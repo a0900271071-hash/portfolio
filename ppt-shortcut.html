@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPT快捷鍵查詢小工具</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --color-primary: #6b7fa3;
+            --color-primary-dark: #556787;
+            --color-primary-light: #eaeeef;
+            --color-bg: #ffffff;
+            --color-card: #ffffff;
+            --color-text: #2d3748;
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Custom scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1ede4;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c5beaf;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a39b8b;
+        }
+
+        .bg-mist-blue {
+            background-color: var(--color-primary);
+        }
+        .bg-mist-blue-dark {
+            background-color: var(--color-primary-dark);
+        }
+        .text-mist-blue {
+            color: var(--color-primary);
+        }
+        .border-mist-blue {
+            border-color: var(--color-primary);
+        }
+
+        .key-badge {
+            background-color: #f0f3f8;
+            border: 1px solid #cbd5e1;
+            border-bottom: 2px solid #94a3b8;
+            color: #334155;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            font-family: monospace, sans-serif;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .shortcut-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .shortcut-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -4px rgba(107, 127, 163, 0.2);
+        }
+
+        .toast-popup {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-6 md:p-10 flex flex-col items-center min-h-screen relative">
+
+    <!-- Flowing Abstract Blue Waves Background Decorative Effect -->
+    <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden bg-white">
+        <!-- Top Right Blue Wave Ribbon -->
+        <svg class="absolute -top-12 -right-12 w-[650px] sm:w-[850px] h-[650px] sm:h-[850px]" viewBox="0 0 1000 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M400 0C600 250 850 180 1000 450V0H400Z" fill="url(#topWave1)" />
+            <path d="M200 0C500 380 800 280 1000 700V0H200Z" fill="url(#topWave2)" />
+            <defs>
+                <linearGradient id="topWave1" x1="1000" y1="0" x2="400" y2="450" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#60a5fa" stop-opacity="0.25"/>
+                    <stop offset="1" stop-color="#93c5fd" stop-opacity="0.03"/>
+                </linearGradient>
+                <linearGradient id="topWave2" x1="1000" y1="0" x2="200" y2="700" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#3b82f6" stop-opacity="0.18"/>
+                    <stop offset="1" stop-color="#bfdbfe" stop-opacity="0.01"/>
+                </linearGradient>
+            </defs>
+        </svg>
+
+        <!-- Bottom Left Layered Blue Wave Ribbons -->
+        <svg class="absolute -bottom-16 -left-16 w-[750px] sm:w-[1050px] h-[650px] sm:h-[850px]" viewBox="0 0 1000 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 800C320 720 480 480 1000 620V800H0Z" fill="url(#bottomWave1)" />
+            <path d="M0 800C220 520 420 320 920 480V800H0Z" fill="url(#bottomWave2)" />
+            <path d="M0 800C160 390 360 200 780 320V800H0Z" fill="url(#bottomWave3)" />
+            <path d="M0 800C110 290 290 130 620 220V800H0Z" fill="url(#bottomWave4)" />
+            <defs>
+                <linearGradient id="bottomWave1" x1="0" y1="800" x2="1000" y2="620" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#3b82f6" stop-opacity="0.12"/>
+                    <stop offset="1" stop-color="#bfdbfe" stop-opacity="0.02"/>
+                </linearGradient>
+                <linearGradient id="bottomWave2" x1="0" y1="800" x2="920" y2="480" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#60a5fa" stop-opacity="0.18"/>
+                    <stop offset="1" stop-color="#93c5fd" stop-opacity="0.03"/>
+                </linearGradient>
+                <linearGradient id="bottomWave3" x1="0" y1="800" x2="780" y2="320" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#2563eb" stop-opacity="0.15"/>
+                    <stop offset="1" stop-color="#dbeafe" stop-opacity="0.04"/>
+                </linearGradient>
+                <linearGradient id="bottomWave4" x1="0" y1="800" x2="620" y2="220" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#93c5fd" stop-opacity="0.25"/>
+                    <stop offset="1" stop-color="#ffffff" stop-opacity="0.0"/>
+                </linearGradient>
+            </defs>
+        </svg>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="w-full max-w-3xl space-y-6 relative z-10">
+        
+        <!-- Header Banner -->
+        <header class="bg-white/90 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-slate-200/80 text-center relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-2 bg-mist-blue"></div>
+            <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#f0f3f8] text-mist-blue text-2xl mb-3 shadow-inner">
+                <i class="fa-solid fa-file-powerpoint"></i>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">PPT 快捷鍵查詢小工具</h1>
+            <p class="text-sm text-slate-500 mt-1">簡報製作 & 演講播放高效加速助手</p>
+        </header>
+
+        <!-- Search Input Block -->
+        <div class="bg-white/90 backdrop-blur-md rounded-2xl p-5 shadow-sm border border-slate-200/80 space-y-3">
+            <div class="relative flex items-center">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 text-slate-400 text-lg"></i>
+                <input id="searchInput" type="text" placeholder="輸入關鍵字（例如：Ctrl, F5, 複製, 群組, +）" class="w-full pl-11 pr-10 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#6b7fa3] focus:bg-white transition text-base">
+                <button id="clearBtn" class="hidden absolute right-3 w-8 h-8 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-600 transition flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="flex flex-wrap items-center justify-between text-xs text-slate-500 pt-1 gap-2">
+                <span id="resultsCount" class="font-medium text-slate-500">請於上方輸入關鍵字開始查詢</span>
+                <button id="resetFiltersBtn" onclick="clearSearch()" class="hidden text-[#6b7fa3] hover:underline font-medium">重置搜尋</button>
+            </div>
+        </div>
+
+        <!-- Default Empty State Container (Shown before searching) -->
+        <div id="emptyState" class="bg-white/80 backdrop-blur-md rounded-2xl p-8 text-center border border-slate-200/80 shadow-sm my-4">
+            <div id="emptyIcon" class="w-16 h-16 mx-auto mb-3 text-slate-300 text-4xl flex items-center justify-center rounded-2xl bg-slate-50">
+                <i class="fa-solid fa-keyboard"></i>
+            </div>
+            <h3 id="emptyTitle" class="text-lg font-bold text-slate-700">等待輸入關鍵字...</h3>
+            <p id="emptyDesc" class="text-sm text-slate-400 max-w-md mx-auto mt-1">請在上方輸入框輸入快捷鍵（如 Ctrl, F5）或功能名稱（如 複製, 群組, 播放），結果將立即呈現。</p>
+        </div>
+
+        <!-- Shortcut Results List Container (Dynamic Output Area) -->
+        <div id="shortcutList" class="space-y-3">
+            <!-- Dynamic JavaScript content goes here -->
+        </div>
+
+        <!-- Full Button: Quick Browse All Categories Toggle -->
+        <div class="pt-2">
+            <button id="showAllBtn" onclick="toggleShowAll()" class="w-full py-3.5 bg-mist-blue hover:bg-mist-blue-dark text-white font-semibold rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-list-ul"></i>
+                <span id="showAllBtnText">一鍵顯示所有常用快捷鍵</span>
+            </button>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center text-xs text-slate-400 py-4">
+            <p>PowerPoint Shortcut Helper Tool &copy; 簡報效率提升神器</p>
+        </footer>
+
+    </div>
+
+    <!-- Notification Toast Popup -->
+    <div id="toast" class="toast-popup fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-5 py-2.5 rounded-xl shadow-xl text-sm font-medium flex items-center gap-2 opacity-0 pointer-events-none z-50">
+        <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+        <span id="toastMsg">已成功複製到剪貼簿！</span>
+    </div>
+
+    <script>
+        // PowerPoint Shortcut Data List
+        const shortcutData = [
+            // 編輯與排版常用
+            { category: '編輯與排版常用', name: '全選內容 / 物件', keys: ['Ctrl', 'A'], desc: '一次選取投影片上的所有文字框或圖形物件' },
+            { category: '編輯與排版常用', name: '複製選取內容', keys: ['Ctrl', 'C'], desc: '將選取的文字或物件複製到剪貼簿' },
+            { category: '編輯與排版常用', name: '貼上剪貼簿內容', keys: ['Ctrl', 'V'], desc: '貼上已複製或剪下的內容' },
+            { category: '編輯與排版常用', name: '剪下選取內容', keys: ['Ctrl', 'X'], desc: '剪下選取內容並存至剪貼簿' },
+            { category: '編輯與排版常用', name: '快速複製物件', keys: ['Ctrl', 'D'], altKeys: ['Ctrl', '滑鼠拖曳'], desc: '複製並直接建立重複物件，或搭配滑鼠拖曳快速拷貝' },
+            { category: '編輯與排版常用', name: '群組物件', keys: ['Ctrl', 'G'], desc: '將多個選取的物件合併為一個群組' },
+            { category: '編輯與排版常用', name: '取消物件群組', keys: ['Ctrl', 'Shift', 'G'], desc: '將選取的物件群組拆解為獨立物件' },
+            { category: '編輯與排版常用', name: '放大 / 縮小畫面', keys: ['Ctrl', '滑鼠滾輪'], desc: '滾輪向上放大投影片視角，向下縮小視角' },
+            { category: '編輯與排版常用', name: '復原上一動作', keys: ['Ctrl', 'Z'], desc: '撤銷剛剛執行的操作' },
+            { category: '編輯與排版常用', name: '重做上一動作 / 重複動作', keys: ['Ctrl', 'Y'], altKeys: ['F4'], desc: '重新執行剛剛復原的動作，或重複執行前一次的格式設定' },
+            { category: '編輯與排版常用', name: '新增投影片', keys: ['Ctrl', 'M'], desc: '在當前頁面後快速插入一張新投影片' },
+            { category: '編輯與排版常用', name: '複製當前投影片', keys: ['Ctrl', 'Shift', 'D'], desc: '快速產生一張完全相同的投影片副本' },
+            { category: '編輯與排版常用', name: '文字加粗', keys: ['Ctrl', 'B'], desc: '將選取的文字設置為粗體' },
+            { category: '編輯與排版常用', name: '文字斜體', keys: ['Ctrl', 'I'], desc: '將選取的文字設置為斜體' },
+            { category: '編輯與排版常用', name: '文字底線', keys: ['Ctrl', 'U'], desc: '將選取的文字加上底線' },
+            { category: '編輯與排版常用', name: '文字靠左對齊', keys: ['Ctrl', 'L'], desc: '設定段落文字靠左對齊' },
+            { category: '編輯與排版常用', name: '文字居中對齊', keys: ['Ctrl', 'E'], desc: '設定段落文字居中對齊' },
+            { category: '編輯與排版常用', name: '文字靠右對齊', keys: ['Ctrl', 'R'], desc: '設定段落文字靠右對齊' },
+            { category: '編輯與排版常用', name: '等比例 / 水平垂直拖曳', keys: ['Shift', '滑鼠拖曳'], desc: '拖曳縮放時保持比例，或移動時鎖定水平/垂直線' },
+
+            // 播放與演講常用
+            { category: '播放與演講常用', name: '從第一張開始播放', keys: ['F5'], desc: '從第 1 張投影片進入全螢幕放映模式' },
+            { category: '播放與演講常用', name: '從當前頁面開始播放', keys: ['Shift', 'F5'], desc: '從當前編輯的投影片直接開始全螢幕放映' },
+            { category: '播放與演講常用', name: '結束投影片放映', keys: ['Esc'], desc: '退出全螢幕簡報播放模式' },
+            { category: '播放與演講常用', name: '切換為黑屏 / 恢復', keys: ['B'], desc: '放映時將螢幕切換為全黑，暫停觀眾注意力（再按一次恢復）' },
+            { category: '播放與演講常用', name: '切換為白屏 / 恢復', keys: ['W'], desc: '放映時將螢幕切換為全白（再按一次恢復）' },
+            { category: '播放與演講常用', name: '顯示畫筆工具', keys: ['Ctrl', 'P'], desc: '放映時將指標切換為畫筆，可在螢幕上塗鴉劃重點' },
+            { category: '播放與演講常用', name: '切換為指標 (箭頭)', keys: ['Ctrl', 'A'], desc: '放映時將畫筆恢復為標準滑鼠指標' },
+            { category: '播放與演講常用', name: '清除螢幕上的塗鴉', keys: ['E'], desc: '擦除放映過程中使用畫筆留下的痕跡' },
+            { category: '播放與演講常用', name: '跳至指定頁碼', keys: ['[頁碼]', 'Enter'], desc: '放映時輸入數字頁碼並按 Enter，立刻跳轉至該頁' },
+            { category: '播放與演講常用', name: '顯示簡報者檢視模式', keys: ['Alt', 'F5'], desc: '開啟雙螢幕演講專用模式（可看備忘稿與下一張頁面）' },
+            { category: '播放與演講常用', name: '顯示所有投影片網格', keys: ['G'], desc: '放映時開啟所有頁面縮圖，方便快速尋找特定頁面' }
+        ];
+
+        // Safe DOM Elements Fetching
+        const getEl = id => document.getElementById(id);
+
+        let isShowingAll = false;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = getEl('searchInput');
+            const clearBtn = getEl('clearBtn');
+
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value.trim();
+                    if (clearBtn) {
+                        if (query.length > 0) {
+                            clearBtn.classList.remove('hidden');
+                        } else {
+                            clearBtn.classList.add('hidden');
+                        }
+                    }
+                    isShowingAll = false;
+                    updateShowAllButtonUI();
+                    renderShortcuts();
+                });
+            }
+
+            if (clearBtn) {
+                clearBtn.addEventListener('click', clearSearch);
+            }
+
+            renderShortcuts();
+        });
+
+        function clearSearch() {
+            const searchInput = getEl('searchInput');
+            const clearBtn = getEl('clearBtn');
+            if (searchInput) searchInput.value = '';
+            if (clearBtn) clearBtn.classList.add('hidden');
+            isShowingAll = false;
+            updateShowAllButtonUI();
+            renderShortcuts();
+            if (searchInput) searchInput.focus();
+        }
+
+        function toggleShowAll() {
+            const searchInput = getEl('searchInput');
+            const clearBtn = getEl('clearBtn');
+            isShowingAll = !isShowingAll;
+            if (isShowingAll) {
+                if (searchInput) searchInput.value = '';
+                if (clearBtn) clearBtn.classList.add('hidden');
+            }
+            updateShowAllButtonUI();
+            renderShortcuts();
+        }
+
+        function updateShowAllButtonUI() {
+            const showAllBtnText = getEl('showAllBtnText');
+            if (showAllBtnText) {
+                showAllBtnText.textContent = isShowingAll 
+                    ? '隱藏列表（恢復預設空白狀態）' 
+                    : '一鍵顯示所有常用快捷鍵';
+            }
+        }
+
+        function renderShortcuts() {
+            const searchInput = getEl('searchInput');
+            const shortcutList = getEl('shortcutList');
+            const emptyState = getEl('emptyState');
+            const emptyTitle = getEl('emptyTitle');
+            const emptyDesc = getEl('emptyDesc');
+            const emptyIcon = getEl('emptyIcon');
+            const resultsCount = getEl('resultsCount');
+            const resetFiltersBtn = getEl('resetFiltersBtn');
+
+            if (!shortcutList) return;
+
+            const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+            // Rule: If search input is empty AND not in "show all" mode, keep output completely blank!
+            if (!searchQuery && !isShowingAll) {
+                shortcutList.innerHTML = '';
+                if (emptyState) emptyState.classList.remove('hidden');
+                if (emptyTitle) emptyTitle.textContent = '等待輸入關鍵字...';
+                if (emptyDesc) emptyDesc.textContent = '請在上方輸入框輸入快捷鍵（如 Ctrl, F5）或功能名稱（如 複製, 群組, 播放），結果將立即呈現。';
+                if (emptyIcon) emptyIcon.innerHTML = '<i class="fa-solid fa-keyboard"></i>';
+                if (resultsCount) resultsCount.textContent = '請於上方輸入關鍵字開始查詢';
+                if (resetFiltersBtn) resetFiltersBtn.classList.add('hidden');
+                return;
+            }
+
+            // Helper to normalize strings for flexible matching (e.g. removing spaces)
+            const normalizeStr = str => str.toLowerCase().replace(/\s+/g, '');
+            const normalizedQuery = normalizeStr(searchQuery);
+
+            // Filter logic matching keyword (including '+', 'Ctrl+A', 'Ctrl + A', etc.)
+            const filtered = shortcutData.filter(item => {
+                if (isShowingAll && !searchQuery) return true;
+
+                const queryLower = searchQuery.toLowerCase();
+
+                // Direct matches in properties
+                const matchesName = item.name.toLowerCase().includes(queryLower);
+                const matchesKeys = item.keys.some(k => k.toLowerCase().includes(queryLower));
+                const matchesAltKeys = item.altKeys ? item.altKeys.some(k => k.toLowerCase().includes(queryLower)) : false;
+                const matchesDesc = item.desc.toLowerCase().includes(queryLower);
+                const matchesCategory = item.category.toLowerCase().includes(queryLower);
+
+                // Combination string matches (e.g., 'Ctrl+A', 'Ctrl + A', '+')
+                const keysJoined = item.keys.join('+');
+                const keysJoinedSpaced = item.keys.join(' + ');
+                const matchesCombination = keysJoined.toLowerCase().includes(queryLower) || 
+                                           keysJoinedSpaced.toLowerCase().includes(queryLower);
+
+                let matchesAltCombination = false;
+                if (item.altKeys) {
+                    const altJoined = item.altKeys.join('+');
+                    const altJoinedSpaced = item.altKeys.join(' + ');
+                    matchesAltCombination = altJoined.toLowerCase().includes(queryLower) || 
+                                            altJoinedSpaced.toLowerCase().includes(queryLower);
+                }
+
+                // Normalized match without spaces (e.g., "ctrl + a" matches "ctrl+a")
+                const normKeysJoined = normalizeStr(keysJoined);
+                const normAltKeysJoined = item.altKeys ? normalizeStr(item.altKeys.join('+')) : '';
+                const matchesNormalized = normKeysJoined.includes(normalizedQuery) || 
+                                          (normAltKeysJoined && normAltKeysJoined.includes(normalizedQuery)) ||
+                                          normalizeStr(item.name).includes(normalizedQuery);
+
+                return matchesName || matchesKeys || matchesAltKeys || matchesDesc || matchesCategory || 
+                       matchesCombination || matchesAltCombination || matchesNormalized;
+            });
+
+            if (resetFiltersBtn) resetFiltersBtn.classList.remove('hidden');
+
+            // Handle empty results when search query returns nothing
+            if (filtered.length === 0) {
+                shortcutList.innerHTML = '';
+                if (emptyState) emptyState.classList.remove('hidden');
+                if (emptyTitle) emptyTitle.textContent = '未找到相符的快捷鍵';
+                if (emptyDesc) emptyDesc.textContent = `搜尋 "${searchQuery}" 沒有找到相關項目，請嘗試改用其他關鍵字（如：Ctrl, F5, 複製）。`;
+                if (emptyIcon) emptyIcon.innerHTML = '<i class="fa-solid fa-magnifying-glass text-slate-300"></i>';
+                if (resultsCount) resultsCount.textContent = `找到 0 筆相符結果`;
+                return;
+            }
+
+            // Hide empty state if there are matches
+            if (emptyState) emptyState.classList.add('hidden');
+            if (resultsCount) resultsCount.textContent = `找到 ${filtered.length} 筆相符的快捷鍵結果`;
+
+            // Group filtered items by Category
+            const grouped = {};
+            filtered.forEach(item => {
+                if (!grouped[item.category]) {
+                    grouped[item.category] = [];
+                }
+                grouped[item.category].push(item);
+            });
+
+            // Build HTML String
+            let html = '';
+            for (const [category, items] of Object.entries(grouped)) {
+                html += `
+                    <div class="space-y-2 pt-2">
+                        <div class="flex items-center gap-2 text-xs font-bold text-[#6b7fa3] uppercase tracking-wider pl-1">
+                            <i class="fa-solid fa-tag"></i>
+                            <span>${category}</span>
+                            <span class="bg-[#eaeeef] text-[#556787] px-2 py-0.5 rounded-full text-[10px]">${items.length}</span>
+                        </div>
+                        <div class="space-y-2.5">
+                `;
+
+                items.forEach(item => {
+                    const keysDisplay = item.keys.map(k => `<span class="key-badge">${k}</span>`).join(' <span class="text-slate-400 font-sans text-xs">+</span> ');
+                    let altKeysDisplay = '';
+                    if (item.altKeys) {
+                        const altStr = item.altKeys.map(k => `<span class="key-badge">${k}</span>`).join(' + ');
+                        altKeysDisplay = `<div class="text-xs text-slate-400 mt-1">或：${altStr}</div>`;
+                    }
+
+                    const copyText = item.keys.join('+');
+
+                    html += `
+                        <div class="shortcut-card bg-white p-4 rounded-xl shadow-sm border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div class="space-y-1">
+                                <div class="font-bold text-slate-800 text-base flex items-center gap-2">
+                                    <span>${item.name}</span>
+                                </div>
+                                <p class="text-xs text-slate-500">${item.desc}</p>
+                            </div>
+                            <div class="flex flex-col sm:items-end justify-center pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+                                <div>${keysDisplay}</div>
+                                ${altKeysDisplay}
+                                <button onclick="copyToClipboard('${copyText}')" class="mt-2 text-xs text-slate-400 hover:text-mist-blue transition inline-flex items-center gap-1 self-end sm:self-auto">
+                                    <i class="fa-regular fa-copy"></i>
+                                    <span>複製組合鍵</span>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+
+            shortcutList.innerHTML = html;
+        }
+
+        // Copy shortcut combination to clipboard
+        function copyToClipboard(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast(`已複製快捷鍵：「${text}」`);
+                }).catch(() => {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast(`已複製快捷鍵：「${text}」`);
+            } catch (err) {
+                showToast(`複製失敗，請手動複製`);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // Show Toast Notification
+        function showToast(message) {
+            const toast = getEl('toast');
+            const toastMsg = getEl('toastMsg');
+            if (!toast || !toastMsg) return;
+
+            toastMsg.textContent = message;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
