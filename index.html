@@ -46,7 +46,7 @@
             overflow-x: hidden;
         }
 
-        /* Tech Cyber Background mirroring the provided visual style */
+        /* Tech Cyber Background matching reference visual style */
         .tech-bg {
             background: 
                 radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.9) 45%, rgba(224, 242, 254, 0.8) 100%),
@@ -70,10 +70,10 @@
 
         /* Cyber Glassmorphism Card Style */
         .tech-card {
-            background: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.82);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(186, 230, 253, 0.6);
+            border: 1px solid rgba(186, 230, 253, 0.7);
             box-shadow: 0 10px 30px -10px rgba(14, 165, 233, 0.08);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -82,11 +82,6 @@
             transform: translateY(-4px);
             border-color: rgba(6, 182, 212, 0.8);
             box-shadow: 0 20px 35px -12px rgba(6, 182, 212, 0.2);
-        }
-
-        /* Glow effects */
-        .glow-cyan {
-            box-shadow: 0 0 20px rgba(6, 182, 212, 0.35);
         }
 
         /* HUD corner accents */
@@ -113,15 +108,27 @@
         }
 
         .glass-nav {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(186, 230, 253, 0.6);
+            border-bottom: 1px solid rgba(186, 230, 253, 0.7);
+        }
+
+        /* Upload box custom styling */
+        .cert-upload-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px dashed rgba(56, 189, 248, 0.5);
+            transition: all 0.3s ease;
+        }
+        .cert-upload-card:hover {
+            border-color: #0284c7;
+            background: rgba(240, 249, 255, 0.95);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
         }
     </style>
 </head>
 <body class="tech-bg font-sans antialiased text-slate-800 selection:bg-cyan-200 selection:text-cyan-900 min-h-screen">
 
-    <!-- Decorative Top & Side Glow Orbs mirroring image visuals -->
+    <!-- Decorative Top & Side Glow Orbs -->
     <div class="fixed -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-cyan-300/30 blur-[120px] rounded-full pointer-events-none z-0"></div>
     <div class="fixed top-1/4 -left-40 w-96 h-96 bg-sky-400/20 blur-[100px] rounded-full pointer-events-none z-0"></div>
     <div class="fixed bottom-10 -right-40 w-96 h-96 bg-cyan-400/20 blur-[100px] rounded-full pointer-events-none z-0"></div>
@@ -139,7 +146,7 @@
                 <!-- Desktop Nav -->
                 <div class="hidden md:flex space-x-6 text-sm font-semibold text-slate-600">
                     <a href="#about" class="hover:text-cyan-600 transition-colors">關於我</a>
-                    <a href="#skills" class="hover:text-cyan-600 transition-colors">專業技能</a>
+                    <a href="#skills" class="hover:text-cyan-600 transition-colors">專業技能與證照</a>
                     <a href="#experience" class="hover:text-cyan-600 transition-colors">經歷與進修</a>
                     <a href="#portfolio" class="hover:text-cyan-600 transition-colors">作品成果</a>
                     <a href="#contact" class="hover:text-cyan-600 transition-colors">聯絡方式</a>
@@ -155,7 +162,7 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-lg border-b border-cyan-100 px-4 pt-2 pb-4 space-y-3 text-base font-medium text-slate-700 shadow-xl">
             <a href="#about" class="block px-3 py-2 rounded-md hover:bg-cyan-50 hover:text-cyan-700 mobile-nav-link">關於我</a>
-            <a href="#skills" class="block px-3 py-2 rounded-md hover:bg-cyan-50 hover:text-cyan-700 mobile-nav-link">專業技能</a>
+            <a href="#skills" class="block px-3 py-2 rounded-md hover:bg-cyan-50 hover:text-cyan-700 mobile-nav-link">專業技能與證照</a>
             <a href="#experience" class="block px-3 py-2 rounded-md hover:bg-cyan-50 hover:text-cyan-700 mobile-nav-link">經歷與進修</a>
             <a href="#portfolio" class="block px-3 py-2 rounded-md hover:bg-cyan-50 hover:text-cyan-700 mobile-nav-link">作品成果</a>
             <a href="#contact" class="block px-3 py-2 rounded-md hover:bg-cyan-50 hover:text-cyan-700 mobile-nav-link">聯絡方式</a>
@@ -208,9 +215,9 @@
                 <div class="tech-card hud-corners p-6 rounded-2xl relative overflow-hidden">
                     <div class="absolute -right-8 -top-8 w-24 h-24 bg-cyan-400/20 rounded-full blur-xl"></div>
                     
-                    <div class="w-28 h-28 mx-auto rounded-2xl bg-gradient-to-br from-cyan-50 to-sky-100 border-2 border-cyan-300 flex items-center justify-center text-cyan-600 shadow-inner relative">
-                        <i class="fa-solid fa-user-gear text-5xl"></i>
-                        <span class="absolute -bottom-2 -right-2 bg-cyan-600 text-white p-1.5 rounded-lg text-xs shadow">
+                    <div class="w-28 h-28 mx-auto rounded-2xl overflow-hidden border-2 border-cyan-300 shadow-md relative group">
+                        <img src="https://a0900271071-hash.github.io/portfolio/my-photo.JPG" alt="劉向榮" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/200x200/e0f2fe/0284c7?text=劉向榮';">
+                        <span class="absolute bottom-1 right-1 bg-cyan-600 text-white p-1 rounded-lg text-xs shadow z-10">
                             <i class="fa-solid fa-microchip"></i>
                         </span>
                     </div>
@@ -281,12 +288,12 @@
         </div>
     </section>
 
-    <!-- Skills Section -->
+    <!-- Skills & Certificates Section (With File Upload Support) -->
     <section id="skills" class="relative z-10 py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <div class="space-y-8">
             <div class="text-center md:text-left">
                 <h2 class="text-2xl font-extrabold text-slate-900">核心技能與專業證照</h2>
-                <p class="text-xs font-semibold text-cyan-700 tracking-wider mt-1">Core Competencies & Certifications</p>
+                <p class="text-xs font-semibold text-cyan-700 tracking-wider mt-1">Core Competencies & Certificate Uploads</p>
             </div>
 
             <!-- Top 3 Skills Highlights -->
@@ -328,54 +335,164 @@
                 </div>
 
                 <!-- Skill 3 -->
-                <div class="tech-card rounded-2xl p-6 flex flex-col justify-between hud-corners">
-                    <div>
-                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-sky-600 text-white flex items-center justify-center text-xl font-black mb-4 shadow-md shadow-cyan-500/20">
-                            03
-                        </div>
-                        <h3 class="text-lg font-bold text-slate-900 mb-2">財務會計與高精準行政</h3>
-                        <p class="text-xs text-slate-600 leading-relaxed mb-4">
-                            擁有財政稅務學歷背景與會計實務經驗，對數字敏感度高，能謹慎處理各類款項、審核單據與帳務結算。
-                        </p>
+            <div class="tech-card rounded-2xl p-6 flex flex-col justify-between hud-corners">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-sky-600 text-white flex items-center justify-center text-xl font-black mb-4 shadow-md shadow-cyan-500/20">
+                        03
                     </div>
-                    <div class="flex flex-wrap gap-1.5 pt-2 border-t border-cyan-100">
-                        <span class="px-2.5 py-1 bg-white text-cyan-800 border border-cyan-200 rounded-md text-xs font-medium">財務會計</span>
-                        <span class="px-2.5 py-1 bg-white text-cyan-800 border border-cyan-200 rounded-md text-xs font-medium">稅務基礎</span>
-                        <span class="px-2.5 py-1 bg-white text-cyan-800 border border-cyan-200 rounded-md text-xs font-medium">行政管理</span>
-                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">財務會計與高精準行政</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                        擁有財政稅務學歷背景與會計實務經驗，對數字敏感度高，能謹慎處理各類款項、審核單據與帳務結算。
+                    </p>
                 </div>
-            </div>
-
-            <!-- Certifications Badges -->
-            <div class="tech-card rounded-2xl p-6 space-y-4">
-                <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-award text-cyan-600"></i> 持有證照與專業技能資格
-                </h3>
-                <div class="flex flex-wrap gap-2.5">
-                    <span class="px-3.5 py-2 rounded-xl bg-white border border-cyan-200 text-xs font-semibold text-slate-800 flex items-center gap-2 shadow-sm">
-                        <i class="fa-solid fa-code text-cyan-600"></i> 丙級網頁設計
-                    </span>
-                    <span class="px-3.5 py-2 rounded-xl bg-white border border-cyan-200 text-xs font-semibold text-slate-800 flex items-center gap-2 shadow-sm">
-                        <i class="fa-solid fa-file-invoice-dollar text-cyan-600"></i> 丙級會計事務技術士
-                    </span>
-                    <span class="px-3.5 py-2 rounded-xl bg-white border border-cyan-200 text-xs font-semibold text-slate-800 flex items-center gap-2 shadow-sm">
-                        <i class="fa-solid fa-laptop-code text-cyan-600"></i> 丙級電腦軟體應用
-                    </span>
-                    <span class="px-3.5 py-2 rounded-xl bg-white border border-cyan-200 text-xs font-semibold text-slate-800 flex items-center gap-2 shadow-sm">
-                        <i class="fa-solid fa-shield-halved text-cyan-600"></i> 產物保險業務員
-                    </span>
-                    <span class="px-3.5 py-2 rounded-xl bg-white border border-cyan-200 text-xs font-semibold text-slate-800 flex items-center gap-2 shadow-sm">
-                        <i class="fa-solid fa-chart-line text-cyan-600"></i> 證券商業務員
-                    </span>
-                    <span class="px-3.5 py-2 rounded-xl bg-white border border-cyan-200 text-xs font-semibold text-slate-800 flex items-center gap-2 shadow-sm">
-                        <i class="fa-solid fa-language text-cyan-600"></i> 中華民國商業職業教育學會英語能力測驗第四級合格
-                    </span>
+                <div class="flex flex-wrap gap-1.5 pt-2 border-t border-cyan-100">
+                    <span class="px-2.5 py-1 bg-white text-cyan-800 border border-cyan-200 rounded-md text-xs font-medium">財務會計</span>
+                    <span class="px-2.5 py-1 bg-white text-cyan-800 border border-cyan-200 rounded-md text-xs font-medium">稅務基礎</span>
+                    <span class="px-2.5 py-1 bg-white text-cyan-800 border border-cyan-200 rounded-md text-xs font-medium">行政管理</span>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Experience & Education Section -->
+        <!-- Custom Uploadable Certificates Cards Section -->
+        <div class="tech-card rounded-2xl p-6 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-cyan-100 pb-3 gap-2">
+                <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-award text-cyan-600"></i> 專業證照與資格證明 (可自訂上傳)
+                </h3>
+                <span class="text-xs text-cyan-700 bg-cyan-50 border border-cyan-200 px-3 py-1 rounded-full font-medium w-max">
+                    <i class="fa-solid fa-cloud-arrow-up mr-1"></i> 點擊卡片自由上傳檔案
+                </span>
+            </div>
+
+            <!-- Grid of 6 Generic Uploadable Certificate Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+                
+                <!-- Cert Slot 1 -->
+                <div class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group" onclick="triggerCertUpload(1)">
+                    <input type="file" id="cert-input-1" class="hidden" accept="image/*,.pdf" onchange="handleCertFileSelect(event, 1)">
+                    <div id="cert-placeholder-1" class="space-y-2 py-2">
+                        <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-file-certificate"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 01</h4>
+                        <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                    </div>
+                    <div id="cert-preview-container-1" class="hidden relative space-y-2">
+                        <img id="cert-img-1" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽">
+                        <p id="cert-name-1" class="text-xs font-bold text-slate-800 truncate px-2"></p>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
+                            <button type="button" onclick="event.stopPropagation(); viewCertModal(1)" class="text-xs text-cyan-700 hover:text-cyan-900 font-bold underline">放大預覽</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cert Slot 2 -->
+                <div class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group" onclick="triggerCertUpload(2)">
+                    <input type="file" id="cert-input-2" class="hidden" accept="image/*,.pdf" onchange="handleCertFileSelect(event, 2)">
+                    <div id="cert-placeholder-2" class="space-y-2 py-2">
+                        <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-file-certificate"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 02</h4>
+                        <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                    </div>
+                    <div id="cert-preview-container-2" class="hidden relative space-y-2">
+                        <img id="cert-img-2" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽">
+                        <p id="cert-name-2" class="text-xs font-bold text-slate-800 truncate px-2"></p>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
+                            <button type="button" onclick="event.stopPropagation(); viewCertModal(2)" class="text-xs text-cyan-700 hover:text-cyan-900 font-bold underline">放大預覽</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cert Slot 3 -->
+                <div class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group" onclick="triggerCertUpload(3)">
+                    <input type="file" id="cert-input-3" class="hidden" accept="image/*,.pdf" onchange="handleCertFileSelect(event, 3)">
+                    <div id="cert-placeholder-3" class="space-y-2 py-2">
+                        <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-file-certificate"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 03</h4>
+                        <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                    </div>
+                    <div id="cert-preview-container-3" class="hidden relative space-y-2">
+                        <img id="cert-img-3" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽">
+                        <p id="cert-name-3" class="text-xs font-bold text-slate-800 truncate px-2"></p>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
+                            <button type="button" onclick="event.stopPropagation(); viewCertModal(3)" class="text-xs text-cyan-700 hover:text-cyan-900 font-bold underline">放大預覽</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cert Slot 4 -->
+                <div class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group" onclick="triggerCertUpload(4)">
+                    <input type="file" id="cert-input-4" class="hidden" accept="image/*,.pdf" onchange="handleCertFileSelect(event, 4)">
+                    <div id="cert-placeholder-4" class="space-y-2 py-2">
+                        <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-file-certificate"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 04</h4>
+                        <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                    </div>
+                    <div id="cert-preview-container-4" class="hidden relative space-y-2">
+                        <img id="cert-img-4" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽">
+                        <p id="cert-name-4" class="text-xs font-bold text-slate-800 truncate px-2"></p>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
+                            <button type="button" onclick="event.stopPropagation(); viewCertModal(4)" class="text-xs text-cyan-700 hover:text-cyan-900 font-bold underline">放大預覽</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cert Slot 5 -->
+                <div class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group" onclick="triggerCertUpload(5)">
+                    <input type="file" id="cert-input-5" class="hidden" accept="image/*,.pdf" onchange="handleCertFileSelect(event, 5)">
+                    <div id="cert-placeholder-5" class="space-y-2 py-2">
+                        <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-file-certificate"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 05</h4>
+                        <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                    </div>
+                    <div id="cert-preview-container-5" class="hidden relative space-y-2">
+                        <img id="cert-img-5" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽">
+                        <p id="cert-name-5" class="text-xs font-bold text-slate-800 truncate px-2"></p>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
+                            <button type="button" onclick="event.stopPropagation(); viewCertModal(5)" class="text-xs text-cyan-700 hover:text-cyan-900 font-bold underline">放大預覽</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cert Slot 6 -->
+                <div class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group" onclick="triggerCertUpload(6)">
+                    <input type="file" id="cert-input-6" class="hidden" accept="image/*,.pdf" onchange="handleCertFileSelect(event, 6)">
+                    <div id="cert-placeholder-6" class="space-y-2 py-2">
+                        <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-file-certificate"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 06</h4>
+                        <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                    </div>
+                    <div id="cert-preview-container-6" class="hidden relative space-y-2">
+                        <img id="cert-img-6" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽">
+                        <p id="cert-name-6" class="text-xs font-bold text-slate-800 truncate px-2"></p>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
+                            <button type="button" onclick="event.stopPropagation(); viewCertModal(6)" class="text-xs text-cyan-700 hover:text-cyan-900 font-bold underline">放大預覽</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Experience & Education Section -->
     <section id="experience" class="relative z-10 py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
             <!-- Work & Refinement Experience -->
@@ -515,7 +632,6 @@
                 <!-- Portfolio Card 1 -->
                 <div class="tech-card rounded-2xl overflow-hidden flex flex-col justify-between hud-corners">
                     <div>
-                        <!-- Tech Header Banner -->
                         <div class="relative bg-gradient-to-br from-cyan-600 to-sky-700 h-44 flex flex-col items-center justify-center p-4 text-white">
                             <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/10 to-transparent"></div>
                             <i class="fa-solid fa-landmark-dome text-4xl mb-2 text-cyan-200"></i>
@@ -541,7 +657,6 @@
                 <!-- Portfolio Card 2 -->
                 <div class="tech-card rounded-2xl overflow-hidden flex flex-col justify-between hud-corners">
                     <div>
-                        <!-- Tech Header Banner -->
                         <div class="relative bg-gradient-to-br from-sky-600 to-cyan-800 h-44 flex flex-col items-center justify-center p-4 text-white">
                             <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/10 to-transparent"></div>
                             <i class="fa-solid fa-robot text-4xl mb-2 text-cyan-200"></i>
@@ -567,7 +682,6 @@
                 <!-- Portfolio Card 3 -->
                 <div class="tech-card rounded-2xl overflow-hidden flex flex-col justify-between hud-corners">
                     <div>
-                        <!-- Tech Header Banner -->
                         <div class="relative bg-gradient-to-br from-cyan-700 to-slate-800 h-44 flex flex-col items-center justify-center p-4 text-white">
                             <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/10 to-transparent"></div>
                             <i class="fa-solid fa-chart-pie text-4xl mb-2 text-cyan-200"></i>
@@ -597,7 +711,6 @@
     <!-- Contact Section -->
     <section id="contact" class="relative z-10 py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <div class="bg-gradient-to-br from-slate-900 via-cyberNavy to-slate-900 text-white rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden border border-cyan-500/30">
-            <!-- Decorative cyber glow -->
             <div class="absolute -right-10 -bottom-10 w-72 h-72 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
             <div class="absolute -left-10 -top-10 w-72 h-72 bg-sky-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -651,14 +764,14 @@
         <p class="mt-1 font-mono text-[11px] text-cyan-700">科技高光風格 | 個人介紹單頁</p>
     </footer>
 
-    <!-- Portfolio Detail Modals -->
+    <!-- Certificate & Portfolio Lightbox Modals -->
     <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="tech-card bg-white/95 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-cyan-300 space-y-4 relative">
             <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-cyan-600 p-1">
                 <i class="fa-solid fa-xmark text-xl"></i>
             </button>
 
-            <!-- Modal Content 1 -->
+            <!-- Portfolio Modal Content 1 -->
             <div id="modal-content-portfolio-1" class="modal-content hidden space-y-3">
                 <span class="px-2.5 py-1 bg-cyan-100 text-cyan-900 rounded-md text-xs font-bold">展場專案管理</span>
                 <h3 class="text-xl font-black text-slate-900">博物館 13 場活動籌辦與公部門溝通</h3>
@@ -673,7 +786,7 @@
                 </ul>
             </div>
 
-            <!-- Modal Content 2 -->
+            <!-- Portfolio Modal Content 2 -->
             <div id="modal-content-portfolio-2" class="modal-content hidden space-y-3">
                 <span class="px-2.5 py-1 bg-cyan-100 text-cyan-900 rounded-md text-xs font-bold">AI & 自動化</span>
                 <h3 class="text-xl font-black text-slate-900">Gemini & Make AI 自動化行政工作流</h3>
@@ -687,7 +800,7 @@
                 </ul>
             </div>
 
-            <!-- Modal Content 3 -->
+            <!-- Portfolio Modal Content 3 -->
             <div id="modal-content-portfolio-3" class="modal-content hidden space-y-3">
                 <span class="px-2.5 py-1 bg-cyan-100 text-cyan-900 rounded-md text-xs font-bold">財稅數據</span>
                 <h3 class="text-xl font-black text-slate-900">Power BI 數據視覺化與財務管理</h3>
@@ -701,6 +814,20 @@
                 </ul>
             </div>
 
+            <!-- Certificate Preview Lightbox Content -->
+            <div id="modal-content-cert" class="modal-content hidden space-y-3 text-center">
+                <span class="px-2.5 py-1 bg-emerald-100 text-emerald-900 rounded-md text-xs font-bold">證照圖檔檢視</span>
+                <h3 id="cert-modal-title" class="text-xl font-black text-slate-900">證照預覽</h3>
+                <div class="max-h-96 overflow-auto rounded-xl border border-cyan-200">
+                    <img id="cert-modal-img" class="w-full object-contain mx-auto" alt="證照放大預覽">
+                </div>
+                <div class="flex justify-center gap-2 pt-2">
+                    <button type="button" id="reupload-btn" onclick="" class="px-4 py-2 bg-cyan-100 text-cyan-900 hover:bg-cyan-200 rounded-xl text-xs font-bold transition-colors">
+                        <i class="fa-solid fa-arrows-rotate mr-1"></i> 重新上傳此證照
+                    </button>
+                </div>
+            </div>
+
             <div class="pt-4 border-t border-cyan-100 text-right">
                 <button onclick="closeModal()" class="px-4 py-2 bg-slate-900 hover:bg-cyan-700 text-white rounded-xl text-xs font-bold transition-colors">
                     關閉視窗
@@ -711,6 +838,7 @@
 
     <!-- Interactive Scripts -->
     <script>
+        // Mobile Navigation Toggle
         const menuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
@@ -725,6 +853,7 @@
             });
         });
 
+        // Copy Contact Details
         function copyContactInfo() {
             const contactText = "劉向榮 | 電話：0900-271-071 | 電子郵件：a0900271071@gmail.com";
             
@@ -744,6 +873,7 @@
             }, 3000);
         }
 
+        // Modals management
         function openModal(portfolioId) {
             const backdrop = document.getElementById('modal-backdrop');
             const contents = document.querySelectorAll('.modal-content');
@@ -767,6 +897,60 @@
                 closeModal();
             }
         });
+
+        // Certificate Upload Handling
+        const certData = {};
+
+        function triggerCertUpload(id) {
+            const input = document.getElementById(`cert-input-${id}`);
+            if (input) input.click();
+        }
+
+        function handleCertFileSelect(event, id) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const dataUrl = e.target.result;
+                certData[id] = {
+                    name: file.name,
+                    url: dataUrl
+                };
+
+                // Hide placeholder, show preview
+                document.getElementById(`cert-placeholder-${id}`).classList.add('hidden');
+                
+                const previewContainer = document.getElementById(`cert-preview-container-${id}`);
+                const previewImg = document.getElementById(`cert-img-${id}`);
+                const previewName = document.getElementById(`cert-name-${id}`);
+
+                previewImg.src = dataUrl;
+                previewName.textContent = file.name;
+                previewContainer.classList.remove('hidden');
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        function viewCertModal(id) {
+            if (!certData[id]) return;
+
+            const backdrop = document.getElementById('modal-backdrop');
+            const contents = document.querySelectorAll('.modal-content');
+            contents.forEach(content => content.classList.add('hidden'));
+
+            const modalTitle = document.getElementById('cert-modal-title');
+            const modalImg = document.getElementById('cert-modal-img');
+            const reuploadBtn = document.getElementById('reupload-btn');
+
+            modalTitle.textContent = `證照預覽：${certData[id].name}`;
+            modalImg.src = certData[id].url;
+            reuploadBtn.setAttribute('onclick', `closeModal(); triggerCertUpload(${id})`);
+
+            document.getElementById('modal-content-cert').classList.remove('hidden');
+            backdrop.classList.remove('hidden');
+        }
     </script>
 </body>
 </html>
