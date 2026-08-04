@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>特級廚師：大馬士革刀之極致切水果</title>
+  <style>
+    /* 基礎樣式重設 */
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      margin: 0;
+      padding: 0;
+    }
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #1a0f05;
+    /* 遊戲容器 - 寫實特級廚房背景 */
+    #game-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      max-width: 1024px;
+      max-height: 768px;
+      margin: 0 auto;
+      /* 替換為高質感寫實頂級廚房背景，並進行適度暗化以保證水果與刀光的清晰對比 */
+      background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.55)), 
+                  url('https://images.unsplash.com/photo-1588854337236-6889d631faa8?auto=format&fit=crop&w=1024&q=80') no-repeat center center;
+      background-size: cover;
+      border: 4px solid #7f5539;
+      box-shadow: 0 12px 50px rgba(0,0,0,0.8);
+      overflow: hidden;
+    }
+
+    /* 畫布 */
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: none; /* 隱藏游標，我們繪製大馬士革主廚刀 */
+    }
+
+    /* UI 頂部資訊列 */
+    #ui-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none; /* 穿透點擊 */
+      z-index: 10;
+    }
+
+    /* 廚師資訊 */
+    .chef-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      padding: 8px 18px;
+      border-radius: 50px;
+      border: 2px solid #ffd700;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+    }
+    .chef-avatar {
+      font-size: 32px;
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
+    }
+    .score-container {
+      color: #fff;
+      font-weight: bold;
+    }
+    .score-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #ffe66d;
+      letter-spacing: 1px;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+    }
+    .score-value {
+      font-size: 28px;
+      font-family: 'Courier New', Courier, monospace;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.7);
+    }
+
+    /* 生命值與最高分 */
+    .right-ui {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+    .hearts {
+      display: flex;
+      gap: 5px;
+      font-size: 26px;
+      filter: drop-shadow(0 3px 6px rgba(0,0,0,0.6));
+    }
+    .best-score {
+      color: #fff;
+      font-weight: bold;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      padding: 4px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+    }
+
+    /* 按鈕容器 */
+    .interactive-ui {
+      pointer-events: auto;
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      background: linear-gradient(135deg, #ffb703, #fb8500);
+      border: 2px solid #fff;
+      color: white;
+      padding: 8px 18px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      transition: all 0.15s ease;
+    }
+    .btn:active {
+      transform: scale(0.95);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+    }
+    .btn-pause {
+      background: linear-gradient(135deg, #888, #444);
+      border-color: #bbb;
+    }
+
+    /* 懸浮覆蓋層（選單、暫停、結束） */
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      /* 調整為半透明深色，保留 50% 的不透明度，讓底層寫實廚房背景在主選單直接顯現 */
+      background: rgba(15, 10, 5, 0.5);
+      /* 降低模糊程度，使背景的不鏽鋼廚具與廚房輪廓清晰可見，同時維持文字可讀性 */
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      transition: opacity 0.3s ease;
+    }
+    .overlay.hidden {
+      display: none !important;
+    }
+    .overlay-title {
+      font-size: 48px;
+      color: #ffd700;
+      margin-bottom: 10px;
+      text-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 0 30px rgba(255, 215, 0, 0.6);
+      font-weight: 900;
+    }
+    .overlay-subtitle {
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 25px;
+      max-width: 550px;
+      line-height: 1.6;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    .overlay-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 2px solid #9c6644;
+      border-radius: 15px;
+      padding: 18px 30px;
+      margin-bottom: 25px;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+      max-width: 600px;
+    }
+    .overlay-score {
+      font-size: 42px;
+      color: #ffe600;
+      font-weight: bold;
+      text-shadow: 0 3px 6px rgba(0,0,0,0.5);
+    }
+
+    /* 難度選擇區域 */
+    .difficulty-section {
+      margin-bottom: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .difficulty-label {
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffe66d;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    .difficulty-group {
+      display: flex;
+      gap: 15px;
+    }
+    .diff-btn {
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 12px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      color: white;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      transition: all 0.2s ease;
+    }
+    .diff-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+    }
+    .diff-btn:active {
+      transform: scale(0.95);
+    }
+    /* 難度配色 */
+    .diff-easy {
+      background: linear-gradient(135deg, #2ec4b6, #0f9f90);
+    }
+    .diff-easy.active {
+      border-color: #fff;
+      box-shadow: 0 0 20px rgba(46, 196, 182, 0.8);
+      transform: scale(1.05);
+    }
+    .diff-normal {
+      background: linear-gradient(135deg, #ff9f1c, #d37300);
+    }
+    .diff-normal.active {
+      border-color: #fff;
+      box-shadow: 0 0 20px rgba(255, 159, 28, 0.8);
+      transform: scale(1.05);
+    }
+    .diff-hard {
+      background: linear-gradient(135deg, #e71d36, #b0071c);
+    }
+    .diff-hard.active {
+      border-color: #fff;
+      box-shadow: 0 0 20px rgba(231, 29, 54, 0.8);
+      transform: scale(1.05);
+    }
+
+    .start-btn {
+      font-size: 26px;
+      padding: 14px 50px;
+      border-radius: 35px;
+      background: linear-gradient(135deg, #ff4e50, #f9d423);
+      border: 3px solid #fff;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+      box-shadow: 0 8px 25px rgba(255,78,80,0.5);
+      animation: pulse 1.5s infinite;
+    }
+
+    /* 慢動作狀態提示 */
+    #fever-bar {
+      position: absolute;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 230, 0, 0.35);
+      backdrop-filter: blur(5px);
+      border: 3px solid #ffe600;
+      padding: 8px 20px;
+      border-radius: 25px;
+      color: #fff;
+      font-weight: bold;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 0 25px rgba(255, 230, 0, 0.8);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 5;
+    }
+    #fever-bar.active {
+      opacity: 1;
+      animation: bounce 0.5s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.06); }
+      100% { transform: scale(1); }
+    }
+    @keyframes bounce {
+      0% { transform: translate(-50%, 0); }
+      100% { transform: translate(-50%, -6px); }
+    }
+
+    @media (min-width: 1024px) {
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #0f0803;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    <!-- UI 頂部資訊欄 -->
+    <div id="ui-layer">
+      <!-- 左側：廚師與分數 -->
+      <div class="chef-info">
+        <span class="chef-avatar">👨‍🍳</span>
+        <div class="score-container">
+          <div class="score-label" id="difficulty-badge">普通模式 1.0x</div>
+          <div class="score-value" id="score-display">0000</div>
+        </div>
+      </div>
+
+      <!-- 右側：血量與互動 -->
+      <div class="right-ui">
+        <div class="hearts" id="hearts-container">
+          ❤️❤️❤️
+        </div>
+        <div class="best-score" id="best-score-display">
+          最高紀錄: 0
+        </div>
+        <div class="interactive-ui">
+          <button class="btn btn-pause" id="pause-btn">暫停</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 慢動作狂熱狀態提示 -->
+    <div id="fever-bar">
+      🍌 香蕉魔法：時間流速減慢 (雙倍得分模式！)
+    </div>
+
+    <!-- 主遊戲 Canvas -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- 1. 開始選單 -->
+    <div id="menu-overlay" class="overlay">
+      <div class="overlay-title">🔪 特級廚師：大馬士革鋼之切 🍉</div>
+      <div class="overlay-subtitle">
+        手握神級大馬士革鋼刀！切碎新鮮水果，斬斷一切！避開炸彈！
+      </div>
+
+      <!-- 難度選擇區域 -->
+      <div class="difficulty-section">
+        <div class="difficulty-label">⚙️ 請選擇烹飪難度：</div>
+        <div class="difficulty-group">
+          <button class="diff-btn diff-easy" data-speed="0.5">新手模式 (0.5x)</button>
+          <button class="diff-btn diff-normal active" data-speed="1.0">普通模式 (1.0x)</button>
+          <button class="diff-btn diff-hard" data-speed="2.0">高玩模式 (2.0x)</button>
+        </div>
+      </div>
+      
+      <div class="overlay-card">
+        <p style="font-size: 14px; text-align: left; line-height: 1.8;">
+          🍌 <strong>黃金香蕉</strong>：觸發「慢動作」與「雙倍得分」特技！<br>
+          🍉 <strong>巨大西瓜</strong>：外皮堅硬，需要連砍 3 刀才能切碎（可得 5 分）！<br>
+          💣 <strong>廚房炸彈</strong>：切中會引發猛烈的螢幕震撼大爆炸，遊戲直接結束！
+        </p>
+      </div>
+
+      <button class="btn start-btn" id="start-btn">開始備料！</button>
+    </div>
+
+    <!-- 2. 暫停選單 -->
+    <div id="pause-overlay" class="overlay hidden">
+      <div class="overlay-title">⏸ 廚房休息中</div>
+      <div class="overlay-subtitle">大廚正在保養大馬士革名刀...</div>
+      <button class="btn start-btn" id="resume-btn" style="animation: none; background: #666; border-color: #aaa;">繼續切水果</button>
+    </div>
+
+    <!-- 3. 遊戲結束選單 -->
+    <div id="gameover-overlay" class="overlay hidden">
+      <div class="overlay-title">💥 廚房大爆炸！</div>
+      <div class="overlay-subtitle" id="gameover-reason">食材流失太多，或誤切了炸彈！</div>
+      
+      <div class="overlay-card">
+        <p style="font-size: 14px; color: #ddd;">本次烹飪得分</p>
+        <div class="overlay-score" id="final-score">0</div>
+        <p style="font-size: 14px; color: #ffd700; margin-top: 5px;" id="new-record-tag"></p>
+      </div>
+
+      <!-- 整合按鈕，新增回到主畫面選項 -->
+      <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+        <button class="btn start-btn" id="restart-btn" style="font-size: 20px; padding: 12px 30px;">重整廚房 (重新開始)</button>
+        <button class="btn start-btn" id="back-to-menu-btn" style="font-size: 20px; padding: 12px 30px; background: linear-gradient(135deg, #6c757d, #495057); border-color: #ced4da; box-shadow: 0 8px 25px rgba(108,117,125,0.4); animation: none;">回到主畫面</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- 遊戲初始化與常數定義 ---
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const container = document.getElementById('game-container');
+
+    // 遊戲狀態與難度設定
+    let gameState = 'menu'; // menu, playing, paused, gameover
+    let score = 0;
+    let lives = 3;
+    let bestScore = parseInt(localStorage.getItem('chef_fruit_best_score') || '0');
+    
+    // 預設難度倍率 (1.0x)
+    let selectedDifficultyMultiplier = 1.0; 
+    let selectedDifficultyName = "普通模式";
+
+    // 螢幕抖動
+    let screenShake = 0;
+
+    // 水果、粒子、背景果汁汙漬、刀光軌跡
+    let fruits = [];
+    let particles = [];
+    let juiceSplatters = []; // 砧板背景上的果汁汙漬
+    let bladeTrails = []; 
+    let floatingTexts = [];
+
+    // 香蕉狂熱狀態
+    let bananaFeverActive = false;
+    let bananaFeverTimer = 0;
+    const FEVER_DURATION = 360; // 6秒 (在 60 FPS 下為 360 幀)
+
+    // 控制遊戲實際物理更新流速
+    let gameSpeedMultiplier = 1.0;
+
+    // 水果生成計時器
+    let spawnTimer = 0;
+    let spawnInterval = 60; 
+
+    // 音效模擬：Web Audio API
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    function playSound(type) {
+      if (!audioCtx) return;
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      const now = audioCtx.currentTime;
+
+      if (type === 'slice') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(450, now);
+        osc.frequency.exponentialRampToValueAtTime(1600, now + 0.12);
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.12);
+        osc.start(now);
+        osc.stop(now + 0.12);
+      } else if (type === 'hit_watermelon') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(200, now);
+        osc.frequency.exponentialRampToValueAtTime(50, now + 0.15);
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.15);
+        osc.start(now);
+        osc.stop(now + 0.15);
+      } else if (type === 'explosion') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(100, now);
+        osc.frequency.exponentialRampToValueAtTime(10, now + 0.95);
+        gain.gain.setValueAtTime(0.55, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.95);
+        osc.start(now);
+        osc.stop(now + 0.95);
+        
+        try {
+          const bufferSize = audioCtx.sampleRate * 0.6;
+          const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            data[i] = Math.random() * 2 - 1;
+          }
+          const noise = audioCtx.createBufferSource();
+          noise.buffer = buffer;
+          const noiseGain = audioCtx.createGain();
+          noiseGain.gain.setValueAtTime(0.25, now);
+          noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+          noise.connect(noiseGain);
+          noiseGain.connect(audioCtx.destination);
+          noise.start(now);
+          noise.stop(now + 0.6);
+        } catch(e) {}
+      } else if (type === 'fever') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(320, now);
+        osc.frequency.linearRampToValueAtTime(640, now + 0.1);
+        osc.frequency.linearRampToValueAtTime(480, now + 0.2);
+        osc.frequency.linearRampToValueAtTime(960, now + 0.3);
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.4);
+        osc.start(now);
+        osc.stop(now + 0.4);
+      } else if (type === 'combo') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(523.25, now); 
+        osc.frequency.setValueAtTime(659.25, now + 0.08); 
+        osc.frequency.setValueAtTime(783.99, now + 0.16); 
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
+        osc.start(now);
+        osc.stop(now + 0.35);
+      } else if (type === 'throw') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(130, now);
+        osc.frequency.exponentialRampToValueAtTime(260, now + 0.2);
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
+        osc.start(now);
+        osc.stop(now + 0.25);
+      } else if (type === 'miss') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(220, now);
+        osc.frequency.setValueAtTime(120, now + 0.15);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      }
+    }
+
+    // --- 畫布尺寸調整 ---
+    function resizeCanvas() {
+      const rect = container.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    document.getElementById('best-score-display').textContent = `最高紀錄: ${bestScore}`;
+
+    // --- 水果類別與高彩度定義 ---
+    const FRUIT_TYPES = {
+      APPLE: { emoji: '🍎', color: '#ff2d55', name: '蘋果', size: 38 },
+      ORANGE: { emoji: '🍊', color: '#ff9500', name: '柳丁', size: 36 },
+      STRAWBERRY: { emoji: '🍓', color: '#ff2d55', name: '草莓', size: 32 },
+      BANANA: { emoji: '🍌', color: '#ffd60a', name: '黃金香蕉', size: 35, isSpecial: true, effect: 'fever' },
+      WATERMELON: { emoji: '🍉', color: '#30d158', name: '巨大西瓜', size: 55, hitsNeeded: 3, isSpecial: true }
+    };
+
+    // --- 背景果汁汙漬（Splat） ---
+    class JuiceSplatter {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.alpha = 0.85;
+        this.decay = 0.003; // 約 4.5 秒緩緩消失
+        this.points = [];
+        
+        const numPoints = 8 + Math.floor(Math.random() * 6);
+        const baseRadius = 20 + Math.random() * 20;
+        for (let i = 0; i < numPoints; i++) {
+          const angle = (i / numPoints) * Math.PI * 2;
+          const length = baseRadius * (0.35 + (Math.random() > 0.65 ? Math.random() * 1.3 : Math.random() * 0.4));
+          this.points.push({
+            x: Math.cos(angle) * length,
+            y: Math.sin(angle) * length
+          });
+        }
+      }
+      update() {
+        this.alpha -= this.decay * gameSpeedMultiplier;
+      }
+      draw() {
+        if (this.alpha <= 0) return;
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        ctx.fillStyle = this.color;
+        
+        // 增強果汁濕漉漉的微光效果
+        ctx.shadowBlur = 4;
+        ctx.shadowColor = this.color;
+
+        ctx.beginPath();
+        ctx.moveTo(this.x + this.points[0].x, this.y + this.points[0].y);
+        for (let i = 1; i < this.points.length; i++) {
+          const prev = this.points[i - 1];
+          const curr = this.points[i];
+          const midX = (prev.x + curr.x) / 2;
+          const midY = (prev.y + curr.y) / 2;
+          ctx.quadraticCurveTo(this.x + prev.x, this.y + prev.y, this.x + midX, this.y + midY);
+        }
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    class Fruit {
+      constructor() {
+        const r = Math.random();
+        if (r < 0.05) {
+          this.type = FRUIT_TYPES.BANANA;
+        } else if (r < 0.12) {
+          this.type = FRUIT_TYPES.WATERMELON;
+        } else if (r < 0.80) {
+          const normKeys = ['APPLE', 'ORANGE', 'STRAWBERRY'];
+          this.type = FRUIT_TYPES[normKeys[Math.floor(Math.random() * normKeys.length)]];
+        } else {
+          this.isBomb = true;
+          this.type = { emoji: '💣', color: '#ff3b30', size: 38 };
+        }
+
+        this.x = Math.random() * (canvas.width * 0.6) + (canvas.width * 0.2);
+        this.y = canvas.height + 50;
+
+        const gravity = 0.15;
+        const targetHeight = Math.random() * (canvas.height * 0.5) + (canvas.height * 0.1);
+        const distanceToCover = this.y - targetHeight;
+        
+        this.vy = -Math.sqrt(2 * gravity * distanceToCover);
+        
+        const centerX = canvas.width / 2;
+        this.vx = (centerX - this.x) * 0.015 + (Math.random() * 2 - 1);
+
+        this.radius = this.type.size;
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rotSpeed = (Math.random() * 0.04 - 0.02);
+
+        this.isSliced = false;
+        this.sliceCount = 0; 
+        this.hitsNeeded = this.type.hitsNeeded || 1;
+        this.parts = [];
+      }
+
+      update() {
+        const speedFactor = gameSpeedMultiplier;
+
+        this.x += this.vx * speedFactor;
+        this.y += this.vy * speedFactor;
+        
+        const gravity = 0.13;
+        this.vy += gravity * speedFactor;
+
+        this.rotation += this.rotSpeed * speedFactor;
+
+        if (this.isSliced && this.parts.length > 0) {
+          for (let part of this.parts) {
+            part.x += part.vx * speedFactor;
+            part.y += part.vy * speedFactor;
+            part.vy += gravity * speedFactor;
+            part.rotation += part.rotSpeed * speedFactor;
+          }
+        }
+      }
+
+      draw() {
+        ctx.save();
+        
+        if (!this.isSliced) {
+          ctx.translate(this.x, this.y);
+          ctx.rotate(this.rotation);
+          
+          ctx.shadowBlur = 25;
+          ctx.shadowColor = this.type.color;
+
+          if (this.isBomb) {
+            const flash = Math.sin(Date.now() * 0.03) * 12 + 15;
+            ctx.shadowBlur = flash;
+            ctx.shadowColor = '#ff2d55';
+          } else if (this.type === FRUIT_TYPES.WATERMELON && this.sliceCount > 0) {
+            ctx.shadowColor = '#ff3b30';
+          }
+
+          // 繪製 Emoji
+          ctx.font = `${this.radius * 2}px Arial`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(this.type.emoji, 0, 0);
+
+          // 繪製大西瓜被切時的刀痕與警示圈
+          if (this.type === FRUIT_TYPES.WATERMELON && this.sliceCount > 0) {
+            ctx.strokeStyle = '#ff375f';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.arc(0, 0, this.radius + 4, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 3;
+            for (let i = 0; i < this.sliceCount; i++) {
+              ctx.beginPath();
+              ctx.moveTo(-this.radius + 12, -10 + i * 10);
+              ctx.lineTo(this.radius - 12, 10 - i * 10);
+              ctx.stroke();
+            }
+          }
+        } else {
+          // 繪製切開的碎片
+          for (let part of this.parts) {
+            ctx.save();
+            ctx.translate(part.x, part.y);
+            ctx.rotate(part.rotation);
+
+            ctx.font = `${this.radius * 1.8}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = this.type.color;
+
+            ctx.beginPath();
+            if (part.side === 'left') {
+              ctx.rect(-this.radius * 2, -this.radius * 2, this.radius * 2, this.radius * 4);
+            } else {
+              ctx.rect(0, -this.radius * 2, this.radius * 2, this.radius * 4);
+            }
+            ctx.clip();
+            
+            ctx.fillText(this.type.emoji, 0, 0);
+            ctx.restore();
+          }
+        }
+        ctx.restore();
+      }
+
+      checkSlice(p1, p2) {
+        if (this.isSliced) return false;
+
+        const dist = distToSegment({ x: this.x, y: this.y }, p1, p2);
+        
+        if (dist < this.radius) {
+          if (this.isBomb) {
+            this.explode();
+            return 'bomb';
+          }
+
+          if (this.type === FRUIT_TYPES.WATERMELON) {
+            this.sliceCount++;
+            // 濺出少許果汁
+            createJuiceSplash(this.x, this.y, this.type.color, 6);
+            
+            if (this.sliceCount < this.hitsNeeded) {
+              playSound('hit_watermelon');
+              this.vx += (Math.random() * 2 - 1);
+              this.vy -= 1;
+              return 'hit'; 
+            }
+          }
+
+          this.isSliced = true;
+          playSound('slice');
+          
+          const angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+          const perpAngle = angle + Math.PI / 2;
+          const force = 4.5;
+
+          this.parts = [
+            {
+              x: this.x - Math.cos(perpAngle) * 5,
+              y: this.y - Math.sin(perpAngle) * 5,
+              vx: this.vx - Math.cos(perpAngle) * force + (Math.random() - 0.5),
+              vy: this.vy - Math.sin(perpAngle) * force - 1.5,
+              rotation: this.rotation,
+              rotSpeed: this.rotSpeed - 0.05,
+              side: 'left'
+            },
+            {
+              x: this.x + Math.cos(perpAngle) * 5,
+              y: this.y + Math.sin(perpAngle) * 5,
+              vx: this.vx + Math.cos(perpAngle) * force + (Math.random() - 0.5),
+              vy: this.vy + Math.sin(perpAngle) * force - 1.5,
+              rotation: this.rotation,
+              rotSpeed: this.rotSpeed + 0.05,
+              side: 'right'
+            }
+          ];
+
+          // 1. 產生大量水滴狀空中噴汁粒子
+          createJuiceSplash(this.x, this.y, this.type.color, 24);
+
+          // 2. 在背景木砧板上留下不規則星芒果汁汙漬！
+          juiceSplatters.push(new JuiceSplatter(this.x, this.y, this.type.color));
+          if (Math.random() > 0.4) {
+            // 有機率在稍微偏離的地方再噴一個小汙漬
+            juiceSplatters.push(new JuiceSplatter(this.x + (Math.random() * 40 - 20), this.y + (Math.random() * 40 - 20), this.type.color));
+          }
+
+          return 'sliced';
+        }
+        return false;
+      }
+
+      explode() {
+        this.isSliced = true;
+        playSound('explosion');
+        screenShake = 35; // 劇烈螢幕抖動
+        
+        // 1. 生成圓形白色衝擊波環
+        particles.push(new Particle(this.x, this.y, 'rgba(255,255,255,0.9)', false, false, true));
+
+        // 2. 生成大量爆炸火球與滾滾濃煙粒子
+        for (let i = 0; i < 40; i++) {
+          particles.push(new Particle(this.x, this.y, null, false, false, false, true)); 
+        }
+
+        // 3. 高亮飛散的爆炸火花
+        for (let i = 0; i < 30; i++) {
+          particles.push(new Particle(this.x, this.y, '#ffd60a', true, false, false, false));
+        }
+      }
+    }
+
+    // --- 強化版粒子系統（水滴噴汁、火球濃煙、衝擊波） ---
+    class Particle {
+      constructor(x, y, color, isSpark = false, isJuiceDrip = false, isShockwave = false, isExplosionSmoke = false) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.isSpark = isSpark;
+        this.isJuiceDrip = isJuiceDrip;
+        this.isShockwave = isShockwave;
+        this.isExplosionSmoke = isExplosionSmoke;
+        
+        const angle = Math.random() * Math.PI * 2;
+
+        if (this.isShockwave) {
+          this.radius = 5;
+          this.maxRadius = 160 + Math.random() * 50;
+          this.alpha = 1.0;
+          this.decay = 0.035;
+          this.vx = 0;
+          this.vy = 0;
+        } else if (this.isExplosionSmoke) {
+          // 烈焰/濃煙粒子
+          const speed = Math.random() * 7 + 1;
+          this.vx = Math.cos(angle) * speed;
+          this.vy = Math.sin(angle) * speed - 2; // 微弱向上浮動
+          this.radius = Math.random() * 25 + 15;
+          this.alpha = 1.0;
+          this.decay = Math.random() * 0.02 + 0.015;
+          this.smokeStage = 0; // 0: 亮黃/白熱, 1: 橘紅, 2: 灰黑
+        } else {
+          // 普通火星與水滴果汁粒子
+          const speed = Math.random() * (isSpark ? 12 : 7) + 2;
+          this.vx = Math.cos(angle) * speed;
+          this.vy = Math.sin(angle) * speed;
+          
+          this.radius = Math.random() * (isSpark ? 3 : 6) + 2;
+          this.alpha = 1.0;
+          this.decay = Math.random() * 0.025 + 0.015;
+        }
+      }
+
+      update() {
+        const speedFactor = gameSpeedMultiplier;
+
+        if (this.isShockwave) {
+          this.radius += 10 * speedFactor;
+          this.alpha -= this.decay * speedFactor;
+        } else if (this.isExplosionSmoke) {
+          this.x += this.vx * speedFactor;
+          this.y += this.vy * speedFactor;
+          this.vy -= 0.02 * speedFactor; // 濃煙緩緩上昇
+          this.radius += 0.8 * speedFactor; // 濃煙擴散變大
+          this.alpha -= this.decay * speedFactor;
+          
+          // 隨生命週期改變濃煙顏色（火焰轉濃煙）
+          if (this.alpha > 0.7) {
+            this.color = `rgba(255, ${Math.floor(150 + Math.random() * 105)}, 50, ${this.alpha})`;
+          } else if (this.alpha > 0.4) {
+            this.color = `rgba(220, 80, 20, ${this.alpha})`;
+          } else {
+            const grey = Math.floor(40 + Math.random() * 40);
+            this.color = `rgba(${grey}, ${grey}, ${grey}, ${this.alpha * 0.8})`;
+          }
+        } else {
+          this.x += this.vx * speedFactor;
+          this.y += this.vy * speedFactor;
+          this.vy += 0.12 * speedFactor; // 重力下拉
+          this.alpha -= this.decay * speedFactor;
+        }
+      }
+
+      draw() {
+        if (this.alpha <= 0) return;
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, this.alpha);
+
+        if (this.isShockwave) {
+          // 衝擊波圓環
+          ctx.strokeStyle = this.color;
+          ctx.lineWidth = 10 * this.alpha;
+          ctx.shadowBlur = 20;
+          ctx.shadowColor = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.stroke();
+        } else if (this.isExplosionSmoke) {
+          // 煙霧烈焰團
+          ctx.fillStyle = this.color;
+          ctx.shadowBlur = this.alpha > 0.5 ? 20 : 0;
+          ctx.shadowColor = '#ff6b00';
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (this.isJuiceDrip) {
+          // 水滴狀果汁喷射
+          ctx.fillStyle = this.color;
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = this.color;
+          
+          // 根據飛行方向旋轉水滴
+          const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+          const angle = Math.atan2(this.vy, this.vx);
+          ctx.translate(this.x, this.y);
+          ctx.rotate(angle);
+          ctx.beginPath();
+          // 繪製水滴（前端窄，後端寬的橢圓）
+          ctx.ellipse(0, 0, this.radius * 2.2, this.radius * 0.9, 0, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          // 火星或普通球體
+          ctx.fillStyle = this.color;
+          ctx.shadowBlur = this.isSpark ? 15 : 6;
+          ctx.shadowColor = this.color;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+    }
+
+    function createJuiceSplash(x, y, color, count) {
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle(x, y, color, false, true, false, false));
+      }
+    }
+
+    // 漂浮文字
+    class FloatingText {
+      constructor(x, y, text, color = '#fff', size = 20) {
+        this.x = x;
+        this.y = y;
+        this.text = text;
+        this.color = color;
+        this.size = size;
+        this.alpha = 1.0;
+        this.vy = -1.8;
+      }
+      update() {
+        this.y += this.vy * gameSpeedMultiplier;
+        this.alpha -= 0.02 * gameSpeedMultiplier;
+      }
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, this.alpha);
+        ctx.fillStyle = this.color;
+        ctx.font = `bold ${this.size}px Arial`;
+        ctx.textAlign = 'center';
+        ctx.shadowColor = '#000';
+        ctx.shadowBlur = 8;
+        ctx.fillText(this.text, this.x, this.y);
+        ctx.restore();
+      }
+    }
+
+    // 點到線段的最短距離
+    function distToSegment(p, v, w) {
+      const l2 = dist2(v, w);
+      if (l2 === 0) return dist2(p, v);
+      let t = ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / l2;
+      t = Math.max(0, Math.min(1, t));
+      return Math.sqrt(dist2(p, { x: v.x + t * (w.x - v.x), y: v.y + t * (w.y - v.y) }));
+    }
+    function dist2(v, w) { 
+      return (v.x - w.x) ** 2 + (v.y - w.y) ** 2; 
+    }
+
+    // --- 刀光軌跡與大馬士革鋼刀繪製 ---
+    let mouse = { x: 0, y: 0, isDown: false };
+
+    function addTrailPoint(x, y) {
+      bladeTrails.push({ x, y, time: Date.now() });
+    }
+
+    function cleanUpTrail() {
+      const now = Date.now();
+      bladeTrails = bladeTrails.filter(p => now - p.time < 150);
+    }
+
+    function drawBladeAndTrail() {
+      if (bladeTrails.length < 2) return;
+
+      // 1. 繪製刀痕流光
+      ctx.save();
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      for (let i = 1; i < bladeTrails.length; i++) {
+        const p1 = bladeTrails[i - 1];
+        const p2 = bladeTrails[i];
+        
+        const age = Date.now() - p2.time;
+        const alpha = Math.max(0, 1 - age / 150);
+        const width = (1 - age / 150) * 14; 
+
+        // 刀痕：璀璨金黃白流光
+        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+        ctx.lineWidth = width;
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = '#ffd700';
+
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // 2. 繪製傳奇「大馬士革鋼主廚刀（旬 Shun 風格）」
+      const lastPoint = bladeTrails[bladeTrails.length - 1];
+      const prevPoint = bladeTrails[Math.max(0, bladeTrails.length - 3)];
+      
+      let angle = 0;
+      if (lastPoint && prevPoint && lastPoint !== prevPoint) {
+        angle = Math.atan2(lastPoint.y - prevPoint.y, lastPoint.x - prevPoint.x);
+      }
+
+      ctx.save();
+      ctx.translate(lastPoint.x, lastPoint.y);
+      ctx.rotate(angle + Math.PI / 4); // 微調角度契合刀尖
+
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = 'rgba(0,0,0,0.5)';
+
+      // 2a. 刀把 (經典日式圓柄 D-Shape 黑檀木色)
+      ctx.fillStyle = '#1c1c1c';
+      ctx.beginPath();
+      ctx.roundRect(-35, -4, 22, 8, 3);
+      ctx.fill();
+
+      // 2b. 刀柄末端金屬尾蓋 (End Cap)
+      ctx.fillStyle = '#cfd8dc';
+      ctx.beginPath();
+      ctx.roundRect(-37, -4, 3, 8, 1);
+      ctx.fill();
+
+      // 2c. 亮銀口金金屬環 (Steel Bolster)
+      ctx.fillStyle = '#e0e0e0';
+      ctx.beginPath();
+      ctx.roundRect(-13, -5, 4, 10, 1);
+      ctx.fill();
+
+      // 2d. 鍛造大馬士革刀身 (Damascus Blade Body)
+      // 使用剪裁（Clip）確保折疊波紋完美限制在刀身之內
+      ctx.save();
+      
+      // 繪製日式牛刀完美弧線刀刃形狀
+      ctx.beginPath();
+      ctx.moveTo(-9, -6);                     // 刀背起點
+      ctx.lineTo(32, -6);                     // 刀背直線
+      ctx.quadraticCurveTo(42, -5, 45, 1);    // 優美的刀尖
+      ctx.quadraticCurveTo(24, 13, -9, 11);   // 優美切削弧度的刀刃腹部
+      ctx.closePath();
+      
+      // 鋼面漸層底色
+      const steelGrad = ctx.createLinearGradient(-9, -6, -9, 11);
+      steelGrad.addColorStop(0, '#757575'); // 刀背深灰
+      steelGrad.addColorStop(0.3, '#b0bec5'); // 刀面中灰
+      steelGrad.addColorStop(0.8, '#eceff1'); // 近刀刃亮銀白
+      ctx.fillStyle = steelGrad;
+      ctx.fill();
+
+      // 剪裁區啟用，用來渲染內部大馬士革鋼紋
+      ctx.clip();
+
+      // 繪製大馬士革流體折疊鋼紋（重複疊加多條貝氏曲線正弦波紋）
+      ctx.strokeStyle = 'rgba(78, 90, 100, 0.45)'; // 碳化深色紋理
+      ctx.lineWidth = 1;
+      for (let i = -15; i < 30; i += 3.5) {
+        ctx.beginPath();
+        ctx.moveTo(-10, i);
+        // 大馬士革流水紋路由複合三角函數疊加，具有自然有機的波紋質感
+        for (let xCoord = -10; xCoord <= 50; xCoord += 2) {
+          const yWave = i + Math.sin(xCoord * 0.3) * 1.5 + Math.cos(xCoord * 0.15) * 1.0;
+          ctx.lineTo(xCoord, yWave);
+        }
+        ctx.stroke();
+      }
+
+      // 2e. 刻印「旬」標誌（Shun Brand Logo）
+      ctx.fillStyle = 'rgba(30, 30, 30, 0.85)';
+      ctx.font = 'bold 8px "Hiragino Mincho ProN", "MS Mincho", "Source Han Serif TC", serif';
+      ctx.fillText('旬', 4, 1);
+
+      ctx.restore(); // 釋放 Clip
+
+      // 2f. 亮銀開刃線 (Shiny Edge Line)
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(-9, 11);
+      ctx.quadraticCurveTo(24, 13, 45, 1);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    // --- 遊戲邏輯更新 ---
+
+    function startNewGame() {
+      score = 0;
+      lives = 3;
+      fruits = [];
+      particles = [];
+      juiceSplatters = [];
+      bladeTrails = [];
+      floatingTexts = [];
+      bananaFeverActive = false;
+      bananaFeverTimer = 0;
+      screenShake = 0;
+      
+      gameSpeedMultiplier = selectedDifficultyMultiplier;
+      
+      document.getElementById('difficulty-badge').textContent = `${selectedDifficultyName} ${selectedDifficultyMultiplier}x`;
+      updateScoreUI();
+      updateHeartsUI();
+      
+      gameState = 'playing';
+      hideAllOverlays();
+      playSound('fever'); 
+    }
+
+    function triggerBananaFever() {
+      bananaFeverActive = true;
+      bananaFeverTimer = FEVER_DURATION;
+      
+      gameSpeedMultiplier = selectedDifficultyMultiplier * 0.4; 
+      
+      document.getElementById('fever-bar').classList.add('active');
+      playSound('fever');
+      
+      floatingTexts.push(new FloatingText(canvas.width / 2, canvas.height / 2, "🍌 香蕉奧義：慢動作雙倍分！", "#ffe600", 28));
+    }
+
+    function endBananaFever() {
+      bananaFeverActive = false;
+      gameSpeedMultiplier = selectedDifficultyMultiplier; 
+      document.getElementById('fever-bar').classList.remove('active');
+    }
+
+    function updateScoreUI() {
+      const scoreStr = String(score).padStart(4, '0');
+      document.getElementById('score-display').textContent = scoreStr;
+    }
+
+    function updateHeartsUI() {
+      const container = document.getElementById('hearts-container');
+      let heartsHtml = '';
+      for (let i = 0; i < 3; i++) {
+        if (i < lives) {
+          heartsHtml += '❤️';
+        } else {
+          heartsHtml += '🖤';
+        }
+      }
+      container.innerHTML = heartsHtml;
+    }
+
+    function loseLife() {
+      lives--;
+      updateHeartsUI();
+      playSound('miss');
+      
+      canvasFlashColor = 'rgba(255, 59, 48, 0.4)';
+
+      if (lives <= 0) {
+        endGame('lives_out');
+      }
+    }
+
+    let canvasFlashColor = null;
+
+    function endGame(reason) {
+      gameState = 'gameover';
+      
+      let isNewRecord = false;
+      if (score > bestScore) {
+        bestScore = score;
+        localStorage.setItem('chef_fruit_best_score', bestScore);
+        document.getElementById('best-score-display').textContent = `最高紀錄: ${bestScore}`;
+        isNewRecord = true;
+      }
+
+      const reasonText = document.getElementById('gameover-reason');
+      if (reason === 'bomb') {
+        reasonText.innerHTML = "🔥 <strong>廚房大爆炸！您切到了烈性炸彈！</strong><br>整間廚房瞬間灰飛煙滅，請改進刀工重振旗鼓！";
+      } else {
+        reasonText.innerHTML = "😢 <strong>漏失太多食材！浪費是特級廚師的大忌！</strong><br>新鮮食材掉滿地...再去修煉您的眼力與反應速度吧！";
+      }
+
+      document.getElementById('final-score').textContent = score;
+      document.getElementById('new-record-tag').textContent = isNewRecord ? "🎉 奇蹟！大廚您打破了歷史最高紀錄！" : "";
+      
+      document.getElementById('gameover-overlay').classList.remove('hidden');
+    }
+
+    function hideAllOverlays() {
+      document.getElementById('menu-overlay').classList.add('hidden');
+      document.getElementById('pause-overlay').classList.add('hidden');
+      document.getElementById('gameover-overlay').classList.add('hidden');
+    }
+
+    // --- 連擊偵測與計分 ---
+    let frameSlicedFruits = []; 
+
+    function processSliceDetections() {
+      if (bladeTrails.length < 2) return;
+      
+      const p1 = bladeTrails[bladeTrails.length - 2];
+      const p2 = bladeTrails[bladeTrails.length - 1];
+
+      frameSlicedFruits = [];
+
+      for (let fruit of fruits) {
+        if (fruit.isSliced) continue;
+
+        const result = fruit.checkSlice(p1, p2);
+        
+        if (result === 'bomb') {
+          endGame('bomb');
+          return;
+        } else if (result === 'sliced') {
+          frameSlicedFruits.push(fruit);
+        }
+      }
+
+      if (frameSlicedFruits.length > 0) {
+        let basePoints = 0;
+        
+        frameSlicedFruits.forEach(f => {
+          let pts = 1;
+          if (f.type === FRUIT_TYPES.WATERMELON) pts = 5; 
+          
+          if (f.type.effect === 'fever') {
+            triggerBananaFever();
+          }
+
+          basePoints += pts;
+        });
+
+        let currentGain = basePoints;
+        if (bananaFeverActive) {
+          currentGain *= 2;
+        }
+
+        score += currentGain;
+
+        // 3 顆以上連擊
+        if (frameSlicedFruits.length >= 3) {
+          const comboBonus = frameSlicedFruits.length; 
+          score += comboBonus;
+          playSound('combo');
+          
+          let avgX = 0, avgY = 0;
+          frameSlicedFruits.forEach(f => { avgX += f.x; avgY += f.y; });
+          avgX /= frameSlicedFruits.length;
+          avgY /= frameSlicedFruits.length;
+
+          floatingTexts.push(new FloatingText(
+            avgX, avgY - 35, 
+            `🔥 ${frameSlicedFruits.length} 連擊 COMBO! +${currentGain + comboBonus}分`, 
+            '#ffe600', 
+            26
+          ));
+        } else {
+          frameSlicedFruits.forEach(f => {
+            let pts = (f.type === FRUIT_TYPES.WATERMELON) ? 5 : 1;
+            if (bananaFeverActive) pts *= 2;
+            floatingTexts.push(new FloatingText(f.x, f.y - 15, `+${pts}`, f.type.color, 20));
+          });
+        }
+
+        updateScoreUI();
+      }
+    }
+
+    // --- 主遊戲迴圈 ---
+    function gameLoop() {
+      ctx.save();
+
+      // 套用螢幕抖動特效
+      if (screenShake > 0) {
+        const dx = (Math.random() - 0.5) * screenShake;
+        const dy = (Math.random() - 0.5) * screenShake;
+        ctx.translate(dx, dy);
+        screenShake *= 0.9; // 衰減
+        if (screenShake < 0.3) screenShake = 0;
+      }
+
+      // 繪製背景
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // 若有受傷紅色閃爍效果
+      if (canvasFlashColor) {
+        ctx.fillStyle = canvasFlashColor;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        canvasFlashColor = null; 
+      }
+
+      if (gameState === 'playing' || gameState === 'paused') {
+        
+        if (bananaFeverActive && gameState === 'playing') {
+          bananaFeverTimer--;
+          if (bananaFeverTimer <= 0) {
+            endBananaFever();
+          }
+        }
+
+        // 物理更新
+        if (gameState === 'playing') {
+          // 果汁汙漬更新
+          for (let i = juiceSplatters.length - 1; i >= 0; i--) {
+            const splatter = juiceSplatters[i];
+            splatter.update();
+            if (splatter.alpha <= 0) {
+              juiceSplatters.splice(i, 1);
+            }
+          }
+
+          // 水果生成
+          spawnTimer += gameSpeedMultiplier;
+          if (spawnTimer >= spawnInterval) {
+            spawnTimer = 0;
+            const spawnCount = Math.floor(Math.random() * 2) + 1 + (bananaFeverActive ? 1 : 0);
+            for (let i = 0; i < spawnCount; i++) {
+              fruits.push(new Fruit());
+            }
+            playSound('throw');
+
+            spawnInterval = Math.max(20, (60 / selectedDifficultyMultiplier) - Math.floor(score / 15) * 2);
+          }
+
+          // 水果溢出過濾與下落
+          for (let i = fruits.length - 1; i >= 0; i--) {
+            const fruit = fruits[i];
+            fruit.update();
+
+            if (fruit.y > canvas.height + 100) {
+              if (!fruit.isSliced && !fruit.isBomb) {
+                loseLife();
+              }
+              fruits.splice(i, 1);
+            }
+          }
+
+          // 粒子
+          for (let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
+            p.update();
+            if (p.alpha <= 0) {
+              particles.splice(i, 1);
+            }
+          }
+
+          // 漂浮文字
+          for (let i = floatingTexts.length - 1; i >= 0; i--) {
+            const ft = floatingTexts[i];
+            ft.update();
+            if (ft.alpha <= 0) {
+              floatingTexts.splice(i, 1);
+            }
+          }
+
+          cleanUpTrail();
+          processSliceDetections();
+        }
+
+        // 渲染背景果汁汙漬（繪製於最下層，呈現在砧板桌面上）
+        for (let splatter of juiceSplatters) {
+          splatter.draw();
+        }
+
+        // 渲染粒子
+        for (let p of particles) {
+          p.draw();
+        }
+
+        // 渲染水果
+        for (let fruit of fruits) {
+          fruit.draw();
+        }
+
+        // 渲染文字
+        for (let ft of floatingTexts) {
+          ft.draw();
+        }
+
+        // 繪製刀痕與大馬士革鋼主廚刀
+        drawBladeAndTrail();
+      }
+
+      ctx.restore(); // 釋放螢幕抖動 translation
+      requestAnimationFrame(gameLoop);
+    }
+
+    requestAnimationFrame(gameLoop);
+
+
+    // --- 互動事件處理 (滑鼠與觸控) ---
+
+    function getCanvasCoords(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return {
+        x: clientX - rect.left,
+        y: clientY - rect.top
+      };
+    }
+
+    function handleStart(e) {
+      if (gameState !== 'playing') return;
+      mouse.isDown = true;
+      const coords = getCanvasCoords(e);
+      mouse.x = coords.x;
+      mouse.y = coords.y;
+      
+      bladeTrails = [];
+      addTrailPoint(mouse.x, mouse.y);
+    }
+
+    function handleMove(e) {
+      if (gameState !== 'playing') return;
+      
+      const coords = getCanvasCoords(e);
+      mouse.x = coords.x;
+      mouse.y = coords.y;
+
+      addTrailPoint(mouse.x, mouse.y);
+
+      if (e.touches) {
+        e.preventDefault();
+      }
+    }
+
+    function handleEnd() {
+      mouse.isDown = false;
+    }
+
+    // 事件監聽
+    canvas.addEventListener('mousedown', handleStart);
+    canvas.addEventListener('mousemove', handleMove);
+    window.addEventListener('mouseup', handleEnd);
+
+    canvas.addEventListener('touchstart', handleStart, { passive: false });
+    canvas.addEventListener('touchmove', handleMove, { passive: false });
+    window.addEventListener('touchend', handleEnd);
+
+
+    // --- UI 控制與難度選擇交互 ---
+
+    const diffButtons = document.querySelectorAll('.diff-btn');
+    diffButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        diffButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        selectedDifficultyMultiplier = parseFloat(btn.getAttribute('data-speed'));
+        
+        if (selectedDifficultyMultiplier === 0.5) {
+          selectedDifficultyName = "新手模式";
+        } else if (selectedDifficultyMultiplier === 1.0) {
+          selectedDifficultyName = "普通模式";
+        } else {
+          selectedDifficultyName = "高玩模式";
+        }
+      });
+    });
+
+    // 1. 開始按鈕
+    document.getElementById('start-btn').addEventListener('click', () => {
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      startNewGame();
+    });
+
+    // 2. 暫停按鈕
+    const pauseBtn = document.getElementById('pause-btn');
+    const pauseOverlay = document.getElementById('pause-overlay');
+    
+    pauseBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (gameState === 'playing') {
+        gameState = 'paused';
+        pauseBtn.textContent = '繼續';
+        pauseOverlay.classList.remove('hidden');
+      } else if (gameState === 'paused') {
+        gameState = 'playing';
+        pauseBtn.textContent = '暫停';
+        pauseOverlay.classList.add('hidden');
+      }
+    });
+
+    // 3. 繼續按鈕
+    document.getElementById('resume-btn').addEventListener('click', () => {
+      gameState = 'playing';
+      pauseBtn.textContent = '暫停';
+      pauseOverlay.classList.add('hidden');
+    });
+
+    // 4. 重新開始
+    document.getElementById('restart-btn').addEventListener('click', () => {
+      startNewGame();
+    });
+
+    // 5. 回到主畫面
+    document.getElementById('back-to-menu-btn').addEventListener('click', () => {
+      gameState = 'menu';
+      hideAllOverlays();
+      document.getElementById('menu-overlay').classList.remove('hidden');
+      
+      // 清空遊戲中的所有剩餘元素，還原到初始狀態
+      fruits = [];
+      particles = [];
+      juiceSplatters = [];
+      bladeTrails = [];
+      floatingTexts = [];
+    });
+
+  </script>
+</body>
+</html>
