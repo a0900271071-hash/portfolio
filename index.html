@@ -6,8 +6,8 @@
     <title>劉向榮 | 個人介紹與作品集</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- FontAwesome Icons with crossorigin -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -119,10 +119,11 @@
             border: 2px dashed rgba(56, 189, 248, 0.5);
             transition: all 0.3s ease;
         }
-        .cert-upload-card:hover {
+        .cert-upload-card:hover, .cert-upload-card:focus-within {
             border-color: #0284c7;
             background: rgba(240, 249, 255, 0.95);
             box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+            outline: none;
         }
     </style>
 </head>
@@ -135,10 +136,10 @@
     <div class="tech-overlay"></div>
 
     <!-- Navigation Bar -->
-    <nav class="fixed top-0 left-0 w-full z-50 glass-nav transition-all duration-300">
+    <nav class="fixed top-0 left-0 w-full z-50 glass-nav transition-all duration-300" aria-label="主要導覽區">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                <a href="#hero" class="text-xl font-extrabold tracking-tight text-slate-900 hover:text-cyan-600 transition-colors flex items-center gap-2">
+                <a href="#hero" class="text-xl font-extrabold tracking-tight text-slate-900 hover:text-cyan-600 transition-colors flex items-center gap-2" aria-label="劉向榮個人首頁">
                     <span class="w-2.5 h-2.5 rounded-full bg-cyan-500 animate-ping"></span>
                     劉向榮 <span class="text-xs font-normal text-slate-500 tracking-normal font-mono">Xiang-Rong Liu</span>
                 </a>
@@ -147,13 +148,14 @@
                 <div class="hidden md:flex space-x-6 text-sm font-semibold text-slate-600">
                     <a href="#about" class="hover:text-cyan-600 transition-colors">關於我</a>
                     <a href="#skills" class="hover:text-cyan-600 transition-colors">專業技能與證照</a>
+                    <a href="#tools" class="hover:text-cyan-600 transition-colors">自製工具箱</a>
                     <a href="#experience" class="hover:text-cyan-600 transition-colors">經歷與進修</a>
                     <a href="#portfolio" class="hover:text-cyan-600 transition-colors">作品成果</a>
                     <a href="#contact" class="hover:text-cyan-600 transition-colors">聯絡方式</a>
                 </div>
 
                 <!-- Mobile menu button -->
-                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-cyan-50 focus:outline-none" aria-label="Toggle Navigation">
+                <button type="button" id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-cyan-50 focus:outline-none" aria-label="切換選單選項目錄" aria-expanded="false">
                     <i class="fa-solid fa-bars text-xl"></i>
                 </button>
             </div>
@@ -163,6 +165,7 @@
         <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-lg border-b border-cyan-100 px-4 pt-2 pb-4 space-y-3 text-base font-medium text-slate-700 shadow-xl">
             <a href="#about" class="block px-3 py-2 rounded-md hover:bg-cyan-50 hover:text-cyan-700 mobile-nav-link">關於我</a>
             <a href="#skills" class="block px-3 py-2 rounded-md hover:bg-cyan-50 hover:text-cyan-700 mobile-nav-link">專業技能與證照</a>
+            <a href="#tools" class="block px-3 py-2 rounded-md hover:bg-cyan-50 hover:text-cyan-700 mobile-nav-link">自製工具箱</a>
             <a href="#experience" class="block px-3 py-2 rounded-md hover:bg-cyan-50 hover:text-cyan-700 mobile-nav-link">經歷與進修</a>
             <a href="#portfolio" class="block px-3 py-2 rounded-md hover:bg-cyan-50 hover:text-cyan-700 mobile-nav-link">作品成果</a>
             <a href="#contact" class="block px-3 py-2 rounded-md hover:bg-cyan-50 hover:text-cyan-700 mobile-nav-link">聯絡方式</a>
@@ -216,7 +219,7 @@
                     <div class="absolute -right-8 -top-8 w-24 h-24 bg-cyan-400/20 rounded-full blur-xl"></div>
                     
                     <div class="w-28 h-28 mx-auto rounded-2xl overflow-hidden border-2 border-cyan-300 shadow-md relative group">
-                        <img src="https://a0900271071-hash.github.io/portfolio/my-photo.JPG" alt="劉向榮" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/200x200/e0f2fe/0284c7?text=劉向榮';">
+                        <img id="profile-img" src="https://a0900271071-hash.github.io/portfolio/my-photo.JPG" alt="劉向榮個人大頭照" class="w-full h-full object-cover">
                         <span class="absolute bottom-1 right-1 bg-cyan-600 text-white p-1 rounded-lg text-xs shadow z-10">
                             <i class="fa-solid fa-microchip"></i>
                         </span>
@@ -288,7 +291,7 @@
         </div>
     </section>
 
-    <!-- Skills & Certificates Section (With File Upload Support) -->
+    <!-- Skills & Certificates Section -->
     <section id="skills" class="relative z-10 py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <div class="space-y-8">
             <div class="text-center md:text-left">
@@ -335,286 +338,286 @@
                 </div>
 
                 <!-- Skill 3 -->
-            <div class="tech-card rounded-2xl p-6 flex flex-col justify-between hud-corners">
-                <div>
-                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-sky-600 text-white flex items-center justify-center text-xl font-black mb-4 shadow-md shadow-cyan-500/20">
-                        03
+                <div class="tech-card rounded-2xl p-6 flex flex-col justify-between hud-corners">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-sky-600 text-white flex items-center justify-center text-xl font-black mb-4 shadow-md shadow-cyan-500/20">
+                            03
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">財務會計與高精準行政</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                            擁有財政稅務學歷背景與會計實務經驗，對數字敏感度高，能謹慎處理各類款項、審核單據與帳務結算。
+                        </p>
                     </div>
-                    <h3 class="text-lg font-bold text-slate-900 mb-2">財務會計與高精準行政</h3>
-                    <p class="text-xs text-slate-600 leading-relaxed mb-4">
-                        擁有財政稅務學歷背景與會計實務經驗，對數字敏感度高，能謹慎處理各類款項、審核單據與帳務結算。
-                    </p>
+                    <div class="flex flex-wrap gap-1.5 pt-2 border-t border-cyan-100">
+                        <span class="px-2.5 py-1 bg-white text-cyan-800 border border-cyan-200 rounded-md text-xs font-medium">財務會計</span>
+                        <span class="px-2.5 py-1 bg-white text-cyan-800 border border-cyan-200 rounded-md text-xs font-medium">稅務基礎</span>
+                        <span class="px-2.5 py-1 bg-white text-cyan-800 border border-cyan-200 rounded-md text-xs font-medium">行政管理</span>
+                    </div>
                 </div>
-                <div class="flex flex-wrap gap-1.5 pt-2 border-t border-cyan-100">
-                    <span class="px-2.5 py-1 bg-white text-cyan-800 border border-cyan-200 rounded-md text-xs font-medium">財務會計</span>
-                    <span class="px-2.5 py-1 bg-white text-cyan-800 border border-cyan-200 rounded-md text-xs font-medium">稅務基礎</span>
-                    <span class="px-2.5 py-1 bg-white text-cyan-800 border border-cyan-200 rounded-md text-xs font-medium">行政管理</span>
+            </div>
+
+            <!-- Custom Uploadable Certificates Cards Section -->
+            <div class="tech-card rounded-2xl p-6 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-cyan-100 pb-3 gap-2">
+                    <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-award text-cyan-600"></i> 專業證照與資格證明 (可自訂上傳)
+                    </h3>
+                    <span class="text-xs text-cyan-700 bg-cyan-50 border border-cyan-200 px-3 py-1 rounded-full font-medium w-max">
+                        <i class="fa-solid fa-cloud-arrow-up mr-1"></i> 點擊卡片自由上傳檔案
+                    </span>
+                </div>
+
+                <!-- Grid of 6 Refactored Accessible Label Certificate Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+                    
+                    <!-- Cert Slot 1 -->
+                    <label for="cert-input-1" tabindex="0" data-cert-id="1" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block" aria-label="點擊上傳證照或資格證明 01">
+                        <input type="file" id="cert-input-1" class="hidden cert-input" data-cert-id="1" accept="image/*,.pdf">
+                        <div id="cert-placeholder-1" class="space-y-2 py-2">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-file-certificate"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 01</h4>
+                            <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                        </div>
+                        <div id="cert-preview-container-1" class="hidden relative space-y-2">
+                            <img id="cert-img-1" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽 01">
+                            <p id="cert-name-1" class="text-xs font-bold text-slate-800 truncate px-2"></p>
+                            <div class="flex items-center justify-center gap-2">
+                                <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
+                                <button type="button" data-cert-id="1" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline" aria-label="放大預覽證照 01">放大預覽</button>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Cert Slot 2 -->
+                    <label for="cert-input-2" tabindex="0" data-cert-id="2" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block" aria-label="點擊上傳證照或資格證明 02">
+                        <input type="file" id="cert-input-2" class="hidden cert-input" data-cert-id="2" accept="image/*,.pdf">
+                        <div id="cert-placeholder-2" class="space-y-2 py-2">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-file-certificate"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 02</h4>
+                            <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                        </div>
+                        <div id="cert-preview-container-2" class="hidden relative space-y-2">
+                            <img id="cert-img-2" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽 02">
+                            <p id="cert-name-2" class="text-xs font-bold text-slate-800 truncate px-2"></p>
+                            <div class="flex items-center justify-center gap-2">
+                                <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
+                                <button type="button" data-cert-id="2" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline" aria-label="放大預覽證照 02">放大預覽</button>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Cert Slot 3 -->
+                    <label for="cert-input-3" tabindex="0" data-cert-id="3" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block" aria-label="點擊上傳證照或資格證明 03">
+                        <input type="file" id="cert-input-3" class="hidden cert-input" data-cert-id="3" accept="image/*,.pdf">
+                        <div id="cert-placeholder-3" class="space-y-2 py-2">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-file-certificate"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 03</h4>
+                            <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                        </div>
+                        <div id="cert-preview-container-3" class="hidden relative space-y-2">
+                            <img id="cert-img-3" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽 03">
+                            <p id="cert-name-3" class="text-xs font-bold text-slate-800 truncate px-2"></p>
+                            <div class="flex items-center justify-center gap-2">
+                                <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
+                                <button type="button" data-cert-id="3" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline" aria-label="放大預覽證照 03">放大預覽</button>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Cert Slot 4 -->
+                    <label for="cert-input-4" tabindex="0" data-cert-id="4" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block" aria-label="點擊上傳證照或資格證明 04">
+                        <input type="file" id="cert-input-4" class="hidden cert-input" data-cert-id="4" accept="image/*,.pdf">
+                        <div id="cert-placeholder-4" class="space-y-2 py-2">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-file-certificate"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 04</h4>
+                            <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                        </div>
+                        <div id="cert-preview-container-4" class="hidden relative space-y-2">
+                            <img id="cert-img-4" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽 04">
+                            <p id="cert-name-4" class="text-xs font-bold text-slate-800 truncate px-2"></p>
+                            <div class="flex items-center justify-center gap-2">
+                                <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
+                                <button type="button" data-cert-id="4" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline" aria-label="放大預覽證照 04">放大預覽</button>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Cert Slot 5 -->
+                    <label for="cert-input-5" tabindex="0" data-cert-id="5" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block" aria-label="點擊上傳證照或資格證明 05">
+                        <input type="file" id="cert-input-5" class="hidden cert-input" data-cert-id="5" accept="image/*,.pdf">
+                        <div id="cert-placeholder-5" class="space-y-2 py-2">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-file-certificate"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 05</h4>
+                            <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                        </div>
+                        <div id="cert-preview-container-5" class="hidden relative space-y-2">
+                            <img id="cert-img-5" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽 05">
+                            <p id="cert-name-5" class="text-xs font-bold text-slate-800 truncate px-2"></p>
+                            <div class="flex items-center justify-center gap-2">
+                                <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
+                                <button type="button" data-cert-id="5" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline" aria-label="放大預覽證照 05">放大預覽</button>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Cert Slot 6 -->
+                    <label for="cert-input-6" tabindex="0" data-cert-id="6" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block" aria-label="點擊上傳證照或資格證明 06">
+                        <input type="file" id="cert-input-6" class="hidden cert-input" data-cert-id="6" accept="image/*,.pdf">
+                        <div id="cert-placeholder-6" class="space-y-2 py-2">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-file-certificate"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 06</h4>
+                            <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                        </div>
+                        <div id="cert-preview-container-6" class="hidden relative space-y-2">
+                            <img id="cert-img-6" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽 06">
+                            <p id="cert-name-6" class="text-xs font-bold text-slate-800 truncate px-2"></p>
+                            <div class="flex items-center justify-center gap-2">
+                                <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
+                                <button type="button" data-cert-id="6" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline" aria-label="放大預覽證照 06">放大預覽</button>
+                            </div>
+                        </div>
+                    </label>
+
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Custom Uploadable Certificates Cards Section -->
-        <div class="tech-card rounded-2xl p-6 space-y-4">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-cyan-100 pb-3 gap-2">
-                <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-award text-cyan-600"></i> 專業證照與資格證明 (可自訂上傳)
-                </h3>
-                <span class="text-xs text-cyan-700 bg-cyan-50 border border-cyan-200 px-3 py-1 rounded-full font-medium w-max">
-                    <i class="fa-solid fa-cloud-arrow-up mr-1"></i> 點擊卡片自由上傳檔案
+    <!-- Digital Tools Suite Section -->
+    <section id="tools" class="relative z-10 py-6 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+        <div class="tech-card rounded-3xl p-6 sm:p-8 space-y-6">
+            <!-- Section Title -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-cyan-100 pb-4 gap-2">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-sky-600 text-white flex items-center justify-center font-bold shadow-md shadow-cyan-500/20">
+                        <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-black text-slate-900">自製數位辦公與實用工具箱</h2>
+                        <p class="text-xs font-semibold text-cyan-700 tracking-wider">Interactive Custom Digital Tools & Utilities</p>
+                    </div>
+                </div>
+                <span class="text-xs text-cyan-800 bg-cyan-50 border border-cyan-200 px-3 py-1.5 rounded-full font-bold w-max self-start sm:self-center">
+                    <i class="fa-solid fa-cube mr-1"></i> 個人開發小工具集
                 </span>
             </div>
 
-            <!-- Grid of 6 Generic Uploadable Certificate Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+            <!-- 2x2 Grid Layout for Current & Future Tools -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 
-                <!-- Cert Slot 1 -->
-                <div class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group" onclick="triggerCertUpload(1)">
-                    <input type="file" id="cert-input-1" class="hidden" accept="image/*,.pdf" onchange="handleCertFileSelect(event, 1)">
-                    <div id="cert-placeholder-1" class="space-y-2 py-2">
-                        <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-file-certificate"></i>
+                <!-- Tool 1: PPT Shortcut Tool -->
+                <div class="hud-corners p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-cyan-950 via-cyberNavy to-slate-900 text-white relative overflow-hidden border border-cyan-400/30 flex flex-col justify-between group shadow-lg">
+                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-cyan-500/20 rounded-full blur-xl pointer-events-none group-hover:bg-cyan-400/30 transition-all"></div>
+                    <div class="space-y-3 relative z-10">
+                        <div class="flex items-center justify-between">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 text-[11px] font-bold">
+                                <i class="fa-solid fa-bolt"></i> 簡報效率
+                            </span>
+                            <span class="text-[10px] font-mono text-cyan-400/80">TOOL #01</span>
                         </div>
-                        <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 01</h4>
-                        <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                        <h3 class="text-lg font-black text-white flex items-center gap-2">
+                            <i class="fa-solid fa-file-powerpoint text-cyan-400"></i> PPT 快捷鍵快速查詢
+                        </h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            極致化簡報製作與展示效率！個人開發之互動式 PowerPoint 快捷鍵檢索介面，支援分類查詢與即時搜尋。
+                        </p>
                     </div>
-                    <div id="cert-preview-container-1" class="hidden relative space-y-2">
-                        <img id="cert-img-1" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽">
-                        <p id="cert-name-1" class="text-xs font-bold text-slate-800 truncate px-2"></p>
-                        <div class="flex items-center justify-center gap-2">
-                            <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
-                            <button type="button" onclick="event.stopPropagation(); viewCertModal(1)" class="text-xs text-cyan-700 hover:text-cyan-900 font-bold underline">放大預覽</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Cert Slot 2 -->
-                <div class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group" onclick="triggerCertUpload(2)">
-                    <input type="file" id="cert-input-2" class="hidden" accept="image/*,.pdf" onchange="handleCertFileSelect(event, 2)">
-                    <div id="cert-placeholder-2" class="space-y-2 py-2">
-                        <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-file-certificate"></i>
-                        </div>
-                        <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 02</h4>
-                        <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
-                    </div>
-                    <div id="cert-preview-container-2" class="hidden relative space-y-2">
-                        <img id="cert-img-2" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽">
-                        <p id="cert-name-2" class="text-xs font-bold text-slate-800 truncate px-2"></p>
-                        <div class="flex items-center justify-center gap-2">
-                            <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
-                            <button type="button" onclick="event.stopPropagation(); viewCertModal(2)" class="text-xs text-cyan-700 hover:text-cyan-900 font-bold underline">放大預覽</button>
-                        </div>
+                    <div class="pt-5 relative z-10">
+                        <a href="https://a0900271071-hash.github.io/portfolio/ppt-shortcut.html" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-extrabold text-xs transition-all shadow-md shadow-cyan-500/20 flex items-center justify-center gap-2 group-hover:scale-[1.02]">
+                            <i class="fa-solid fa-keyboard text-sm"></i> 開啟 PPT 快捷鍵查詢 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
                     </div>
                 </div>
 
-                <!-- Cert Slot 3 -->
-                <div class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group" onclick="triggerCertUpload(3)">
-                    <input type="file" id="cert-input-3" class="hidden" accept="image/*,.pdf" onchange="handleCertFileSelect(event, 3)">
-                    <div id="cert-placeholder-3" class="space-y-2 py-2">
-                        <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-file-certificate"></i>
+                <!-- Tool 2: Weather Widget Tool -->
+                <div class="hud-corners p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-cyan-950 via-cyberNavy to-slate-900 text-white relative overflow-hidden border border-cyan-400/30 flex flex-col justify-between group shadow-lg">
+                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-sky-500/20 rounded-full blur-xl pointer-events-none group-hover:bg-sky-400/30 transition-all"></div>
+                    <div class="space-y-3 relative z-10">
+                        <div class="flex items-center justify-between">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-sky-500/20 border border-sky-400/40 text-sky-300 text-[11px] font-bold">
+                                <i class="fa-solid fa-cloud-sun-rain"></i> 生活實用
+                            </span>
+                            <span class="text-[10px] font-mono text-cyan-400/80">TOOL #02</span>
                         </div>
-                        <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 03</h4>
-                        <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                        <h3 class="text-lg font-black text-white flex items-center gap-2">
+                            <i class="fa-solid fa-cloud-sun text-sky-400"></i> 即時天氣查詢小工具
+                        </h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            自用即時氣象資訊與天氣預報查詢介面，方便快速掌握最新氣象動態，協助活動行程規劃與外勤防範。
+                        </p>
                     </div>
-                    <div id="cert-preview-container-3" class="hidden relative space-y-2">
-                        <img id="cert-img-3" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽">
-                        <p id="cert-name-3" class="text-xs font-bold text-slate-800 truncate px-2"></p>
-                        <div class="flex items-center justify-center gap-2">
-                            <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
-                            <button type="button" onclick="event.stopPropagation(); viewCertModal(3)" class="text-xs text-cyan-700 hover:text-cyan-900 font-bold underline">放大預覽</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Cert Slot 4 -->
-                <div class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group" onclick="triggerCertUpload(4)">
-                    <input type="file" id="cert-input-4" class="hidden" accept="image/*,.pdf" onchange="handleCertFileSelect(event, 4)">
-                    <div id="cert-placeholder-4" class="space-y-2 py-2">
-                        <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-file-certificate"></i>
-                        </div>
-                        <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 04</h4>
-                        <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
-                    </div>
-                    <div id="cert-preview-container-4" class="hidden relative space-y-2">
-                        <img id="cert-img-4" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽">
-                        <p id="cert-name-4" class="text-xs font-bold text-slate-800 truncate px-2"></p>
-                        <div class="flex items-center justify-center gap-2">
-                            <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
-                            <button type="button" onclick="event.stopPropagation(); viewCertModal(4)" class="text-xs text-cyan-700 hover:text-cyan-900 font-bold underline">放大預覽</button>
-                        </div>
+                    <div class="pt-5 relative z-10">
+                        <a href="https://a0900271071-hash.github.io/portfolio/weather_widget.html" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-400 hover:to-cyan-400 text-slate-950 font-extrabold text-xs transition-all shadow-md shadow-sky-500/20 flex items-center justify-center gap-2 group-hover:scale-[1.02]">
+                            <i class="fa-solid fa-temperature-half text-sm"></i> 開啟即時天氣查詢 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
                     </div>
                 </div>
 
-                <!-- Cert Slot 5 -->
-                <div class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group" onclick="triggerCertUpload(5)">
-                    <input type="file" id="cert-input-5" class="hidden" accept="image/*,.pdf" onchange="handleCertFileSelect(event, 5)">
-                    <div id="cert-placeholder-5" class="space-y-2 py-2">
-                        <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-file-certificate"></i>
+                <!-- Tool 3: Tarot Card Reading Tool -->
+                <div class="hud-corners p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-cyan-950 via-cyberNavy to-slate-900 text-white relative overflow-hidden border border-cyan-400/30 flex flex-col justify-between group shadow-lg">
+                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-purple-500/20 rounded-full blur-xl pointer-events-none group-hover:bg-purple-400/30 transition-all"></div>
+                    <div class="space-y-3 relative z-10">
+                        <div class="flex items-center justify-between">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-purple-500/20 border border-purple-400/40 text-purple-300 text-[11px] font-bold">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> 互動體驗
+                            </span>
+                            <span class="text-[10px] font-mono text-cyan-400/80">TOOL #03</span>
                         </div>
-                        <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 05</h4>
-                        <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                        <h3 class="text-lg font-black text-white flex items-center gap-2">
+                            <i class="fa-solid fa-eye text-purple-400"></i> 塔羅牌線上占卜工具
+                        </h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            自製互動式塔羅牌線上抽牌與解析工具，結合牌陣分析與直覺視覺介面，提供個人化占卜指引與決策參考。
+                        </p>
                     </div>
-                    <div id="cert-preview-container-5" class="hidden relative space-y-2">
-                        <img id="cert-img-5" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽">
-                        <p id="cert-name-5" class="text-xs font-bold text-slate-800 truncate px-2"></p>
-                        <div class="flex items-center justify-center gap-2">
-                            <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
-                            <button type="button" onclick="event.stopPropagation(); viewCertModal(5)" class="text-xs text-cyan-700 hover:text-cyan-900 font-bold underline">放大預覽</button>
-                        </div>
+                    <div class="pt-5 relative z-10">
+                        <a href="https://tarot-card-reading-production.up.railway.app" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-400 hover:to-cyan-400 text-slate-950 font-extrabold text-xs transition-all shadow-md shadow-purple-500/20 flex items-center justify-center gap-2 group-hover:scale-[1.02]">
+                            <i class="fa-solid fa-wand-magic-sparkles text-sm"></i> 開啟塔羅牌線上占卜 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
                     </div>
                 </div>
 
-                <!-- Cert Slot 6 -->
-                <div class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group" onclick="triggerCertUpload(6)">
-                    <input type="file" id="cert-input-6" class="hidden" accept="image/*,.pdf" onchange="handleCertFileSelect(event, 6)">
-                    <div id="cert-placeholder-6" class="space-y-2 py-2">
-                        <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-file-certificate"></i>
+                <!-- Tool 4: Fruit Cutting Game Tool -->
+                <div class="hud-corners p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-cyan-950 via-cyberNavy to-slate-900 text-white relative overflow-hidden border border-cyan-400/30 flex flex-col justify-between group shadow-lg">
+                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-emerald-500/20 rounded-full blur-xl pointer-events-none group-hover:bg-emerald-400/30 transition-all"></div>
+                    <div class="space-y-3 relative z-10">
+                        <div class="flex items-center justify-between">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[11px] font-bold">
+                                <i class="fa-solid fa-gamepad"></i> 網頁遊戲
+                            </span>
+                            <span class="text-[10px] font-mono text-cyan-400/80">TOOL #04</span>
                         </div>
-                        <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 06</h4>
-                        <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                        <h3 class="text-lg font-black text-white flex items-center gap-2">
+                            <i class="fa-solid fa-apple-whole text-emerald-400"></i> 切水果小遊戲
+                        </h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            自製互動式切水果網頁遊戲，具備動態劃刀切擊、拋物線果實運動與計分機制，展現前端互動開發與動態遊戲邏輯設計能力。
+                        </p>
                     </div>
-                    <div id="cert-preview-container-6" class="hidden relative space-y-2">
-                        <img id="cert-img-6" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽">
-                        <p id="cert-name-6" class="text-xs font-bold text-slate-800 truncate px-2"></p>
-                        <div class="flex items-center justify-center gap-2">
-                            <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
-                            <button type="button" onclick="event.stopPropagation(); viewCertModal(6)" class="text-xs text-cyan-700 hover:text-cyan-900 font-bold underline">放大預覽</button>
-                        </div>
+                    <div class="pt-5 relative z-10">
+                        <a href="https://a0900271071-hash.github.io/portfolio/fruit-cut.html" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-extrabold text-xs transition-all shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2 group-hover:scale-[1.02]">
+                            <i class="fa-solid fa-play text-sm"></i> 開始切水果遊戲 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
                     </div>
                 </div>
 
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Digital Tools Suite Section (PPT Shortcut, Weather Widget & Reserved Slots) -->
-<section id="tools" class="relative z-10 py-6 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-    <div class="tech-card rounded-3xl p-6 sm:p-8 space-y-6">
-        <!-- Section Title -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-cyan-100 pb-4 gap-2">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-sky-600 text-white flex items-center justify-center font-bold shadow-md shadow-cyan-500/20">
-                    <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
-                </div>
-                <div>
-                    <h2 class="text-xl sm:text-2xl font-black text-slate-900">自製數位辦公與實用工具箱</h2>
-                    <p class="text-xs font-semibold text-cyan-700 tracking-wider">Interactive Custom Digital Tools & Utilities</p>
-                </div>
-            </div>
-            <span class="text-xs text-cyan-800 bg-cyan-50 border border-cyan-200 px-3 py-1.5 rounded-full font-bold w-max self-start sm:self-center">
-                <i class="fa-solid fa-cube mr-1"></i> 個人開發小工具集
-            </span>
-        </div>
-
-        <!-- 2x2 Grid Layout for Current & Future Tools -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            
-            <!-- Tool 1: PPT Shortcut Tool -->
-            <div class="hud-corners p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-cyan-950 via-cyberNavy to-slate-900 text-white relative overflow-hidden border border-cyan-400/30 flex flex-col justify-between group shadow-lg">
-                <div class="absolute -right-8 -top-8 w-32 h-32 bg-cyan-500/20 rounded-full blur-xl pointer-events-none group-hover:bg-cyan-400/30 transition-all"></div>
-                <div class="space-y-3 relative z-10">
-                    <div class="flex items-center justify-between">
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 text-[11px] font-bold">
-                            <i class="fa-solid fa-bolt"></i> 簡報效率
-                        </span>
-                        <span class="text-[10px] font-mono text-cyan-400/80">TOOL #01</span>
-                    </div>
-                    <h3 class="text-lg font-black text-white flex items-center gap-2">
-                        <i class="fa-solid fa-file-powerpoint text-cyan-400"></i> PPT 快捷鍵快速查詢
-                    </h3>
-                    <p class="text-xs text-slate-300 leading-relaxed">
-                        極致化簡報製作與展示效率！個人開發之互動式 PowerPoint 快捷鍵檢索介面，支援分類查詢與即時搜尋。
-                    </p>
-                </div>
-                <div class="pt-5 relative z-10">
-                    <a href="https://a0900271071-hash.github.io/portfolio/ppt-shortcut.html" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-extrabold text-xs transition-all shadow-md shadow-cyan-500/20 flex items-center justify-center gap-2 group-hover:scale-[1.02]">
-                        <i class="fa-solid fa-keyboard text-sm"></i> 開啟 PPT 快捷鍵查詢 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Tool 2: Weather Widget Tool -->
-            <div class="hud-corners p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-cyan-950 via-cyberNavy to-slate-900 text-white relative overflow-hidden border border-cyan-400/30 flex flex-col justify-between group shadow-lg">
-                <div class="absolute -right-8 -top-8 w-32 h-32 bg-sky-500/20 rounded-full blur-xl pointer-events-none group-hover:bg-sky-400/30 transition-all"></div>
-                <div class="space-y-3 relative z-10">
-                    <div class="flex items-center justify-between">
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-sky-500/20 border border-sky-400/40 text-sky-300 text-[11px] font-bold">
-                            <i class="fa-solid fa-cloud-sun-rain"></i> 生活實用
-                        </span>
-                        <span class="text-[10px] font-mono text-cyan-400/80">TOOL #02</span>
-                    </div>
-                    <h3 class="text-lg font-black text-white flex items-center gap-2">
-                        <i class="fa-solid fa-cloud-sun text-sky-400"></i> 即時天氣查詢小工具
-                    </h3>
-                    <p class="text-xs text-slate-300 leading-relaxed">
-                        自用即時氣象資訊與天氣預報查詢介面，方便快速掌握最新氣象動態，協助活動行程規劃與外勤防範。
-                    </p>
-                </div>
-                <div class="pt-5 relative z-10">
-                    <a href="https://a0900271071-hash.github.io/portfolio/weather_widget.html" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-400 hover:to-cyan-400 text-slate-950 font-extrabold text-xs transition-all shadow-md shadow-sky-500/20 flex items-center justify-center gap-2 group-hover:scale-[1.02]">
-                        <i class="fa-solid fa-temperature-half text-sm"></i> 開啟即時天氣查詢 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Tool 3: Tarot Card Reading Tool -->
-            <div class="hud-corners p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-cyan-950 via-cyberNavy to-slate-900 text-white relative overflow-hidden border border-cyan-400/30 flex flex-col justify-between group shadow-lg">
-                <div class="absolute -right-8 -top-8 w-32 h-32 bg-purple-500/20 rounded-full blur-xl pointer-events-none group-hover:bg-purple-400/30 transition-all"></div>
-                <div class="space-y-3 relative z-10">
-                    <div class="flex items-center justify-between">
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-purple-500/20 border border-purple-400/40 text-purple-300 text-[11px] font-bold">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i> 互動體驗
-                        </span>
-                        <span class="text-[10px] font-mono text-cyan-400/80">TOOL #03</span>
-                    </div>
-                    <h3 class="text-lg font-black text-white flex items-center gap-2">
-                        <i class="fa-solid fa-eye text-purple-400"></i> 塔羅牌線上占卜工具
-                    </h3>
-                    <p class="text-xs text-slate-300 leading-relaxed">
-                        自製互動式塔羅牌線上抽牌與解析工具，結合牌陣分析與直覺視覺介面，提供個人化占卜指引與決策參考。
-                    </p>
-                </div>
-                <div class="pt-5 relative z-10">
-                    <a href="https://tarot-card-reading-production.up.railway.app" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-400 hover:to-cyan-400 text-slate-950 font-extrabold text-xs transition-all shadow-md shadow-purple-500/20 flex items-center justify-center gap-2 group-hover:scale-[1.02]">
-                        <i class="fa-solid fa-wand-magic-sparkles text-sm"></i> 開啟塔羅牌線上占卜 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Tool 4: Fruit Cutting Game Tool -->
-            <div class="hud-corners p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-cyan-950 via-cyberNavy to-slate-900 text-white relative overflow-hidden border border-cyan-400/30 flex flex-col justify-between group shadow-lg">
-                <div class="absolute -right-8 -top-8 w-32 h-32 bg-emerald-500/20 rounded-full blur-xl pointer-events-none group-hover:bg-emerald-400/30 transition-all"></div>
-                <div class="space-y-3 relative z-10">
-                    <div class="flex items-center justify-between">
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[11px] font-bold">
-                            <i class="fa-solid fa-gamepad"></i> 網頁遊戲
-                        </span>
-                        <span class="text-[10px] font-mono text-cyan-400/80">TOOL #04</span>
-                    </div>
-                    <h3 class="text-lg font-black text-white flex items-center gap-2">
-                        <i class="fa-solid fa-apple-whole text-emerald-400"></i> 切水果小遊戲
-                    </h3>
-                    <p class="text-xs text-slate-300 leading-relaxed">
-                        自製互動式切水果網頁遊戲，具備動態劃刀切擊、拋物線果實運動與計分機制，展現前端互動開發與動態遊戲邏輯設計能力。
-                    </p>
-                </div>
-                <div class="pt-5 relative z-10">
-                    <a href="https://a0900271071-hash.github.io/portfolio/fruit-cut.html" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-extrabold text-xs transition-all shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2 group-hover:scale-[1.02]">
-                        <i class="fa-solid fa-play text-sm"></i> 開始切水果遊戲 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                    </a>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-<!-- Experience & Education Section -->
+    <!-- Experience & Education Section -->
     <section id="experience" class="relative z-10 py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
             <!-- Work & Refinement Experience -->
@@ -735,7 +738,7 @@
         </div>
     </section>
 
-    <!-- Portfolio Section (3 Placeholders) -->
+    <!-- Portfolio Section -->
     <section id="portfolio" class="relative z-10 py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <div class="space-y-8">
             <div class="flex flex-col md:flex-row md:items-end justify-between">
@@ -770,7 +773,7 @@
                         </div>
                     </div>
                     <div class="p-5 pt-0">
-                        <button onclick="openModal('portfolio-1')" class="w-full py-2.5 bg-cyan-50 hover:bg-cyan-100 text-cyan-900 border border-cyan-200 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                        <button type="button" data-modal-target="portfolio-1" class="open-modal-btn w-full py-2.5 bg-cyan-50 hover:bg-cyan-100 text-cyan-900 border border-cyan-200 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm" aria-label="查看博物館 13 場活動籌辦細節">
                             <i class="fa-solid fa-circle-info text-cyan-600"></i> 查看細節說明
                         </button>
                     </div>
@@ -795,7 +798,7 @@
                         </div>
                     </div>
                     <div class="p-5 pt-0">
-                        <button onclick="openModal('portfolio-2')" class="w-full py-2.5 bg-cyan-50 hover:bg-cyan-100 text-cyan-900 border border-cyan-200 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                        <button type="button" data-modal-target="portfolio-2" class="open-modal-btn w-full py-2.5 bg-cyan-50 hover:bg-cyan-100 text-cyan-900 border border-cyan-200 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm" aria-label="查看 Gemini AI 自動化模組細節">
                             <i class="fa-solid fa-circle-info text-cyan-600"></i> 查看細節說明
                         </button>
                     </div>
@@ -820,7 +823,7 @@
                         </div>
                     </div>
                     <div class="p-5 pt-0">
-                        <button onclick="openModal('portfolio-3')" class="w-full py-2.5 bg-cyan-50 hover:bg-cyan-100 text-cyan-900 border border-cyan-200 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                        <button type="button" data-modal-target="portfolio-3" class="open-modal-btn w-full py-2.5 bg-cyan-50 hover:bg-cyan-100 text-cyan-900 border border-cyan-200 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm" aria-label="查看 Power BI 數據視覺化與財務管理細節">
                             <i class="fa-solid fa-circle-info text-cyan-600"></i> 查看細節說明
                         </button>
                     </div>
@@ -845,7 +848,7 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                     <!-- Phone -->
-                    <a href="tel:0900271071" class="flex items-center gap-4 p-4 rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-cyan-500/30 transition-all hover:border-cyan-400">
+                    <a href="tel:0900271071" class="flex items-center gap-4 p-4 rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-cyan-500/30 transition-all hover:border-cyan-400" aria-label="撥打電話給劉向榮">
                         <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold">
                             <i class="fa-solid fa-phone text-lg"></i>
                         </div>
@@ -856,7 +859,7 @@
                     </a>
 
                     <!-- Email -->
-                    <a href="mailto:a0900271071@gmail.com" class="flex items-center gap-4 p-4 rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-cyan-500/30 transition-all hover:border-cyan-400">
+                    <a href="mailto:a0900271071@gmail.com" class="flex items-center gap-4 p-4 rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-cyan-500/30 transition-all hover:border-cyan-400" aria-label="寄送 Email 給劉向榮">
                         <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold">
                             <i class="fa-solid fa-envelope text-lg"></i>
                         </div>
@@ -869,7 +872,7 @@
 
                 <!-- Action button to copy contact details -->
                 <div class="pt-2 flex flex-wrap gap-3">
-                    <button onclick="copyContactInfo()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-sky-600 hover:from-cyan-500 hover:to-sky-500 text-white font-bold text-xs transition-all shadow-md flex items-center gap-2">
+                    <button type="button" id="copy-contact-btn" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-sky-600 hover:from-cyan-500 hover:to-sky-500 text-white font-bold text-xs transition-all shadow-md flex items-center gap-2">
                         <i class="fa-regular fa-copy"></i> 複製聯絡資訊 (電話/Email)
                     </button>
                     <span id="copy-toast" class="hidden text-xs text-cyan-400 items-center gap-1 font-bold self-center animate-pulse">
@@ -887,9 +890,9 @@
     </footer>
 
     <!-- Certificate & Portfolio Lightbox Modals -->
-    <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="詳細資訊對話視窗">
         <div class="tech-card bg-white/95 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-cyan-300 space-y-4 relative">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-cyan-600 p-1">
+            <button type="button" id="modal-close-icon" class="close-modal-btn absolute top-4 right-4 text-slate-400 hover:text-cyan-600 p-1" aria-label="關閉對話視窗">
                 <i class="fa-solid fa-xmark text-xl"></i>
             </button>
 
@@ -941,138 +944,211 @@
                 <span class="px-2.5 py-1 bg-emerald-100 text-emerald-900 rounded-md text-xs font-bold">證照圖檔檢視</span>
                 <h3 id="cert-modal-title" class="text-xl font-black text-slate-900">證照預覽</h3>
                 <div class="max-h-96 overflow-auto rounded-xl border border-cyan-200">
-                    <img id="cert-modal-img" class="w-full object-contain mx-auto" alt="證照放大預覽">
+                    <img id="cert-modal-img" class="w-full object-contain mx-auto" alt="證照放大預覽圖檔">
                 </div>
                 <div class="flex justify-center gap-2 pt-2">
-                    <button type="button" id="reupload-btn" onclick="" class="px-4 py-2 bg-cyan-100 text-cyan-900 hover:bg-cyan-200 rounded-xl text-xs font-bold transition-colors">
+                    <button type="button" id="reupload-btn" class="px-4 py-2 bg-cyan-100 text-cyan-900 hover:bg-cyan-200 rounded-xl text-xs font-bold transition-colors">
                         <i class="fa-solid fa-arrows-rotate mr-1"></i> 重新上傳此證照
                     </button>
                 </div>
             </div>
 
             <div class="pt-4 border-t border-cyan-100 text-right">
-                <button onclick="closeModal()" class="px-4 py-2 bg-slate-900 hover:bg-cyan-700 text-white rounded-xl text-xs font-bold transition-colors">
+                <button type="button" id="modal-close-footer-btn" class="close-modal-btn px-4 py-2 bg-slate-900 hover:bg-cyan-700 text-white rounded-xl text-xs font-bold transition-colors">
                     關閉視窗
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Interactive Scripts -->
+    <!-- Interactive Scripts with Standard DOM Event Delegation (Separation of Concerns) -->
     <script>
-        // Mobile Navigation Toggle
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile Navigation Toggle
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
 
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+            if (menuBtn && mobileMenu) {
+                menuBtn.addEventListener('click', () => {
+                    const isHidden = mobileMenu.classList.toggle('hidden');
+                    menuBtn.setAttribute('aria-expanded', !isHidden);
+                });
 
-        mobileNavLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
+                mobileNavLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                        menuBtn.setAttribute('aria-expanded', 'false');
+                    });
+                });
+            }
+
+            // Profile Image Fallback Event Listener
+            const profileImg = document.getElementById('profile-img');
+            if (profileImg) {
+                profileImg.addEventListener('error', function() {
+                    this.src = 'https://placehold.co/200x200/e0f2fe/0284c7?text=劉向榮';
+                });
+            }
+
+            // Copy Contact Details Logic
+            function copyContactInfo() {
+                const contactText = "劉向榮 | 電話：0900-271-071 | 電子郵件：a0900271071@gmail.com";
+                
+                const tempInput = document.createElement("textarea");
+                tempInput.value = contactText;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand("copy");
+                document.body.removeChild(tempInput);
+
+                const toast = document.getElementById('copy-toast');
+                if (toast) {
+                    toast.classList.remove('hidden');
+                    toast.classList.add('flex');
+                    setTimeout(() => {
+                        toast.classList.add('hidden');
+                        toast.classList.remove('flex');
+                    }, 3000);
+                }
+            }
+
+            const copyContactBtn = document.getElementById('copy-contact-btn');
+            if (copyContactBtn) {
+                copyContactBtn.addEventListener('click', copyContactInfo);
+            }
+
+            // Modals Management
+            function openModal(portfolioId) {
+                const backdrop = document.getElementById('modal-backdrop');
+                const contents = document.querySelectorAll('.modal-content');
+                
+                contents.forEach(content => content.classList.add('hidden'));
+                
+                const targetContent = document.getElementById(`modal-content-${portfolioId}`);
+                if (targetContent && backdrop) {
+                    targetContent.classList.remove('hidden');
+                    backdrop.classList.remove('hidden');
+                }
+            }
+
+            function closeModal() {
+                const backdrop = document.getElementById('modal-backdrop');
+                if (backdrop) {
+                    backdrop.classList.add('hidden');
+                }
+            }
+
+            // Bind open modal buttons
+            document.querySelectorAll('.open-modal-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetId = this.dataset.modalTarget;
+                    if (targetId) openModal(targetId);
+                });
+            });
+
+            // Bind close modal buttons
+            document.querySelectorAll('.close-modal-btn').forEach(btn => {
+                btn.addEventListener('click', closeModal);
+            });
+
+            const modalBackdrop = document.getElementById('modal-backdrop');
+            if (modalBackdrop) {
+                modalBackdrop.addEventListener('click', (e) => {
+                    if (e.target === modalBackdrop) {
+                        closeModal();
+                    }
+                });
+            }
+
+            // Certificate Upload Handling
+            const certData = {};
+
+            // File select listener on all cert inputs
+            document.querySelectorAll('.cert-input').forEach(input => {
+                input.addEventListener('change', function(event) {
+                    const id = this.dataset.certId;
+                    const file = event.target.files[0];
+                    if (!file || !id) return;
+
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const dataUrl = e.target.result;
+                        certData[id] = {
+                            name: file.name,
+                            url: dataUrl
+                        };
+
+                        // Hide placeholder, show preview
+                        const placeholder = document.getElementById(`cert-placeholder-${id}`);
+                        if (placeholder) placeholder.classList.add('hidden');
+                        
+                        const previewContainer = document.getElementById(`cert-preview-container-${id}`);
+                        const previewImg = document.getElementById(`cert-img-${id}`);
+                        const previewName = document.getElementById(`cert-name-${id}`);
+
+                        if (previewImg) previewImg.src = dataUrl;
+                        if (previewName) previewName.textContent = file.name;
+                        if (previewContainer) previewContainer.classList.remove('hidden');
+                    };
+
+                    reader.readAsDataURL(file);
+                });
+            });
+
+            // View cert preview modal buttons listener
+            document.querySelectorAll('.view-cert-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const id = this.dataset.certId;
+                    if (!id || !certData[id]) return;
+
+                    const contents = document.querySelectorAll('.modal-content');
+                    contents.forEach(content => content.classList.add('hidden'));
+
+                    const modalTitle = document.getElementById('cert-modal-title');
+                    const modalImg = document.getElementById('cert-modal-img');
+                    const reuploadBtn = document.getElementById('reupload-btn');
+
+                    if (modalTitle) modalTitle.textContent = `證照預覽：${certData[id].name}`;
+                    if (modalImg) modalImg.src = certData[id].url;
+                    if (reuploadBtn) reuploadBtn.dataset.certId = id;
+
+                    const certModalContent = document.getElementById('modal-content-cert');
+                    if (certModalContent) certModalContent.classList.remove('hidden');
+
+                    if (modalBackdrop) modalBackdrop.classList.remove('hidden');
+                });
+            });
+
+            // Reupload button in cert modal listener
+            const reuploadBtn = document.getElementById('reupload-btn');
+            if (reuploadBtn) {
+                reuploadBtn.addEventListener('click', function() {
+                    const id = this.dataset.certId;
+                    closeModal();
+                    if (id) {
+                        const targetInput = document.getElementById(`cert-input-${id}`);
+                        if (targetInput) targetInput.click();
+                    }
+                });
+            }
+
+            // Keydown accessibility for label card buttons
+            document.querySelectorAll('.cert-upload-card').forEach(card => {
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        if (e.target.classList.contains('view-cert-btn')) return;
+                        e.preventDefault();
+                        const id = this.dataset.certId;
+                        const fileInput = document.getElementById(`cert-input-${id}`);
+                        if (fileInput) fileInput.click();
+                    }
+                });
             });
         });
-
-        // Copy Contact Details
-        function copyContactInfo() {
-            const contactText = "劉向榮 | 電話：0900-271-071 | 電子郵件：a0900271071@gmail.com";
-            
-            const tempInput = document.createElement("textarea");
-            tempInput.value = contactText;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand("copy");
-            document.body.removeChild(tempInput);
-
-            const toast = document.getElementById('copy-toast');
-            toast.classList.remove('hidden');
-            toast.classList.add('flex');
-            setTimeout(() => {
-                toast.classList.add('hidden');
-                toast.classList.remove('flex');
-            }, 3000);
-        }
-
-        // Modals management
-        function openModal(portfolioId) {
-            const backdrop = document.getElementById('modal-backdrop');
-            const contents = document.querySelectorAll('.modal-content');
-            
-            contents.forEach(content => content.classList.add('hidden'));
-            
-            const targetContent = document.getElementById(`modal-content-${portfolioId}`);
-            if (targetContent) {
-                targetContent.classList.remove('hidden');
-                backdrop.classList.remove('hidden');
-            }
-        }
-
-        function closeModal() {
-            const backdrop = document.getElementById('modal-backdrop');
-            backdrop.classList.add('hidden');
-        }
-
-        document.getElementById('modal-backdrop').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('modal-backdrop')) {
-                closeModal();
-            }
-        });
-
-        // Certificate Upload Handling
-        const certData = {};
-
-        function triggerCertUpload(id) {
-            const input = document.getElementById(`cert-input-${id}`);
-            if (input) input.click();
-        }
-
-        function handleCertFileSelect(event, id) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const dataUrl = e.target.result;
-                certData[id] = {
-                    name: file.name,
-                    url: dataUrl
-                };
-
-                // Hide placeholder, show preview
-                document.getElementById(`cert-placeholder-${id}`).classList.add('hidden');
-                
-                const previewContainer = document.getElementById(`cert-preview-container-${id}`);
-                const previewImg = document.getElementById(`cert-img-${id}`);
-                const previewName = document.getElementById(`cert-name-${id}`);
-
-                previewImg.src = dataUrl;
-                previewName.textContent = file.name;
-                previewContainer.classList.remove('hidden');
-            };
-
-            reader.readAsDataURL(file);
-        }
-
-        function viewCertModal(id) {
-            if (!certData[id]) return;
-
-            const backdrop = document.getElementById('modal-backdrop');
-            const contents = document.querySelectorAll('.modal-content');
-            contents.forEach(content => content.classList.add('hidden'));
-
-            const modalTitle = document.getElementById('cert-modal-title');
-            const modalImg = document.getElementById('cert-modal-img');
-            const reuploadBtn = document.getElementById('reupload-btn');
-
-            modalTitle.textContent = `證照預覽：${certData[id].name}`;
-            modalImg.src = certData[id].url;
-            reuploadBtn.setAttribute('onclick', `closeModal(); triggerCertUpload(${id})`);
-
-            document.getElementById('modal-content-cert').classList.remove('hidden');
-            backdrop.classList.remove('hidden');
-        }
     </script>
 </body>
 </html>
