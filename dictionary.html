@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>學生與國考專用中英雙向字典</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Noto Sans TC & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'Noto Sans TC', 'sans-serif'],
+                    },
+                    colors: {
+                        sunset: {
+                            50: '#fffaf5',
+                            100: '#fff1e6',
+                            200: '#fedcc4',
+                            300: '#fdbd98',
+                            400: '#fa9262',
+                            500: '#f56b33',
+                            600: '#e44a1b',
+                            700: '#bd3514',
+                            800: '#972c17',
+                            900: '#7a2717',
+                        },
+                        classroom: {
+                            wood: '#8c5a3c',
+                            chalkboard: '#2b4436',
+                            purple: '#4a3b5c',
+                            sunsetGlow: '#f99e74',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Sunset Classroom Background Effect */
+        body {
+            background: #110d1a;
+            min-height: 100vh;
+            color: #f1f5f9;
+            background-attachment: fixed;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Japanese Classroom Sunset Atmosphere Styles */
+        .classroom-container {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        /* Floating particles in golden sunbeams */
+        .dust-particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(254, 215, 170, 0.8) 0%, rgba(251, 146, 60, 0) 70%);
+            border-radius: 50%;
+            animation: floatDust 12s infinite ease-in-out;
+        }
+
+        @keyframes floatDust {
+            0%, 100% {
+                transform: translateY(0) translateX(0) scale(1);
+                opacity: 0.2;
+            }
+            50% {
+                transform: translateY(-40px) translateX(20px) scale(1.4);
+                opacity: 0.7;
+            }
+        }
+
+        /* Glassmorphism Card Style - Adjusted for rich background visibility */
+        .glass-panel {
+            background: rgba(22, 18, 33, 0.78);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 215, 180, 0.18);
+            box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-input {
+            background: rgba(12, 10, 22, 0.75);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(251, 146, 60, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .glass-input:focus {
+            border-color: #fb923c;
+            box-shadow: 0 0 20px rgba(251, 146, 60, 0.45);
+        }
+
+        .badge-level {
+            background: linear-gradient(135deg, rgba(251, 146, 60, 0.25), rgba(234, 88, 12, 0.35));
+            border: 1px solid rgba(251, 146, 60, 0.5);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 13, 25, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(251, 146, 60, 0.4);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(251, 146, 60, 0.7);
+        }
+
+        /* Highlight matching text */
+        .kw-hl {
+            color: #fdba74;
+            font-weight: 600;
+            border-bottom: 1.5px dotted #fb923c;
+        }
+
+        /* Chalkboard Text Effect */
+        .chalk-text {
+            font-family: 'Noto Sans TC', sans-serif;
+            color: rgba(240, 248, 255, 0.75);
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased flex flex-col justify-between selection:bg-orange-500 selection:text-white">
+
+    <!-- Japanese Anime Sunset Classroom Visual Background -->
+    <div class="classroom-container">
+        <svg class="w-full h-full object-cover" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+            <defs>
+                <!-- Sky Sunset Gradient -->
+                <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#2a1636"/>
+                    <stop offset="35%" stop-color="#5c2647"/>
+                    <stop offset="65%" stop-color="#b04946"/>
+                    <stop offset="88%" stop-color="#e87648"/>
+                    <stop offset="100%" stop-color="#ffd07b"/>
+                </linearGradient>
+
+                <!-- Sun Glow -->
+                <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
+                    <stop offset="30%" stop-color="#ffe49e" stop-opacity="0.9"/>
+                    <stop offset="70%" stop-color="#f97316" stop-opacity="0.4"/>
+                    <stop offset="100%" stop-color="#b04946" stop-opacity="0"/>
+                </radialGradient>
+
+                <!-- Sunbeam Projection Light -->
+                <linearGradient id="sunbeamGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ffedd5" stop-opacity="0.35"/>
+                    <stop offset="50%" stop-color="#fb923c" stop-opacity="0.15"/>
+                    <stop offset="100%" stop-color="#7c2d12" stop-opacity="0"/>
+                </linearGradient>
+
+                <!-- Wooden Floor Gradient -->
+                <linearGradient id="floorGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#4a251b"/>
+                    <stop offset="100%" stop-color="#1f0a07"/>
+                </linearGradient>
+
+                <!-- Wall Gradient -->
+                <linearGradient id="wallGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#362238"/>
+                    <stop offset="100%" stop-color="#1f1424"/>
+                </linearGradient>
+
+                <!-- Chalkboard Texture/Gradient -->
+                <linearGradient id="chalkboardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#1c3327"/>
+                    <stop offset="100%" stop-color="#0f2118"/>
+                </linearGradient>
+
+                <!-- Wood Desk Texture -->
+                <linearGradient id="deskWood" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#9a5832"/>
+                    <stop offset="50%" stop-color="#be7343"/>
+                    <stop offset="100%" stop-color="#7a4123"/>
+                </linearGradient>
+            </defs>
+
+            <!-- 1. Sky outside windows -->
+            <rect width="1920" height="1080" fill="url(#skyGrad)"/>
+
+            <!-- Distant Mountain/City Horizon Silhouette -->
+            <path d="M 0 620 Q 350 580, 700 630 T 1400 600 T 1920 640 L 1920 750 L 0 750 Z" fill="#4a1c31" opacity="0.7"/>
+            <path d="M 0 650 Q 450 620, 900 660 T 1920 640 L 1920 750 L 0 750 Z" fill="#2d1022" opacity="0.85"/>
+
+            <!-- Setting Sun Rays -->
+            <circle cx="1450" cy="520" r="180" fill="url(#sunGlow)"/>
+
+            <!-- Clouds in Sunset Sky -->
+            <ellipse cx="1200" cy="420" rx="220" ry="25" fill="#f472b6" opacity="0.3"/>
+            <ellipse cx="1550" cy="380" rx="300" ry="30" fill="#fb923c" opacity="0.35"/>
+            <ellipse cx="800" cy="480" rx="180" ry="20" fill="#c084fc" opacity="0.25"/>
+
+            <!-- 2. Classroom Interior Wall & Structure -->
+            <!-- Back Wall Frame -->
+            <path d="M 0 0 L 550 0 L 550 780 L 0 1080 Z" fill="url(#wallGrad)"/>
+            <path d="M 550 0 L 1920 0 L 1920 1080 L 550 780 Z" fill="url(#wallGrad)" opacity="0.6"/>
+
+            <!-- 3. Chalkboard on Front/Back Wall -->
+            <g transform="translate(60, 140)">
+                <!-- Chalkboard Frame -->
+                <rect x="0" y="0" width="440" height="260" rx="6" fill="#5c3a21" stroke="#3b2312" stroke-width="6"/>
+                <!-- Chalkboard Surface -->
+                <rect x="12" y="12" width="416" height="236" rx="3" fill="url(#chalkboardGrad)"/>
+                <!-- Chalkboard Tray -->
+                <rect x="-10" y="260" width="460" height="10" rx="2" fill="#7c4a2a"/>
+                <!-- Chalk & Eraser -->
+                <rect x="80" y="255" width="30" height="5" fill="#e2e8f0"/>
+                <rect x="130" y="253" width="45" height="7" fill="#475569"/>
+                
+                <!-- Handwritten Chalk Notes on Board -->
+                <text x="30" y="55" font-family="'Noto Sans TC', sans-serif" font-size="20" font-weight="bold" fill="#f8fafc" opacity="0.85">本日目標：中英雙向單字複習</text>
+                <text x="30" y="90" font-family="sans-serif" font-size="15" fill="#fed7aa" opacity="0.75">1. resilient [rɪˈzɪl.jənt] - 堅韌的</text>
+                <text x="30" y="118" font-family="sans-serif" font-size="15" fill="#fed7aa" opacity="0.75">2. diligence [ˈdɪl.ə.dʒəns] - 勤勉</text>
+                <text x="30" y="146" font-family="sans-serif" font-size="15" fill="#fed7aa" opacity="0.75">3. persistence - 堅持不懈</text>
+
+                <path d="M 30 180 Q 120 170, 220 185" stroke="#f472b6" stroke-width="2" fill="none" opacity="0.6" stroke-dasharray="4,4"/>
+                <text x="30" y="215" font-family="sans-serif" font-size="14" fill="#93c5fd" opacity="0.8">★ 國考/學測必考高頻詞彙特化</text>
+            </g>
+
+            <!-- Classroom Clock above board -->
+            <g transform="translate(280, 70)">
+                <circle cx="0" cy="0" r="32" fill="#f8fafc" stroke="#475569" stroke-width="5"/>
+                <circle cx="0" cy="0" r="28" fill="#fffaf5"/>
+                <!-- Clock Hands pointing to ~4:30 PM (Sunset time) -->
+                <line x1="0" y1="0" x2="0" y2="-16" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>
+                <line x1="0" y1="0" x2="14" y2="8" stroke="#1e293b" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="0" cy="0" r="3" fill="#ea580c"/>
+            </g>
+
+            <!-- Classroom Speaker -->
+            <rect x="440" y="60" width="45" height="55" rx="4" fill="#4a3728" stroke="#2d2017" stroke-width="3"/>
+            <rect x="448" y="70" width="29" height="35" rx="2" fill="#1e1711"/>
+
+            <!-- 4. Large Japanese School Windows (Left side / Center perspective) -->
+            <!-- Window Grid 1 -->
+            <g opacity="0.95">
+                <!-- Large Window Frames -->
+                <line x1="550" y1="0" x2="550" y2="780" stroke="#2d1c16" stroke-width="14"/>
+                <line x1="1200" y1="0" x2="1200" y2="870" stroke="#2d1c16" stroke-width="14"/>
+                <line x1="1850" y1="0" x2="1850" y2="980" stroke="#2d1c16" stroke-width="14"/>
+
+                <!-- Horizontal Window Mullions -->
+                <line x1="550" y1="220" x2="1920" y2="220" stroke="#3a251e" stroke-width="8"/>
+                <line x1="550" y1="500" x2="1920" y2="500" stroke="#3a251e" stroke-width="10"/>
+                <line x1="550" y1="750" x2="1920" y2="750" stroke="#3a251e" stroke-width="12"/>
+
+                <!-- Glass Sheen / Reflection lines -->
+                <polygon points="620,0 720,0 580,500 500,500" fill="#ffffff" opacity="0.08"/>
+                <polygon points="1280,0 1420,0 1200,750 1100,750" fill="#ffffff" opacity="0.06"/>
+            </g>
+
+            <!-- Window Curtains (Slightly drawn on sides) -->
+            <path d="M 540 0 Q 570 300, 550 520 Q 580 700, 540 780 L 510 780 L 510 0 Z" fill="#b91c1c" opacity="0.4"/>
+            <path d="M 1920 0 Q 1880 350, 1900 650 L 1920 650 Z" fill="#b91c1c" opacity="0.4"/>
+
+            <!-- 5. Sunbeam Rays Projected Into Classroom -->
+            <polygon points="1350,350 1920,500 1920,1080 300,1080" fill="url(#sunbeamGrad)" style="mix-blend-mode: screen;"/>
+            <polygon points="1450,220 1920,320 1920,950 800,1080" fill="url(#sunbeamGrad)" opacity="0.7" style="mix-blend-mode: screen;"/>
+
+            <!-- 6. Wooden Floor -->
+            <polygon points="0,780 1920,780 1920,1080 0,1080" fill="url(#floorGrad)"/>
+
+            <!-- Wooden Floor Planks Perspective Lines -->
+            <g stroke="#140503" stroke-width="2" opacity="0.6">
+                <line x1="200" y1="780" x2="-100" y2="1080"/>
+                <line x1="500" y1="780" x2="300" y2="1080"/>
+                <line x1="800" y1="780" x2="750" y2="1080"/>
+                <line x1="1100" y1="780" x2="1200" y2="1080"/>
+                <line x1="1400" y1="780" x2="1650" y2="1080"/>
+                <line x1="1700" y1="780" x2="2100" y2="1080"/>
+            </g>
+
+            <!-- Floor Light Reflections from Window -->
+            <polygon points="650,780 1150,780 1350,1080 600,1080" fill="#fb923c" opacity="0.12"/>
+
+            <!-- 7. Classroom Student Desks & Chairs (Foreground / Midground Rows) -->
+            
+            <!-- DESK ROW 1 (Left / Back) -->
+            <g transform="translate(580, 720)">
+                <!-- Chair Back -->
+                <rect x="25" y="-60" width="50" height="40" rx="4" fill="#6c3b1e" stroke="#3a1d0e" stroke-width="2"/>
+                <line x1="33" y1="-20" x2="33" y2="20" stroke="#262626" stroke-width="4"/>
+                <line x1="67" y1="-20" x2="67" y2="20" stroke="#262626" stroke-width="4"/>
+
+                <!-- Desk Surface -->
+                <polygon points="0,0 110,-10 120,25 5,38" fill="url(#deskWood)" stroke="#4a2511" stroke-width="2"/>
+                <!-- Desk Light Highlight -->
+                <polygon points="2,2 108,-8 112,0 4,10" fill="#fdba74" opacity="0.3"/>
+                <!-- Desk Metal Legs -->
+                <line x1="10" y1="35" x2="10" y2="110" stroke="#1f2937" stroke-width="5"/>
+                <line x1="115" y1="22" x2="115" y2="95" stroke="#1f2937" stroke-width="5"/>
+                <line x1="100" y1="-8" x2="100" y2="60" stroke="#111827" stroke-width="4"/>
+                <!-- Desk Hook/Bag -->
+                <path d="M 118 35 Q 125 40, 122 55" stroke="#fb923c" stroke-width="3" fill="none"/>
+            </g>
+
+            <!-- DESK ROW 2 (Center / Midground) -->
+            <g transform="translate(1020, 750)">
+                <!-- Chair Back -->
+                <rect x="35" y="-70" width="60" height="48" rx="5" fill="#7c4322" stroke="#42200c" stroke-width="2"/>
+                <line x1="45" y1="-22" x2="45" y2="30" stroke="#1f2937" stroke-width="5"/>
+                <line x1="85" y1="-22" x2="85" y2="30" stroke="#1f2937" stroke-width="5"/>
+
+                <!-- Desk Surface -->
+                <polygon points="0,0 140,-12 152,32 5,48" fill="url(#deskWood)" stroke="#3a1d0e" stroke-width="2"/>
+                <!-- Golden Rim Light on Desk Edge -->
+                <polygon points="2,2 138,-10 142,0 4,12" fill="#fed7aa" opacity="0.45"/>
+                <line x1="5" y1="48" x2="152" y2="32" stroke="#f97316" stroke-width="3" opacity="0.8"/>
+                
+                <!-- Notebook on Desk -->
+                <polygon points="30,8 75,4 82,22 35,27" fill="#f8fafc" opacity="0.9"/>
+                <polygon points="75,4 88,3 93,20 82,22" fill="#ea580c" opacity="0.8"/> <!-- Pencil Case -->
+
+                <!-- Desk Legs -->
+                <line x1="12" y1="45" x2="12" y2="150" stroke="#111827" stroke-width="6"/>
+                <line x1="146" y1="30" x2="146" y2="130" stroke="#111827" stroke-width="6"/>
+                <line x1="130" y1="-10" x2="130" y2="90" stroke="#030712" stroke-width="5"/>
+            </g>
+
+            <!-- DESK ROW 3 (Right / Foreground Side) -->
+            <g transform="translate(1520, 790)">
+                <!-- Chair Back -->
+                <rect x="40" y="-80" width="70" height="55" rx="6" fill="#8c4a26" stroke="#4a220d" stroke-width="3"/>
+                <line x1="52" y1="-25" x2="52" y2="35" stroke="#111827" stroke-width="6"/>
+                <line x1="98" y1="-25" x2="98" y2="35" stroke="#111827" stroke-width="6"/>
+
+                <!-- Desk Surface -->
+                <polygon points="0,0 170,-15 185,40 5,60" fill="url(#deskWood)" stroke="#2d1508" stroke-width="3"/>
+                <!-- Highlight Edge -->
+                <polygon points="3,3 167,-12 172,0 5,15" fill="#ffedd5" opacity="0.5"/>
+                <line x1="5" y1="60" x2="185" y2="40" stroke="#fb923c" stroke-width="4"/>
+
+                <!-- Textbook open on Desk -->
+                <polygon points="40,12 85,7 90,32 43,38" fill="#f1f5f9"/>
+                <polygon points="86,7 130,3 137,26 91,32" fill="#f8fafc"/>
+                
+                <!-- Desk Legs -->
+                <line x1="15" y1="55" x2="15" y2="200" stroke="#0f172a" stroke-width="7"/>
+                <line x1="178" y1="38" x2="178" y2="170" stroke="#0f172a" stroke-width="7"/>
+            </g>
+
+            <!-- Ambient Dusk Shadows over lower scene -->
+            <rect x="0" y="850" width="1920" height="230" fill="#090511" opacity="0.45"/>
+        </svg>
+
+        <!-- Floating Particles Element Injection -->
+        <div class="dust-particle" style="width: 6px; height: 6px; top: 35%; left: 45%; animation-delay: 0s;"></div>
+        <div class="dust-particle" style="width: 8px; height: 8px; top: 50%; left: 65%; animation-delay: 3s;"></div>
+        <div class="dust-particle" style="width: 5px; height: 5px; top: 25%; left: 75%; animation-delay: 1.5s;"></div>
+        <div class="dust-particle" style="width: 10px; height: 10px; top: 60%; left: 80%; animation-delay: 4.5s;"></div>
+        <div class="dust-particle" style="width: 7px; height: 7px; top: 40%; left: 30%; animation-delay: 2s;"></div>
+    </div>
+
+    <!-- Main Container Content (Elevated above background with relative z-10) -->
+    <div class="relative z-10 flex-grow flex flex-col max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- Header -->
+        <header class="flex items-center justify-between py-4 mb-6 border-b border-white/10">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-500/20">
+                    <i class="fa-solid font-bold text-white text-xl fa-book-open"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold bg-gradient-to-r from-orange-200 via-amber-100 to-orange-400 bg-clip-text text-transparent">
+                        中英文雙向字典
+                    </h1>
+                    <p class="text-xs text-orange-200/70">國中小 ‧ 高中學測 ‧ 國考高頻詞彙特化版</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button id="bookmarkTabBtn" onclick="toggleBookmarkDrawer()" class="px-3 py-2 rounded-lg glass-panel hover:bg-white/10 transition text-xs sm:text-sm text-amber-200 flex items-center space-x-2 border border-amber-500/30">
+                    <i class="fa-solid fa-bookmark text-amber-400"></i>
+                    <span>生字本</span>
+                    <span id="bookmarkCount" class="bg-amber-500/30 text-amber-200 text-xs px-1.5 py-0.5 rounded-full font-mono">0</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Search Section -->
+        <section class="mb-8">
+            <div class="glass-panel p-4 sm:p-6 rounded-2xl">
+                <form id="searchForm" onsubmit="handleSearch(event)" class="relative flex flex-col sm:flex-row gap-3">
+                    <div class="relative flex-grow">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-orange-300/60 text-lg"></i>
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            placeholder="輸入英文單字（如: resilient）或中文詞彙（如: 堅韌）..." 
+                            class="w-full pl-12 pr-10 py-3.5 sm:py-4 rounded-xl glass-input text-white placeholder-slate-400 text-base focus:outline-none"
+                            autocomplete="off"
+                        >
+                        <button type="button" onclick="clearSearch()" id="clearBtn" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white p-1">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </button>
+                    </div>
+                    <button 
+                        type="submit" 
+                        class="px-8 py-3.5 sm:py-4 bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-medium rounded-xl shadow-lg shadow-orange-600/30 hover:shadow-orange-600/50 transition-all flex items-center justify-center space-x-2 active:scale-95"
+                    >
+                        <i class="fa-solid fa-search"></i>
+                        <span>查詢語意</span>
+                    </button>
+                </form>
+
+                <!-- Quick Tags / Hot Words for Students & Exam Takers -->
+                <div class="mt-4 flex flex-wrap items-center gap-2 text-xs">
+                    <span class="text-slate-400 flex items-center gap-1"><i class="fa-solid fa-fire text-orange-400"></i> 熱門單字快查：</span>
+                    <button onclick="quickSearch('resilient')" class="px-2.5 py-1 rounded-md bg-white/5 hover:bg-white/15 text-orange-200 transition">resilient (國考)</button>
+                    <button onclick="quickSearch('diligence')" class="px-2.5 py-1 rounded-md bg-white/5 hover:bg-white/15 text-orange-200 transition">diligence (高中)</button>
+                    <button onclick="quickSearch('curious')" class="px-2.5 py-1 rounded-md bg-white/5 hover:bg-white/15 text-orange-200 transition">curious (國中)</button>
+                    <button onclick="quickSearch('explore')" class="px-2.5 py-1 rounded-md bg-white/5 hover:bg-white/15 text-orange-200 transition">explore (國小)</button>
+                    <button onclick="quickSearch('永續')" class="px-2.5 py-1 rounded-md bg-white/5 hover:bg-white/15 text-amber-300 transition">永續 (中對英)</button>
+                    <button onclick="quickSearch('效率')" class="px-2.5 py-1 rounded-md bg-white/5 hover:bg-white/15 text-amber-300 transition">效率 (中對英)</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Result Display Container -->
+        <main id="resultContainer" class="flex-grow flex flex-col justify-center">
+            
+            <!-- Default Welcome State (Shown when no search performed) -->
+            <div id="welcomeState" class="glass-panel rounded-2xl p-6 sm:p-10 text-center relative overflow-hidden my-auto">
+                <div class="max-w-md mx-auto space-y-4">
+                    <div class="w-16 h-16 bg-gradient-to-br from-amber-400/20 to-orange-500/20 rounded-2xl flex items-center justify-center mx-auto border border-orange-400/30">
+                        <i class="fa-solid fa-graduation-cap text-3xl text-orange-300"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-amber-100">開啟今天的英語學習旅程</h2>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        支援英文單字（輸出 KK 音標、三真實情境例句、衍生反義詞）與中文詞彙（精準英文釋義與近義詞比較）。定位服務國小、國中、高中與國考生。
+                    </p>
+                    
+                    <!-- Daily Exam Word Showcase -->
+                    <div class="mt-6 p-4 rounded-xl bg-white/5 border border-amber-500/20 text-left">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs text-orange-400 font-semibold uppercase tracking-wider flex items-center gap-1">
+                                <i class="fa-solid fa-star"></i> 每日國考/學測必備詞彙
+                            </span>
+                            <span class="text-xs px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">國考高頻 / 高中7000</span>
+                        </div>
+                        <div class="flex items-baseline justify-between">
+                            <h3 class="text-xl font-bold text-white">persistence</h3>
+                            <span class="text-xs text-orange-200/80 font-mono">[pɚˈsɪs.təns]</span>
+                        </div>
+                        <p class="text-sm text-slate-300 mt-1">n. 堅持；毅力；持續存在</p>
+                        <p class="text-xs text-slate-400 mt-2 italic">"Persistence guarantees that the result which is to be attained comes at last."</p>
+                        <button onclick="quickSearch('persistence')" class="mt-3 text-xs text-orange-300 hover:text-orange-200 font-medium flex items-center gap-1">
+                            查看完整詳解 <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Spinner State -->
+            <div id="loadingState" class="hidden glass-panel rounded-2xl p-12 text-center my-auto">
+                <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-orange-400 border-t-transparent mb-4"></div>
+                <p class="text-orange-200 text-sm animate-pulse" id="loadingText">正在調用 AI 字典庫進行深度語意與情境解析...</p>
+            </div>
+
+            <!-- Dynamic Result Card -->
+            <div id="resultContent" class="hidden space-y-6">
+                <!-- Content will be injected dynamically via JS -->
+            </div>
+
+        </main>
+
+        <!-- Bookmark Drawer (Modal) -->
+        <div id="bookmarkDrawer" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex justify-end">
+            <div class="w-full max-w-md bg-slate-900/95 h-full p-6 shadow-2xl border-l border-white/10 flex flex-col justify-between overflow-y-auto">
+                <div>
+                    <div class="flex items-center justify-between pb-4 mb-4 border-b border-white/10">
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-bookmark text-amber-400"></i>
+                            <h2 class="text-lg font-bold text-amber-100">我的備考生字本</h2>
+                        </div>
+                        <button onclick="toggleBookmarkDrawer()" class="text-slate-400 hover:text-white p-1">
+                            <i class="fa-solid fa-xmark text-xl"></i>
+                        </button>
+                    </div>
+                    <div id="bookmarkList" class="space-y-3">
+                        <!-- Bookmarked words list -->
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-white/10 flex justify-between items-center text-xs text-slate-400">
+                    <span>提示：生字自動同步保存在本機</span>
+                    <button onclick="clearAllBookmarks()" class="text-red-400 hover:underline">清空生字本</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-8 text-center text-xs text-slate-400 py-4 border-t border-white/5">
+            <p>中英文雙向學習字典 ‧ 專為國小/國中/高中/大專與國考考生打造</p>
+        </footer>
+    </div>
+
+    <script>
+        // Offline Lexicon Database (Specifically tailored for Elementary, High School, College, and Civil Service Exams)
+        const dictionaryDB = {
+            // BASIC CORE WORDS PRE-LOADED
+            "banana": {
+                type: "en",
+                word: "banana",
+                kk: "[bəˈnæn.ə]",
+                phoneticTip: "重音在第二音節 /næn/，前後兩個 a 均發弱音 /ə/。",
+                level: "國小 1200 基礎",
+                definitions: [
+                    { pos: "n.", meaning: "香蕉" }
+                ],
+                scenarios: [
+                    {
+                        tag: "🏫 校園課堂",
+                        en: "The teacher used a banana to explain tropical fruits in class.",
+                        zh: "老師在課堂上用香蕉來介紹熱帶水果。"
+                    },
+                    {
+                        tag: "🛒 日常生活",
+                        en: "I usually eat a banana and drink milk for breakfast.",
+                        zh: "我早餐通常吃一根香蕉並喝牛奶。"
+                    },
+                    {
+                        tag: "💼 職場/國考",
+                        en: "Banana exports play a significant role in agricultural trade policies.",
+                        zh: "香蕉出口在農業貿易政策中扮演重要角色。"
+                    }
+                ],
+                derivatives: [],
+                antonyms: []
+            },
+            "香蕉": {
+                type: "zh",
+                query: "香蕉",
+                primary: {
+                    word: "banana",
+                    pos: "n.",
+                    kk: "[bəˈnæn.ə]",
+                    definition: "香蕉（常見熱帶水果，富含鉀與膳食纖維）"
+                },
+                similarWords: [
+                    {
+                        word: "plantain",
+                        pos: "n.",
+                        difference: "大蕉／芭蕉（多用於烹飪或煎炸，甜度較低、澱粉含量較高）。"
+                    }
+                ]
+            },
+
+            // ENGLISH WORDS
+            "resilient": {
+                type: "en",
+                word: "resilient",
+                kk: "[rɪˈzɪl.jənt]",
+                phoneticTip: "重音在第二音節 /zɪl/，結尾 -ient 發軟質的 /jənt/ 音。形容詞，意指遭受挫折後迅速恢復適應能力。",
+                level: "國考高頻 / 高中 7000",
+                definitions: [
+                    { pos: "adj.", meaning: "有彈性的；能迅速恢復優良狀態的；適應力強的" }
+                ],
+                scenarios: [
+                    {
+                        tag: "🏫 校園課堂",
+                        en: "Resilient students often view difficult exam questions as opportunities to learn rather than failures.",
+                        zh: "具備韌性的學生通常將艱深的考題視為學習機會，而非失敗。"
+                    },
+                    {
+                        tag: "🛒 日常生活",
+                        en: "This water bottle is made of highly resilient rubber, so it won't break even if dropped.",
+                        zh: "這款水壺由高彈性橡膠製成，因此即使摔落也不會破裂。"
+                    },
+                    {
+                        tag: "💼 職場/國考",
+                        en: "Civil servants must remain resilient when facing complex public administration challenges.",
+                        zh: "公務人員在面對複雜的公共行政挑戰時，必須保持堅韌適應力。"
+                    }
+                ],
+                derivatives: [
+                    { word: "resilience", pos: "n.", meaning: "恢復力；韌性" },
+                    { word: "resiliently", pos: "adv.", meaning: "堅韌地" }
+                ],
+                antonyms: [
+                    { word: "fragile", pos: "adj.", meaning: "脆弱的" },
+                    { word: "vulnerable", pos: "adj.", meaning: "易受傷害的" }
+                ]
+            },
+            "diligence": {
+                type: "en",
+                word: "diligence",
+                kk: "[ˈdɪl.ə.dʒəns]",
+                phoneticTip: "重音在第一音節 /ˈdɪl/，-gence 發 /dʒəns/ 音。名詞，代表持續不斷地努力與勤奮。",
+                level: "高中學測 / 國考必備",
+                definitions: [
+                    { pos: "n.", meaning: "勤勉；用功；孜孜不倦" }
+                ],
+                scenarios: [
+                    {
+                        tag: "🏫 校園課堂",
+                        en: "Her diligence in studying grammar eventually earned her the top score in the English exam.",
+                        zh: "她在文法學習上的勤奮，最終讓她在英文考試中獲得最高分。"
+                    },
+                    {
+                        tag: "🛒 日常生活",
+                        en: "Maintaining a healthy lifestyle requires daily diligence in exercise and diet.",
+                        zh: "維持健康的生活型態需要每天對運動與飲食保持堅持。"
+                    },
+                    {
+                        tag: "💼 職場/國考",
+                        en: "Due diligence is required before signing any government procurement contracts.",
+                        zh: "在簽署任何政府採購合約前，皆需進行盡職調查與慎重審查。"
+                    }
+                ],
+                derivatives: [
+                    { word: "diligent", pos: "adj.", meaning: "勤奮的" },
+                    { word: "diligently", pos: "adv.", meaning: "勤勉地" }
+                ],
+                antonyms: [
+                    { word: "laziness", pos: "n.", meaning: "怠惰；懶惰" },
+                    { word: "negligence", pos: "n.", meaning: "疏忽；粗心" }
+                ]
+            },
+            "curious": {
+                type: "en",
+                word: "curious",
+                kk: "[ˈkjʊr.i.əs]",
+                phoneticTip: "重音在第一音節 /ˈkjʊr/，發音時嘴角微收，結尾 -ous 發弱音 /əs/。",
+                level: "國中 2000 必備",
+                definitions: [
+                    { pos: "adj.", meaning: "好奇的；求知欲強的；奇特的" }
+                ],
+                scenarios: [
+                    {
+                        tag: "🏫 校園課堂",
+                        en: "The science teacher encouraged curious students to ask questions after class.",
+                        zh: "自然老師鼓勵好學好奇的學生在課後提出問題。"
+                    },
+                    {
+                        tag: "🛒 日常生活",
+                        en: "The kitten was very curious about the new toy on the wooden floor.",
+                        zh: "小貓對木地板上的新玩具感到十分好奇。"
+                    },
+                    {
+                        tag: "💼 職場/國考",
+                        en: "A curious mind helps researchers stay passionate about exploring social issues.",
+                        zh: "好奇探求的心態能協助研究人員對探討社會議題保持熱情。"
+                    }
+                ],
+                derivatives: [
+                    { word: "curiosity", pos: "n.", meaning: "好奇心" },
+                    { word: "curiously", pos: "adv.", meaning: "好奇地；奇妙地" }
+                ],
+                antonyms: [
+                    { word: "indifferent", pos: "adj.", meaning: "冷漠的；毫無興趣的" },
+                    { word: "uninterested", pos: "adj.", meaning: "不感興趣的" }
+                ]
+            },
+            "explore": {
+                type: "en",
+                word: "explore",
+                kk: "[ɪkˈsplɔːr]",
+                phoneticTip: "重音在第二音節 /splɔːr/，p 音在 s 後方發不送氣的 /b/ 輔音組。",
+                level: "國小 1200 基礎",
+                definitions: [
+                    { pos: "v.", meaning: "探索；探究；勘探" }
+                ],
+                scenarios: [
+                    {
+                        tag: "🏫 校園課堂",
+                        en: "We will explore the history of Taiwan in our social studies class tomorrow.",
+                        zh: "我們明天將在社會課上探索台灣的歷史。"
+                    },
+                    {
+                        tag: "🛒 日常生活",
+                        en: "Children love to explore the nearby park on sunny weekends.",
+                        zh: "孩子們喜歡在陽光明媚的週末探索附近的公園。"
+                    },
+                    {
+                        tag: "💼 職場/國考",
+                        en: "The committee was formed to explore sustainable energy policies.",
+                        zh: "該委員會成立旨在探討永續能源政策。"
+                    }
+                ],
+                derivatives: [
+                    { word: "exploration", pos: "n.", meaning: "探索；探險" },
+                    { word: "explorer", pos: "n.", meaning: "探險家" }
+                ],
+                antonyms: [
+                    { word: "ignore", pos: "v.", meaning: "忽視" },
+                    { word: "overlook", pos: "v.", meaning: "忽略；忽略不計" }
+                ]
+            },
+            "persistence": {
+                type: "en",
+                word: "persistence",
+                kk: "[pɚˈsɪs.təns]",
+                phoneticTip: "重音在第二音節 /sɪs/，注意前綴 per- 發 /pɚ/ 捲舌音。",
+                level: "高中 7000 / 國考高頻",
+                definitions: [
+                    { pos: "n.", meaning: "堅持；毅力；持續存在" }
+                ],
+                scenarios: [
+                    {
+                        tag: "🏫 校園課堂",
+                        en: "Through hard work and persistence, he eventually passed the National Civil Service Examination.",
+                        zh: "透過努力與堅持，他最終考取了國家公務人員考試。"
+                    },
+                    {
+                        tag: "🛒 日常生活",
+                        en: "Her persistence in practicing the piano every evening paid off during the concert.",
+                        zh: "她每晚堅持練習鋼琴的毅力，在音樂會上得到了回報。"
+                    },
+                    {
+                        tag: "💼 職場/國考",
+                        en: "The persistence of high inflation forced the government to adjust economic strategies.",
+                        zh: "高通貨膨脹的持續存在迫使政府調整經濟策略。"
+                    }
+                ],
+                derivatives: [
+                    { word: "persistent", pos: "adj.", meaning: "堅持不懈的；持續的" },
+                    { word: "persist", pos: "v.", meaning: "堅持；持續" }
+                ],
+                antonyms: [
+                    { word: "surrender", pos: "n./v.", meaning: "放棄；投降" },
+                    { word: "instability", pos: "n.", meaning: "不穩定" }
+                ]
+            },
+
+            // CHINESE WORDS (CHINESE TO ENGLISH LOOKUP)
+            "永續": {
+                type: "zh",
+                query: "永續",
+                primary: {
+                    word: "sustainability",
+                    pos: "n.",
+                    kk: "[səˌsteɪ.nəˈbɪl.ə.t̬i]",
+                    definition: "永續性；可持續發展性（常用於環境保護、經濟發展政策）"
+                },
+                similarWords: [
+                    {
+                        word: "sustainable",
+                        pos: "adj.",
+                        difference: "形容詞形式。例：sustainable development (永續發展)。"
+                    },
+                    {
+                        word: "perpetual",
+                        pos: "adj.",
+                        difference: "側重於『永久不間斷的、長久的』，較少專指現代環保政策上的永續。"
+                    },
+                    {
+                        word: "enduring",
+                        pos: "adj.",
+                        difference: "強調能『持久經得起考驗的』，如 enduring friendship (長久的友誼)。"
+                    }
+                ]
+            },
+            "效率": {
+                type: "zh",
+                query: "效率",
+                primary: {
+                    word: "efficiency",
+                    pos: "n.",
+                    kk: "[ɪˈfɪʃ.ən.si]",
+                    definition: "效率；效能（指以最少的資源、時間達到最大產出）"
+                },
+                similarWords: [
+                    {
+                        word: "efficacy",
+                        pos: "n.",
+                        difference: "側重於『功效、藥效』，如法律或藥品是否能產生預期效果。"
+                    },
+                    {
+                        word: "effectiveness",
+                        pos: "n.",
+                        difference: "側重於『有效性、是否達到目標』；而 efficiency 強調『過程省時省資源』。"
+                    },
+                    {
+                        word: "productivity",
+                        pos: "n.",
+                        difference: "生產力、生產效率，常用於工業或職場個人產出能力。"
+                    }
+                ]
+            },
+            "堅韌": {
+                type: "zh",
+                query: "堅韌",
+                primary: {
+                    word: "resilience",
+                    pos: "n.",
+                    kk: "[rɪˈzɪl.jəns]",
+                    definition: "堅韌；復原力；遭遇打擊後快速復原的能力"
+                },
+                similarWords: [
+                    {
+                        word: "tenacity",
+                        pos: "n.",
+                        difference: "強調『不屈不撓、死咬不放的執著韌性』。"
+                    },
+                    {
+                        word: "fortitude",
+                        pos: "n.",
+                        difference: "側重於『面對痛苦、逆境時的剛毅膽識與精神力量』，常用於寫作高級詞彙。"
+                    },
+                    {
+                        word: "toughness",
+                        pos: "n.",
+                        difference: "口語化或通俗詞彙，指身體或性格上的強悍與堅韌。"
+                    }
+                ]
+            }
+        };
+
+        let bookmarks = JSON.parse(localStorage.getItem('sunset_dict_bookmarks') || '[]');
+
+        window.onload = function() {
+            updateBookmarkCount();
+        };
+
+        // Detect language type
+        function isChinese(text) {
+            return /[\u4e00-\u9fa5]/.test(text);
+        }
+
+        async function fetchGeminiDictionaryData(query) {
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            const systemPrompt = `你是一個嚴謹、精準且專業的中英雙向字典學專家，專門為台灣的國小、國中、高中與國考學生提供權威字典服務。
+請對使用者輸入的詞彙進行徹底的語意與教學級別解析，絕對禁止給出錯誤的翻譯、偽造單字或包含 "(Translate)" 的佔位字樣。
+
+如果是英文單字，請回傳 type="en" 的 JSON；如果是中文詞彙，請回傳 type="zh" 的 JSON。
+
+【英文查詢 (type="en") 的 JSON 格式範例】：
+{
+  "type": "en",
+  "word": "banana",
+  "kk": "[bəˈnæn.ə]",
+  "phoneticTip": "重音發音指引與技巧說明",
+  "level": "適用層級，如：國小 1200 基礎 / 國中 2000 / 高中 7000 / 國考高頻",
+  "definitions": [
+    { "pos": "n.", "meaning": "精準中文釋義" }
+  ],
+  "scenarios": [
+    { "tag": "🏫 校園課堂", "en": "真實校園例句", "zh": "中文翻譯" },
+    { "tag": "🛒 日常生活", "en": "真實生活例句", "zh": "中文翻譯" },
+    { "tag": "💼 職場/國考", "en": "真實公文或國考等級例句", "zh": "中文翻譯" }
+  ],
+  "derivatives": [
+    { "word": "衍生字", "pos": "詞性", "meaning": "中文" }
+  ],
+  "antonyms": [
+    { "word": "反義字", "pos": "詞性", "meaning": "中文" }
+  ]
+}
+
+【中文查詢 (type="zh") 的 JSON 格式範例】：
+{
+  "type": "zh",
+  "query": "香蕉",
+  "primary": {
+    "word": "banana",
+    "pos": "n.",
+    "kk": "[bəˈnæn.ə]",
+    "definition": "精準對應英文說明"
+  },
+  "similarWords": [
+    {
+      "word": "plantain",
+      "pos": "n.",
+      "difference": "近義字語意與使用情境差異解析"
+    }
+  ]
+}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: `請嚴格解析詞彙：「${query}」` }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+                generationConfig: {
+                    responseMimeType: "application/json"
+                }
+            };
+
+            let retries = 3;
+            let delay = 1000;
+            while (retries > 0) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    const result = await response.json();
+                    const jsonText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (jsonText) {
+                        return JSON.parse(jsonText);
+                    }
+                } catch (e) {
+                    retries--;
+                    if (retries === 0) throw e;
+                    await new Promise(res => setTimeout(res, delay));
+                    delay *= 2;
+                }
+            }
+        }
+
+        async function handleSearch(e) {
+            if (e) e.preventDefault();
+            const input = document.getElementById('searchInput').value.trim();
+            if (!input) return;
+
+            document.getElementById('welcomeState').classList.add('hidden');
+            document.getElementById('resultContent').classList.add('hidden');
+            document.getElementById('loadingState').classList.remove('hidden');
+
+            const key = input.toLowerCase();
+            let data = dictionaryDB[key];
+
+            if (!data) {
+                try {
+                    // Fetch accurate analysis using Gemini 3 Flash API
+                    data = await fetchGeminiDictionaryData(input);
+                    // Cache the accurate result in local memory
+                    dictionaryDB[key] = data;
+                } catch (err) {
+                    console.error("Gemini API query failed:", err);
+                    alert("網路連線不穩定或 AI 分析服務暫時不可用，請稍後再試。");
+                    document.getElementById('loadingState').classList.add('hidden');
+                    document.getElementById('welcomeState').classList.remove('hidden');
+                    return;
+                }
+            }
+
+            document.getElementById('loadingState').classList.add('hidden');
+            document.getElementById('resultContent').classList.remove('hidden');
+            renderResult(data);
+        }
+
+        function quickSearch(word) {
+            document.getElementById('searchInput').value = word;
+            document.getElementById('clearBtn').classList.remove('hidden');
+            handleSearch();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearBtn').classList.add('hidden');
+            document.getElementById('resultContent').classList.add('hidden');
+            document.getElementById('welcomeState').classList.remove('hidden');
+        }
+
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const clearBtn = document.getElementById('clearBtn');
+            if (this.value.trim().length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+        });
+
+        function renderResult(data) {
+            const resultContainer = document.getElementById('resultContent');
+            const targetWord = data.word || data.query;
+            const isSaved = bookmarks.includes(targetWord);
+
+            if (data.type === 'en') {
+                resultContainer.innerHTML = renderEnglishResult(data, isSaved);
+            } else {
+                resultContainer.innerHTML = renderChineseResult(data, isSaved);
+            }
+        }
+
+        // Render English Lookup Template (KK, Audio, 3 Scenarios, Derivatives/Antonyms)
+        function renderEnglishResult(data, isSaved) {
+            const derivativeHTML = data.derivatives && data.derivatives.length > 0 ? data.derivatives.map(d => `
+                <div class="bg-white/5 p-3 rounded-lg border border-white/10 flex items-baseline justify-between">
+                    <div>
+                        <span class="text-orange-300 font-bold text-sm">${d.word}</span>
+                        <span class="text-xs text-slate-400 font-mono ml-2">${d.pos}</span>
+                    </div>
+                    <span class="text-xs text-slate-200">${d.meaning}</span>
+                </div>
+            `).join('') : '<p class="text-xs text-slate-400">無常見衍生字</p>';
+
+            const antonymHTML = data.antonyms && data.antonyms.length > 0 ? data.antonyms.map(a => `
+                <div class="bg-white/5 p-3 rounded-lg border border-white/10 flex items-baseline justify-between">
+                    <div>
+                        <span class="text-amber-300 font-bold text-sm">${a.word}</span>
+                        <span class="text-xs text-slate-400 font-mono ml-2">${a.pos}</span>
+                    </div>
+                    <span class="text-xs text-slate-200">${a.meaning}</span>
+                </div>
+            `).join('') : '<p class="text-xs text-slate-400">無常見反義字</p>';
+
+            const scenariosHTML = data.scenarios.map((sc, idx) => `
+                <div class="bg-white/5 p-4 rounded-xl border border-white/10 hover:border-orange-400/40 transition">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs px-2.5 py-0.5 rounded-full bg-orange-500/20 text-orange-300 border border-orange-500/30 font-medium">
+                            ${sc.tag}
+                        </span>
+                        <button onclick="speakText('${sc.en.replace(/'/g, "\\'")}')" class="text-xs text-slate-400 hover:text-orange-300 flex items-center gap-1">
+                            <i class="fa-solid fa-volume-high text-[10px]"></i> 朗讀例句
+                        </button>
+                    </div>
+                    <p class="text-sm sm:text-base text-amber-50 font-medium leading-relaxed mb-1">
+                        ${highlightKeyword(sc.en, data.word)}
+                    </p>
+                    <p class="text-xs sm:text-sm text-slate-300">
+                        ${sc.zh}
+                    </p>
+                </div>
+            `).join('');
+
+            return `
+                <!-- Main Header Card -->
+                <div class="glass-panel rounded-2xl p-6 relative overflow-hidden">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+                        <div>
+                            <div class="flex items-center gap-3">
+                                <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-wide">${data.word}</h2>
+                                <span class="badge-level px-3 py-1 rounded-full text-xs font-semibold text-orange-200">
+                                    ${data.level || '精選單字'}
+                                </span>
+                            </div>
+                            <!-- KK Phonetic & Pronunciation Tip -->
+                            <div class="flex flex-wrap items-center gap-3 mt-2">
+                                <span class="text-lg font-mono text-amber-300 font-medium">${data.kk}</span>
+                                <button onclick="speakText('${data.word}')" class="px-3 py-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 rounded-lg text-xs flex items-center gap-1.5 transition border border-amber-500/30">
+                                    <i class="fa-solid fa-volume-high"></i>
+                                    <span>真人美式發音</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Bookmark Action Button -->
+                        <button onclick="toggleBookmark('${data.word}')" id="bmBtn_${data.word}" class="self-start sm:self-center px-4 py-2.5 rounded-xl border ${isSaved ? 'bg-amber-500 text-slate-900 border-amber-400' : 'bg-white/5 hover:bg-white/10 text-amber-200 border-amber-500/30'} font-medium text-xs sm:text-sm flex items-center gap-2 transition">
+                            <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                            <span>${isSaved ? '已收錄生字本' : '加入生字本'}</span>
+                        </button>
+                    </div>
+
+                    <!-- Pronunciation Tip -->
+                    <div class="mt-4 p-3 rounded-lg bg-orange-950/40 border border-orange-500/20 flex items-start space-x-2.5 text-xs text-orange-200">
+                        <i class="fa-solid fa-circle-info text-orange-400 text-sm mt-0.5"></i>
+                        <div>
+                            <span class="font-bold text-orange-300">KK 音標發音提示：</span>
+                            <span>${data.phoneticTip}</span>
+                        </div>
+                    </div>
+
+                    <!-- Definitions -->
+                    <div class="mt-5 space-y-2">
+                        <h3 class="text-xs uppercase font-semibold text-slate-400 tracking-wider">中文釋義</h3>
+                        <div class="space-y-1.5">
+                            ${data.definitions.map(def => `
+                                <div class="flex items-baseline space-x-2">
+                                    <span class="px-2 py-0.5 rounded bg-white/10 font-mono text-xs text-amber-300 font-bold">${def.pos}</span>
+                                    <span class="text-base text-slate-100 font-medium">${def.meaning}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3 Scenario Sentences Section -->
+                <div class="glass-panel rounded-2xl p-6">
+                    <div class="flex items-center space-x-2 mb-4 border-b border-white/10 pb-3">
+                        <i class="fa-solid fa-masks-theater text-orange-400 text-lg"></i>
+                        <h3 class="text-base sm:text-lg font-bold text-amber-100">三個不同生活場景的實用例句</h3>
+                    </div>
+                    <div class="grid grid-cols-1 gap-4">
+                        ${scenariosHTML}
+                    </div>
+                </div>
+
+                <!-- Derivatives & Antonyms Section -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- Derivatives -->
+                    <div class="glass-panel rounded-2xl p-5">
+                        <div class="flex items-center space-x-2 mb-3 border-b border-white/10 pb-2">
+                            <i class="fa-solid fa-diagram-project text-orange-300"></i>
+                            <h4 class="text-sm font-bold text-amber-200">常見衍生字 (Derivatives)</h4>
+                        </div>
+                        <div class="space-y-2">
+                            ${derivativeHTML}
+                        </div>
+                    </div>
+
+                    <!-- Antonyms -->
+                    <div class="glass-panel rounded-2xl p-5">
+                        <div class="flex items-center space-x-2 mb-3 border-b border-white/10 pb-2">
+                            <i class="fa-solid fa-right-left text-amber-300"></i>
+                            <h4 class="text-sm font-bold text-amber-200">反義字 (Antonyms)</h4>
+                        </div>
+                        <div class="space-y-2">
+                            ${antonymHTML}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render Chinese Lookup Template (Primary English Word & Similar Expression Comparisons)
+        function renderChineseResult(data, isSaved) {
+            const keyWord = data.primary.word;
+            const similarHTML = data.similarWords.map(sim => `
+                <div class="bg-white/5 p-4 rounded-xl border border-white/10 space-y-1 hover:border-amber-400/30 transition">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-baseline space-x-2">
+                            <span class="text-base font-bold text-amber-300">${sim.word}</span>
+                            <span class="text-xs text-slate-400 font-mono">${sim.pos}</span>
+                        </div>
+                        <button onclick="speakText('${sim.word}')" class="text-xs text-slate-400 hover:text-amber-200">
+                            <i class="fa-solid fa-volume-high"></i>
+                        </button>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        <span class="text-orange-300 font-medium">使用情境差異：</span>${sim.difference}
+                    </p>
+                </div>
+            `).join('');
+
+            return `
+                <!-- Chinese Search Output Card -->
+                <div class="glass-panel rounded-2xl p-6 relative">
+                    <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 font-medium">中文對照搜尋</span>
+                            <h2 class="text-2xl font-bold text-white">「${data.query}」之英文解析</h2>
+                        </div>
+                        <button onclick="toggleBookmark('${data.query}')" id="bmBtn_${data.query}" class="px-3.5 py-2 rounded-xl border ${isSaved ? 'bg-amber-500 text-slate-900 border-amber-400' : 'bg-white/5 hover:bg-white/10 text-amber-200 border-amber-500/30'} font-medium text-xs flex items-center gap-1.5 transition">
+                            <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                            <span>${isSaved ? '已收藏' : '收藏詞彙'}</span>
+                        </button>
+                    </div>
+
+                    <!-- Primary Translation -->
+                    <div class="bg-gradient-to-r from-orange-950/60 to-amber-950/40 p-5 rounded-xl border border-orange-500/30 mb-6">
+                        <span class="text-xs text-orange-400 font-bold uppercase tracking-wider block mb-1">1. 主要精準對應英文單字</span>
+                        <div class="flex flex-wrap items-baseline gap-3">
+                            <h3 class="text-3xl font-extrabold text-amber-200">${data.primary.word}</h3>
+                            <span class="text-sm font-mono text-slate-300">${data.primary.kk}</span>
+                            <span class="px-2 py-0.5 rounded bg-white/10 font-mono text-xs text-orange-300">${data.primary.pos}</span>
+                            <button onclick="speakText('${data.primary.word}')" class="px-2.5 py-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 rounded text-xs flex items-center gap-1 border border-amber-500/30">
+                                <i class="fa-solid fa-volume-high"></i> 發音
+                            </button>
+                        </div>
+                        <p class="text-sm text-slate-200 mt-2 font-medium">${data.primary.definition}</p>
+                    </div>
+
+                    <!-- Similar English Words Section -->
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-2 border-b border-white/10 pb-2">
+                            <i class="fa-solid fa-code-compare text-amber-400"></i>
+                            <h3 class="text-base font-bold text-amber-100">2. 類似解釋英文單字與近義詞比較</h3>
+                        </div>
+                        <div class="space-y-3">
+                            ${similarHTML}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function highlightKeyword(sentence, word) {
+            if (!word) return sentence;
+            const regex = new RegExp(`(${word}[a-z]*)`, 'gi');
+            return sentence.replace(regex, `<span class="kw-hl">$1</span>`);
+        }
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // cancel previous
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert('您的瀏覽器不支援語音播放功能。');
+            }
+        }
+
+        function toggleBookmark(word) {
+            const index = bookmarks.indexOf(word);
+            if (index > -1) {
+                bookmarks.splice(index, 1);
+            } else {
+                bookmarks.push(word);
+            }
+            localStorage.setItem('sunset_dict_bookmarks', JSON.stringify(bookmarks));
+            updateBookmarkCount();
+
+            // Re-render button state if present
+            const btn = document.getElementById(`bmBtn_${word}`);
+            if (btn) {
+                const isSaved = bookmarks.includes(word);
+                btn.className = `px-4 py-2.5 rounded-xl border ${isSaved ? 'bg-amber-500 text-slate-900 border-amber-400' : 'bg-white/5 hover:bg-white/10 text-amber-200 border-amber-500/30'} font-medium text-xs sm:text-sm flex items-center gap-2 transition`;
+                btn.innerHTML = `
+                    <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                    <span>${isSaved ? (isChinese(word) ? '已收藏' : '已收錄生字本') : (isChinese(word) ? '收藏詞彙' : '加入生字本')}</span>
+                `;
+            }
+            renderBookmarkDrawer();
+        }
+
+        function updateBookmarkCount() {
+            document.getElementById('bookmarkCount').innerText = bookmarks.length;
+        }
+
+        function toggleBookmarkDrawer() {
+            const drawer = document.getElementById('bookmarkDrawer');
+            if (drawer.classList.contains('hidden')) {
+                renderBookmarkDrawer();
+                drawer.classList.remove('hidden');
+            } else {
+                drawer.classList.add('hidden');
+            }
+        }
+
+        function renderBookmarkDrawer() {
+            const listContainer = document.getElementById('bookmarkList');
+            if (bookmarks.length === 0) {
+                listContainer.innerHTML = '<p class="text-sm text-slate-400 text-center py-8">尚無收錄的生字詞彙</p>';
+                return;
+            }
+
+            listContainer.innerHTML = bookmarks.map(w => `
+                <div class="bg-white/5 p-3 rounded-lg border border-white/10 flex items-center justify-between">
+                    <span class="text-amber-200 font-bold text-sm hover:underline cursor-pointer" onclick="quickSearch('${w}'); toggleBookmarkDrawer();">${w}</span>
+                    <button onclick="toggleBookmark('${w}')" class="text-xs text-red-400 hover:text-red-300 p-1">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function clearAllBookmarks() {
+            if (bookmarks.length === 0) return;
+            bookmarks = [];
+            localStorage.setItem('sunset_dict_bookmarks', JSON.stringify(bookmarks));
+            updateBookmarkCount();
+            renderBookmarkDrawer();
+        }
+    </script>
+</body>
+</html>
