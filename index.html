@@ -417,132 +417,272 @@
             <div class="tech-card rounded-2xl p-6 space-y-4 reveal-bounce">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-cyan-100 pb-3 gap-2">
                     <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
-                        <i class="fa-solid fa-award text-cyan-600 animate-bounce"></i> 專業證照與資格證明 (可自訂上傳)
+                        <i class="fa-solid fa-award text-cyan-600 animate-bounce"></i> 專業證照與資格證明
                     </h3>
                     <span class="text-xs text-cyan-700 bg-cyan-50 border border-cyan-200 px-3 py-1 rounded-full font-medium w-max animate-pulse">
-                        <i class="fa-solid fa-cloud-arrow-up mr-1"></i> 點擊卡片自由上傳檔案
+                        <i class="fa-solid fa-circle-check mr-1 text-emerald-600"></i> 已預載 12 項專業證照 (亦可再上傳更換)
                     </span>
                 </div>
 
-                <!-- Grid of 6 Refactored Accessible Label Certificate Cards -->
+                <!-- Grid of Refactored Accessible Label Certificate Cards -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
                     
-                    <!-- Cert Slot 1 -->
-                    <label for="cert-input-1" tabindex="0" data-cert-id="1" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="點擊上傳證照或資格證明 01">
+                    <!-- Cert Slot 1: 會計事務丙級技術士 -->
+                    <label for="cert-input-1" tabindex="0" data-cert-id="1" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="會計事務丙級技術士證照">
                         <input type="file" id="cert-input-1" class="hidden cert-input" data-cert-id="1" accept="image/*,.pdf">
-                        <div id="cert-placeholder-1" class="space-y-2 py-2">
+                        <div id="cert-placeholder-1" class="space-y-2 py-2 hidden">
                             <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 group-hover:rotate-12 transition-all">
                                 <i class="fa-solid fa-file-certificate"></i>
                             </div>
-                            <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 01</h4>
+                            <h4 class="font-bold text-slate-900 text-sm">會計事務 丙級技術士</h4>
                             <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
                         </div>
-                        <div id="cert-preview-container-1" class="hidden relative space-y-2">
-                            <img id="cert-img-1" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽 01">
-                            <p id="cert-name-1" class="text-xs font-bold text-slate-800 truncate px-2"></p>
+                        <div id="cert-preview-container-1" class="relative space-y-2">
+                            <img id="cert-img-1" src="https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Level%20C%20Technician%20for%20Accounting.JPG" onerror="this.src='https://a0900271071-hash.github.io/portfolio/Level%20C%20Technician%20for%20Accounting.JPG'" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="會計事務丙級技術士證照預覽">
+                            <p id="cert-name-1" class="text-xs font-bold text-slate-800 truncate px-2">會計事務 丙級技術士</p>
                             <div class="flex items-center justify-center gap-2">
-                                <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
-                                <button type="button" data-cert-id="1" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽證照 01">放大預覽</button>
+                                <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">國家技術士證</span>
+                                <button type="button" data-cert-id="1" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽會計事務丙級技術士證照">放大預覽</button>
                             </div>
                         </div>
                     </label>
 
-                    <!-- Cert Slot 2 -->
-                    <label for="cert-input-2" tabindex="0" data-cert-id="2" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="點擊上傳證照或資格證明 02">
+                    <!-- Cert Slot 2: 電腦軟體應用丙級技術士 -->
+                    <label for="cert-input-2" tabindex="0" data-cert-id="2" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="電腦軟體應用丙級技術士證照">
                         <input type="file" id="cert-input-2" class="hidden cert-input" data-cert-id="2" accept="image/*,.pdf">
-                        <div id="cert-placeholder-2" class="space-y-2 py-2">
+                        <div id="cert-placeholder-2" class="space-y-2 py-2 hidden">
                             <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 group-hover:rotate-12 transition-all">
                                 <i class="fa-solid fa-file-certificate"></i>
                             </div>
-                            <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 02</h4>
+                            <h4 class="font-bold text-slate-900 text-sm">電腦軟體應用 丙級技術士</h4>
                             <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
                         </div>
-                        <div id="cert-preview-container-2" class="hidden relative space-y-2">
-                            <img id="cert-img-2" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽 02">
-                            <p id="cert-name-2" class="text-xs font-bold text-slate-800 truncate px-2"></p>
+                        <div id="cert-preview-container-2" class="relative space-y-2">
+                            <img id="cert-img-2" src="https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Level%20C%20Technician%20for%20Computer%20Software%20Application.JPG" onerror="this.src='https://a0900271071-hash.github.io/portfolio/Level%20C%20Technician%20for%20Computer%20Software%20Application.JPG'" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="電腦軟體應用丙級技術士證照預覽">
+                            <p id="cert-name-2" class="text-xs font-bold text-slate-800 truncate px-2">電腦軟體應用 丙級技術士</p>
                             <div class="flex items-center justify-center gap-2">
-                                <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
-                                <button type="button" data-cert-id="2" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽證照 02">放大預覽</button>
+                                <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">國家技術士證</span>
+                                <button type="button" data-cert-id="2" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽電腦軟體應用丙級技術士證照">放大預覽</button>
                             </div>
                         </div>
                     </label>
 
-                    <!-- Cert Slot 3 -->
-                    <label for="cert-input-3" tabindex="0" data-cert-id="3" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="點擊上傳證照或資格證明 03">
+                    <!-- Cert Slot 3: 網頁設計丙級技術士 -->
+                    <label for="cert-input-3" tabindex="0" data-cert-id="3" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="網頁設計丙級技術士證照">
                         <input type="file" id="cert-input-3" class="hidden cert-input" data-cert-id="3" accept="image/*,.pdf">
-                        <div id="cert-placeholder-3" class="space-y-2 py-2">
+                        <div id="cert-placeholder-3" class="space-y-2 py-2 hidden">
                             <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 group-hover:rotate-12 transition-all">
                                 <i class="fa-solid fa-file-certificate"></i>
                             </div>
-                            <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 03</h4>
+                            <h4 class="font-bold text-slate-900 text-sm">網頁設計 丙級技術士</h4>
                             <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
                         </div>
-                        <div id="cert-preview-container-3" class="hidden relative space-y-2">
-                            <img id="cert-img-3" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽 03">
-                            <p id="cert-name-3" class="text-xs font-bold text-slate-800 truncate px-2"></p>
+                        <div id="cert-preview-container-3" class="relative space-y-2">
+                            <img id="cert-img-3" src="https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Level%20C%20technician%20for%20web%20page%20design.JPG" onerror="this.src='https://a0900271071-hash.github.io/portfolio/Level%20C%20technician%20for%20web%20page%20design.JPG'" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="網頁設計丙級技術士證照預覽">
+                            <p id="cert-name-3" class="text-xs font-bold text-slate-800 truncate px-2">網頁設計 丙級技術士</p>
                             <div class="flex items-center justify-center gap-2">
-                                <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
-                                <button type="button" data-cert-id="3" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽證照 03">放大預覽</button>
+                                <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">國家技術士證</span>
+                                <button type="button" data-cert-id="3" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽網頁設計丙級技術士證照">放大預覽</button>
                             </div>
                         </div>
                     </label>
 
-                    <!-- Cert Slot 4 -->
-                    <label for="cert-input-4" tabindex="0" data-cert-id="4" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="點擊上傳證照或資格證明 04">
+                    <!-- Cert Slot 4: 財產保險業務員資格證照 -->
+                    <label for="cert-input-4" tabindex="0" data-cert-id="4" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="財產保險業務員資格證照">
                         <input type="file" id="cert-input-4" class="hidden cert-input" data-cert-id="4" accept="image/*,.pdf">
-                        <div id="cert-placeholder-4" class="space-y-2 py-2">
+                        <div id="cert-placeholder-4" class="space-y-2 py-2 hidden">
                             <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 group-hover:rotate-12 transition-all">
                                 <i class="fa-solid fa-file-certificate"></i>
                             </div>
-                            <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 04</h4>
+                            <h4 class="font-bold text-slate-900 text-sm">財產保險業務員資格證照</h4>
                             <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
                         </div>
-                        <div id="cert-preview-container-4" class="hidden relative space-y-2">
-                            <img id="cert-img-4" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽 04">
-                            <p id="cert-name-4" class="text-xs font-bold text-slate-800 truncate px-2"></p>
+                        <div id="cert-preview-container-4" class="relative space-y-2">
+                            <img id="cert-img-4" src="https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Property%20Insurance%20Sales%20Representative.jpeg" onerror="this.src='https://a0900271071-hash.github.io/portfolio/Property%20Insurance%20Sales%20Representative.jpeg'" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="財產保險業務員資格證照預覽">
+                            <p id="cert-name-4" class="text-xs font-bold text-slate-800 truncate px-2">財產保險業務員資格證照</p>
                             <div class="flex items-center justify-center gap-2">
-                                <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
-                                <button type="button" data-cert-id="4" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽證照 04">放大預覽</button>
+                                <span class="text-[10px] bg-sky-100 text-sky-800 px-2 py-0.5 rounded font-bold">金融專業證照</span>
+                                <button type="button" data-cert-id="4" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽財產保險業務員資格證照">放大預覽</button>
                             </div>
                         </div>
                     </label>
 
-                    <!-- Cert Slot 5 -->
-                    <label for="cert-input-5" tabindex="0" data-cert-id="5" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="點擊上傳證照或資格證明 05">
+                    <!-- Cert Slot 5: 證券商業務員資格證照 -->
+                    <label for="cert-input-5" tabindex="0" data-cert-id="5" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="證券商業務員資格證照">
                         <input type="file" id="cert-input-5" class="hidden cert-input" data-cert-id="5" accept="image/*,.pdf">
-                        <div id="cert-placeholder-5" class="space-y-2 py-2">
+                        <div id="cert-placeholder-5" class="space-y-2 py-2 hidden">
                             <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 group-hover:rotate-12 transition-all">
                                 <i class="fa-solid fa-file-certificate"></i>
                             </div>
-                            <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 05</h4>
+                            <h4 class="font-bold text-slate-900 text-sm">證券商業務員資格證照</h4>
                             <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
                         </div>
-                        <div id="cert-preview-container-5" class="hidden relative space-y-2">
-                            <img id="cert-img-5" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽 05">
-                            <p id="cert-name-5" class="text-xs font-bold text-slate-800 truncate px-2"></p>
+                        <div id="cert-preview-container-5" class="relative space-y-2">
+                            <img id="cert-img-5" src="https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Securities%20Specialist%20Qualification.jpeg" onerror="this.src='https://a0900271071-hash.github.io/portfolio/Securities%20Specialist%20Qualification.jpeg'" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證券商業務員資格證照預覽">
+                            <p id="cert-name-5" class="text-xs font-bold text-slate-800 truncate px-2">證券商業務員資格證照</p>
                             <div class="flex items-center justify-center gap-2">
-                                <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
-                                <button type="button" data-cert-id="5" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽證照 05">放大預覽</button>
+                                <span class="text-[10px] bg-sky-100 text-sky-800 px-2 py-0.5 rounded font-bold">金融專業證照</span>
+                                <button type="button" data-cert-id="5" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽證券商業務員資格證照">放大預覽</button>
                             </div>
                         </div>
                     </label>
 
-                    <!-- Cert Slot 6 -->
-                    <label for="cert-input-6" tabindex="0" data-cert-id="6" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="點擊上傳證照或資格證明 06">
+                    <!-- Cert Slot 6: MOS Excel Expert -->
+                    <label for="cert-input-6" tabindex="0" data-cert-id="6" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="MOS Excel Expert 專家認證">
                         <input type="file" id="cert-input-6" class="hidden cert-input" data-cert-id="6" accept="image/*,.pdf">
-                        <div id="cert-placeholder-6" class="space-y-2 py-2">
+                        <div id="cert-placeholder-6" class="space-y-2 py-2 hidden">
                             <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 group-hover:rotate-12 transition-all">
                                 <i class="fa-solid fa-file-certificate"></i>
                             </div>
-                            <h4 class="font-bold text-slate-900 text-sm">證照 / 資格證明 06</h4>
+                            <h4 class="font-bold text-slate-900 text-sm">MOS Excel Expert 專家認證</h4>
                             <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
                         </div>
-                        <div id="cert-preview-container-6" class="hidden relative space-y-2">
-                            <img id="cert-img-6" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽 06">
-                            <p id="cert-name-6" class="text-xs font-bold text-slate-800 truncate px-2"></p>
+                        <div id="cert-preview-container-6" class="relative space-y-2">
+                            <img id="cert-img-6" src="https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Microsoft%20Office%20Specialist%20Excel%20Expert.png" onerror="this.src='https://a0900271071-hash.github.io/portfolio/Microsoft%20Office%20Specialist%20Excel%20Expert.png'" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="MOS Excel Expert 專家認證預覽">
+                            <p id="cert-name-6" class="text-xs font-bold text-slate-800 truncate px-2">MOS Excel Expert 專家認證</p>
+                            <div class="flex items-center justify-center gap-2">
+                                <span class="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-bold">Microsoft 國際證照</span>
+                                <button type="button" data-cert-id="6" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽 MOS Excel Expert 專家認證">放大預覽</button>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Cert Slot 7: MOS Word Expert -->
+                    <label for="cert-input-7" tabindex="0" data-cert-id="7" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="MOS Word Expert 專家認證">
+                        <input type="file" id="cert-input-7" class="hidden cert-input" data-cert-id="7" accept="image/*,.pdf">
+                        <div id="cert-placeholder-7" class="space-y-2 py-2 hidden">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 group-hover:rotate-12 transition-all">
+                                <i class="fa-solid fa-file-certificate"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">MOS Word Expert 專家認證</h4>
+                            <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                        </div>
+                        <div id="cert-preview-container-7" class="relative space-y-2">
+                            <img id="cert-img-7" src="https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Microsoft%20Office%20Specialist%20Word%20Expert.png" onerror="this.src='https://a0900271071-hash.github.io/portfolio/Microsoft%20Office%20Specialist%20Word%20Expert.png'" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="MOS Word Expert 專家認證預覽">
+                            <p id="cert-name-7" class="text-xs font-bold text-slate-800 truncate px-2">MOS Word Expert 專家認證</p>
+                            <div class="flex items-center justify-center gap-2">
+                                <span class="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-bold">Microsoft 國際證照</span>
+                                <button type="button" data-cert-id="7" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽 MOS Word Expert 專家認證">放大預覽</button>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Cert Slot 8: MOS Associate -->
+                    <label for="cert-input-8" tabindex="0" data-cert-id="8" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="MOS Office Specialist Associate 認證">
+                        <input type="file" id="cert-input-8" class="hidden cert-input" data-cert-id="8" accept="image/*,.pdf">
+                        <div id="cert-placeholder-8" class="space-y-2 py-2 hidden">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 group-hover:rotate-12 transition-all">
+                                <i class="fa-solid fa-file-certificate"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">MOS Associate 專業認證</h4>
+                            <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                        </div>
+                        <div id="cert-preview-container-8" class="relative space-y-2">
+                            <img id="cert-img-8" src="https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Microsoft%20Office%20Specialist%20Microsoft%20Associate.png" onerror="this.src='https://a0900271071-hash.github.io/portfolio/Microsoft%20Office%20Specialist%20Microsoft%20Associate.png'" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="MOS Associate 專業認證預覽">
+                            <p id="cert-name-8" class="text-xs font-bold text-slate-800 truncate px-2">MOS Associate 專業認證</p>
+                            <div class="flex items-center justify-center gap-2">
+                                <span class="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-bold">Microsoft 國際證照</span>
+                                <button type="button" data-cert-id="8" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽 MOS Associate 專業認證">放大預覽</button>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Cert Slot 9: Gemini Certified Educator -->
+                    <label for="cert-input-9" tabindex="0" data-cert-id="9" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="Gemini Certified Educator 認證">
+                        <input type="file" id="cert-input-9" class="hidden cert-input" data-cert-id="9" accept="image/*,.pdf">
+                        <div id="cert-placeholder-9" class="space-y-2 py-2 hidden">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 group-hover:rotate-12 transition-all">
+                                <i class="fa-solid fa-file-certificate"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">Gemini Certified Educator</h4>
+                            <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                        </div>
+                        <div id="cert-preview-container-9" class="relative space-y-2">
+                            <img id="cert-img-9" src="https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Gemini%20Certified%20Educator.png" onerror="this.src='https://a0900271071-hash.github.io/portfolio/Gemini%20Certified%20Educator.png'" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="Gemini Certified Educator 認證預覽">
+                            <p id="cert-name-9" class="text-xs font-bold text-slate-800 truncate px-2">Gemini Certified Educator</p>
+                            <div class="flex items-center justify-center gap-2">
+                                <span class="text-[10px] bg-purple-100 text-purple-800 px-2 py-0.5 rounded font-bold">Google AI 專業認證</span>
+                                <button type="button" data-cert-id="9" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽 Gemini Certified Educator">放大預覽</button>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Cert Slot 10: Gemini Certified Faculty -->
+                    <label for="cert-input-10" tabindex="0" data-cert-id="10" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="Gemini Certified Faculty 認證">
+                        <input type="file" id="cert-input-10" class="hidden cert-input" data-cert-id="10" accept="image/*,.pdf">
+                        <div id="cert-placeholder-10" class="space-y-2 py-2 hidden">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 group-hover:rotate-12 transition-all">
+                                <i class="fa-solid fa-file-certificate"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">Gemini Certified Faculty</h4>
+                            <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                        </div>
+                        <div id="cert-preview-container-10" class="relative space-y-2">
+                            <img id="cert-img-10" src="https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Gemini%20Certified%20Faculty.png" onerror="this.src='https://a0900271071-hash.github.io/portfolio/Gemini%20Certified%20Faculty.png'" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="Gemini Certified Faculty 認證預覽">
+                            <p id="cert-name-10" class="text-xs font-bold text-slate-800 truncate px-2">Gemini Certified Faculty</p>
+                            <div class="flex items-center justify-center gap-2">
+                                <span class="text-[10px] bg-purple-100 text-purple-800 px-2 py-0.5 rounded font-bold">Google AI 專業認證</span>
+                                <button type="button" data-cert-id="10" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽 Gemini Certified Faculty">放大預覽</button>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Cert Slot 11: Gemini Certified Student -->
+                    <label for="cert-input-11" tabindex="0" data-cert-id="11" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="Gemini Certified Student 認證">
+                        <input type="file" id="cert-input-11" class="hidden cert-input" data-cert-id="11" accept="image/*,.pdf">
+                        <div id="cert-placeholder-11" class="space-y-2 py-2 hidden">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 group-hover:rotate-12 transition-all">
+                                <i class="fa-solid fa-file-certificate"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">Gemini Certified Student</h4>
+                            <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                        </div>
+                        <div id="cert-preview-container-11" class="relative space-y-2">
+                            <img id="cert-img-11" src="https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Gemini%20Certified%20Student.png" onerror="this.src='https://a0900271071-hash.github.io/portfolio/Gemini%20Certified%20Student.png'" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="Gemini Certified Student 認證預覽">
+                            <p id="cert-name-11" class="text-xs font-bold text-slate-800 truncate px-2">Gemini Certified Student</p>
+                            <div class="flex items-center justify-center gap-2">
+                                <span class="text-[10px] bg-purple-100 text-purple-800 px-2 py-0.5 rounded font-bold">Google AI 專業認證</span>
+                                <button type="button" data-cert-id="11" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽 Gemini Certified Student">放大預覽</button>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Cert Slot 12: C-EPT A1 -->
+                    <label for="cert-input-12" tabindex="0" data-cert-id="12" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="C-EPT 英語檢定 A1 級證書">
+                        <input type="file" id="cert-input-12" class="hidden cert-input" data-cert-id="12" accept="image/*,.pdf">
+                        <div id="cert-placeholder-12" class="space-y-2 py-2 hidden">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 group-hover:rotate-12 transition-all">
+                                <i class="fa-solid fa-file-certificate"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">C-EPT 英語檢定 A1 級證書</h4>
+                            <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                        </div>
+                        <div id="cert-preview-container-12" class="relative space-y-2">
+                            <img id="cert-img-12" src="https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/C-EPT%20A1.JPG" onerror="this.src='https://a0900271071-hash.github.io/portfolio/C-EPT%20A1.JPG'" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="C-EPT 英語檢定 A1 級證書預覽">
+                            <p id="cert-name-12" class="text-xs font-bold text-slate-800 truncate px-2">C-EPT 英語檢定 A1 級證書</p>
+                            <div class="flex items-center justify-center gap-2">
+                                <span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold">語言能力檢定</span>
+                                <button type="button" data-cert-id="12" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽 C-EPT 英語檢定 A1 級證書">放大預覽</button>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Cert Slot 13: 預留可自訂上傳欄位 -->
+                    <label for="cert-input-13" tabindex="0" data-cert-id="13" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="點擊上傳證照或資格證明 13">
+                        <input type="file" id="cert-input-13" class="hidden cert-input" data-cert-id="13" accept="image/*,.pdf">
+                        <div id="cert-placeholder-13" class="space-y-2 py-2">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 group-hover:rotate-12 transition-all">
+                                <i class="fa-solid fa-plus text-2xl"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">新增其他證照 / 證明</h4>
+                            <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
+                        </div>
+                        <div id="cert-preview-container-13" class="hidden relative space-y-2">
+                            <img id="cert-img-13" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽 13">
+                            <p id="cert-name-13" class="text-xs font-bold text-slate-800 truncate px-2"></p>
                             <div class="flex items-center justify-center gap-2">
                                 <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
-                                <button type="button" data-cert-id="6" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽證照 06">放大預覽</button>
+                                <button type="button" data-cert-id="13" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽證照 13">放大預覽</button>
                             </div>
                         </div>
                     </label>
@@ -1001,7 +1141,20 @@
             }
 
             // Certificate Upload Handling
-            const certData = {};
+            const certData = {
+                "1": { name: "會計事務 丙級技術士", url: "https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Level%20C%20Technician%20for%20Accounting.JPG" },
+                "2": { name: "電腦軟體應用 丙級技術士", url: "https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Level%20C%20Technician%20for%20Computer%20Software%20Application.JPG" },
+                "3": { name: "網頁設計 丙級技術士", url: "https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Level%20C%20technician%20for%20web%20page%20design.JPG" },
+                "4": { name: "財產保險業務員資格證照", url: "https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Property%20Insurance%20Sales%20Representative.jpeg" },
+                "5": { name: "證券商業務員資格證照", url: "https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Securities%20Specialist%20Qualification.jpeg" },
+                "6": { name: "MOS Excel Expert 專家認證", url: "https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Microsoft%20Office%20Specialist%20Excel%20Expert.png" },
+                "7": { name: "MOS Word Expert 專家認證", url: "https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Microsoft%20Office%20Specialist%20Word%20Expert.png" },
+                "8": { name: "MOS Associate 專業認證", url: "https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Microsoft%20Office%20Specialist%20Microsoft%20Associate.png" },
+                "9": { name: "Gemini Certified Educator 認證", url: "https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Gemini%20Certified%20Educator.png" },
+                "10": { name: "Gemini Certified Faculty 認證", url: "https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Gemini%20Certified%20Faculty.png" },
+                "11": { name: "Gemini Certified Student 認證", url: "https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Gemini%20Certified%20Student.png" },
+                "12": { name: "C-EPT 英語檢定 A1 級證書", url: "https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/C-EPT%20A1.JPG" }
+            };
 
             // File select listener on all cert inputs
             document.querySelectorAll('.cert-input').forEach(input => {
