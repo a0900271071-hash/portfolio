@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+    
     <script>
         tailwind.config = {
             theme: {
@@ -187,7 +187,138 @@
     </style>
 </head>
 <body class="tech-bg font-sans antialiased text-slate-800 selection:bg-cyan-200 selection:text-cyan-900 min-h-screen">
-                    </p>
+
+    <!-- Decorative Top & Side Glow Orbs with floating animation -->
+    <div class="fixed -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-cyan-300/30 blur-[120px] rounded-full pointer-events-none z-0 animate-float-slow"></div>
+    <div class="fixed top-1/4 -left-40 w-96 h-96 bg-sky-400/20 blur-[100px] rounded-full pointer-events-none z-0 animate-float-slow" style="animation-delay: 1.5s;"></div>
+    <div class="fixed bottom-10 -right-40 w-96 h-96 bg-cyan-400/20 blur-[100px] rounded-full pointer-events-none z-0 animate-float-slow" style="animation-delay: 3s;"></div>
+    <div class="tech-overlay"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 w-full z-50 glass-nav transition-all duration-300 shadow-sm" aria-label="主要導覽區">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="#hero" class="text-xl font-extrabold tracking-tight text-slate-900 hover:text-cyan-600 transition-colors flex items-center gap-2 bounce-on-click" aria-label="劉向榮個人首頁">
+                    <span class="w-3 h-3 rounded-full bg-cyan-500 animate-ping"></span>
+                    劉向榮 <span class="text-xs font-normal text-slate-500 tracking-normal font-mono">Xiang-Rong Liu</span>
+                </a>
+                
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex space-x-6 text-sm font-semibold text-slate-600">
+                    <a href="#about" class="hover:text-cyan-600 transition-all hover:-translate-y-0.5 inline-block">關於我</a>
+                    <a href="#skills" class="hover:text-cyan-600 transition-all hover:-translate-y-0.5 inline-block">專業技能與證照</a>
+                    <a href="#tools" class="hover:text-cyan-600 transition-all hover:-translate-y-0.5 inline-block">自製工具箱</a>
+                    <a href="#experience" class="hover:text-cyan-600 transition-all hover:-translate-y-0.5 inline-block">經歷與進修</a>
+                    <a href="#contact" class="hover:text-cyan-600 transition-all hover:-translate-y-0.5 inline-block">聯絡方式</a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <button type="button" id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-cyan-50 focus:outline-none bounce-on-click" aria-label="切換選單選項目錄" aria-expanded="false">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-lg border-b border-cyan-100 px-4 pt-2 pb-4 space-y-3 text-base font-medium text-slate-700 shadow-xl">
+            <a href="#about" class="block px-3 py-2 rounded-md hover:bg-cyan-50 hover:text-cyan-700 mobile-nav-link">關於我</a>
+            <a href="#skills" class="block px-3 py-2 rounded-md hover:bg-cyan-50 hover:text-cyan-700 mobile-nav-link">專業技能與證照</a>
+            <a href="#tools" class="block px-3 py-2 rounded-md hover:bg-cyan-50 hover:text-cyan-700 mobile-nav-link">自製工具箱</a>
+            <a href="#experience" class="block px-3 py-2 rounded-md hover:bg-cyan-50 hover:text-cyan-700 mobile-nav-link">經歷與進修</a>
+            <a href="#contact" class="block px-3 py-2 rounded-md hover:bg-cyan-50 hover:text-cyan-700 mobile-nav-link">聯絡方式</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Page Load Bounce Animation -->
+    <section id="hero" class="relative z-10 pt-28 pb-16 md:pt-36 md:pb-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-10">
+            <div class="flex-1 text-center md:text-left space-y-6 animate-bounce-in">
+                <!-- Status Badge -->
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-300/80 text-cyan-800 text-xs sm:text-sm font-semibold shadow-sm animate-pulse">
+                    <span class="w-2.5 h-2.5 rounded-full bg-cyan-500 animate-ping"></span>
+                    <span class="tracking-wide">積極尋求 專案管理 / 數位行政 職缺</span>
+                </div>
+                
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+                    你好，我是 <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-sky-600 to-cyan-500 inline-block hover:scale-105 transition-transform duration-300 cursor-default">劉向榮</span>
+                </h1>
+                
+                <!-- One-line self positioning -->
+                <p class="text-lg sm:text-xl font-bold text-slate-700 leading-relaxed">
+                    具備豐富跨單位溝通與展場專案管理經驗，積極導入 <span class="px-2.5 py-1 bg-cyan-100 text-cyan-900 rounded-lg font-semibold border border-cyan-300 shadow-sm inline-block hover:rotate-1 hover:scale-105 transition-all">AI 自動化工具</span> 以極致化工作效率。
+                </p>
+
+                <p class="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl font-normal">
+                    擁有跨公部門專案溝通對接經驗，成功籌辦 13 場博物館活動並維持 100% 準時交付品質。結合財稅背景與 AI / Power BI 數位工具，為團隊注入即戰力與高營運價值。
+                </p>
+
+                <!-- Quick Action Buttons -->
+                <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-2">
+                    <a href="#contact" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-sky-600 hover:from-cyan-500 hover:to-sky-500 text-white font-bold text-sm transition-all shadow-md hover:shadow-cyan-500/30 flex items-center gap-2 bounce-on-click hover:-translate-y-1">
+                        <i class="fa-solid fa-paper-plane animate-bounce"></i> 聯絡我
+                    </a>
+                    <a href="#tools" class="px-6 py-3 rounded-xl bg-white/90 border border-cyan-200 text-slate-800 font-bold text-sm hover:bg-cyan-50 hover:border-cyan-300 transition-all shadow-sm flex items-center gap-2 bounce-on-click hover:-translate-y-1">
+                        <i class="fa-solid fa-cubes text-cyan-600"></i> 體驗自製工具
+                    </a>
+                </div>
+
+                <!-- Quick info badges -->
+                <div class="pt-4 flex flex-wrap justify-center md:justify-start gap-y-2 gap-x-6 text-xs text-slate-500 border-t border-cyan-100/80 font-medium">
+                    <span class="flex items-center gap-1.5 hover:text-cyan-700 transition-colors"><i class="fa-solid fa-location-dot text-cyan-600"></i> 台灣</span>
+                    <span class="flex items-center gap-1.5 hover:text-cyan-700 transition-colors"><i class="fa-solid fa-car text-cyan-600"></i> 持普通小型車 / 重型機車駕照</span>
+                    <span class="flex items-center gap-1.5 hover:text-emerald-700 transition-colors"><i class="fa-solid fa-circle-check text-emerald-600"></i> 面試即到職</span>
+                </div>
+            </div>
+
+            <!-- Hero Tech Card -->
+            <div class="w-full sm:w-72 md:w-80 flex-shrink-0 animate-bounce-in" style="animation-delay: 0.2s;">
+                <div class="tech-card hud-corners p-6 rounded-2xl relative overflow-hidden animate-float-slow">
+                    <div class="absolute -right-8 -top-8 w-24 h-24 bg-cyan-400/20 rounded-full blur-xl"></div>
+                    
+                    <div class="w-28 h-28 mx-auto rounded-2xl overflow-hidden border-2 border-cyan-300 shadow-md relative group cursor-pointer hover:rotate-2 hover:scale-105 transition-all duration-300">
+                        <img id="profile-img" src="https://a0900271071-hash.github.io/portfolio/my-photo.JPG" alt="劉向榮個人大頭照" class="w-full h-full object-cover">
+                        <span class="absolute bottom-1 right-1 bg-cyan-600 text-white p-1 rounded-lg text-xs shadow z-10 animate-pulse">
+                            <i class="fa-solid fa-microchip"></i>
+                        </span>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <h2 class="text-xl font-extrabold text-slate-900">劉向榮</h2>
+                        <p class="text-xs text-cyan-700 font-semibold mt-1">專案管理 | 數據分析 | AI 自動化</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-2 text-left pt-4 mt-4 border-t border-cyan-100 text-xs">
+                        <div class="p-2.5 bg-white/80 rounded-xl border border-cyan-100 hover:border-cyan-400 hover:scale-105 transition-all cursor-default">
+                            <span class="text-slate-400 block text-[10px] font-medium">專案成效</span>
+                            <span class="font-black text-slate-800 text-sm">13+ 場活動</span>
+                        </div>
+                        <div class="p-2.5 bg-white/80 rounded-xl border border-cyan-100 hover:border-emerald-400 hover:scale-105 transition-all cursor-default">
+                            <span class="text-slate-400 block text-[10px] font-medium">交付達成率</span>
+                            <span class="font-black text-emerald-600 text-sm">100% 準時</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section with Scroll Reveal Bounce -->
+    <section id="about" class="relative z-10 py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+        <div class="tech-card rounded-3xl p-6 sm:p-10 space-y-6 reveal-bounce">
+            <div class="flex items-center gap-3 border-b border-cyan-100 pb-4">
+                <div class="w-10 h-10 rounded-xl bg-cyan-500 text-white flex items-center justify-center font-bold shadow-md shadow-cyan-500/20 hover:rotate-12 transition-transform">
+                    <i class="fa-solid fa-id-card text-lg"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-extrabold text-slate-900">關於我</h2>
+                    <p class="text-xs font-semibold text-cyan-700 tracking-wider">About Me & Career Summary</p>
+                </div>
+            </div>
+
+            <div class="prose max-w-none text-slate-700 leading-relaxed text-sm sm:text-base space-y-4">
+                <p>
+                    貴公司您好，我是<strong>劉向榮</strong>。我具備豐富的跨單位溝通與展場專案管理經驗，同時積極導入 AI 自動化工具以提升團隊工作效率。
+                </p>
                 <p>
                     在西米創意設計擔任<strong>博物館專案管理人員</strong>期間，我擔任總公司、文化資產局及縣政府文化局三方之間的核心溝通窗口。面對公部門嚴格的審查標準，我建立起高精準度的資訊對接機制，確保溝通零重大失誤；在執行層面，我成功籌辦並執行 <strong>13 場博物館活動</strong>，創造平均 <strong>80% 以上的高滿意度</strong>，並維持 <strong>100% 準時交付營運報告書</strong>的優異紀錄。
                 </p>
@@ -289,13 +420,13 @@
                         <i class="fa-solid fa-award text-cyan-600 animate-bounce"></i> 專業證照與資格證明
                     </h3>
                     <span class="text-xs text-cyan-700 bg-cyan-50 border border-cyan-200 px-3 py-1 rounded-full font-medium w-max animate-pulse">
-                        <i class="fa-solid fa-circle-check mr-1 text-emerald-600"></i> 已預載 13 項專業證照 (亦可再上傳更換)
+                        <i class="fa-solid fa-circle-check mr-1 text-emerald-600"></i> 已預載 12 項專業證照 (亦可再上傳更換)
                     </span>
                 </div>
 
                 <!-- Grid of Refactored Accessible Label Certificate Cards -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
-
+                    
                     <!-- Cert Slot 1: 會計事務丙級技術士 -->
                     <label for="cert-input-1" tabindex="0" data-cert-id="1" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="會計事務丙級技術士證照">
                         <input type="file" id="cert-input-1" class="hidden cert-input" data-cert-id="1" accept="image/*,.pdf">
@@ -355,7 +486,8 @@
                             </div>
                         </div>
                     </label>
-                                        <!-- Cert Slot 4: 財產保險業務員資格證照 -->
+
+                    <!-- Cert Slot 4: 財產保險業務員資格證照 -->
                     <label for="cert-input-4" tabindex="0" data-cert-id="4" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="財產保險業務員資格證照">
                         <input type="file" id="cert-input-4" class="hidden cert-input" data-cert-id="4" accept="image/*,.pdf">
                         <div id="cert-placeholder-4" class="space-y-2 py-2 hidden">
@@ -435,26 +567,27 @@
                         </div>
                     </label>
 
-                    <!-- Cert Slot 8: MOS PowerPoint -->
-                    <label for="cert-input-8" tabindex="0" data-cert-id="8" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="MOS PowerPoint 專家認證">
+                    <!-- Cert Slot 8: MOS Associate -->
+                    <label for="cert-input-8" tabindex="0" data-cert-id="8" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="MOS Office Specialist Associate 認證">
                         <input type="file" id="cert-input-8" class="hidden cert-input" data-cert-id="8" accept="image/*,.pdf">
                         <div id="cert-placeholder-8" class="space-y-2 py-2 hidden">
                             <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 group-hover:rotate-12 transition-all">
                                 <i class="fa-solid fa-file-certificate"></i>
                             </div>
-                            <h4 class="font-bold text-slate-900 text-sm">MOS PowerPoint 專家認證</h4>
+                            <h4 class="font-bold text-slate-900 text-sm">MOS Associate 專業認證</h4>
                             <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
                         </div>
                         <div id="cert-preview-container-8" class="relative space-y-2">
-                            <img id="cert-img-8" src="https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Microsoft%20Office%20Specialist%20PowerPoint.png" onerror="this.src='https://a0900271071-hash.github.io/portfolio/Microsoft%20Office%20Specialist%20PowerPoint.png'" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="MOS PowerPoint 專家認證預覽">
-                            <p id="cert-name-8" class="text-xs font-bold text-slate-800 truncate px-2">MOS PowerPoint 專家認證</p>
+                            <img id="cert-img-8" src="https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Microsoft%20Office%20Specialist%20Microsoft%20Associate.png" onerror="this.src='https://a0900271071-hash.github.io/portfolio/Microsoft%20Office%20Specialist%20Microsoft%20Associate.png'" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="MOS Associate 專業認證預覽">
+                            <p id="cert-name-8" class="text-xs font-bold text-slate-800 truncate px-2">MOS Associate 專業認證</p>
                             <div class="flex items-center justify-center gap-2">
                                 <span class="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-bold">Microsoft 國際證照</span>
-                                <button type="button" data-cert-id="8" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽 MOS PowerPoint 專家認證">放大預覽</button>
+                                <button type="button" data-cert-id="8" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽 MOS Associate 專業認證">放大預覽</button>
                             </div>
                         </div>
                     </label>
-                                        <!-- Cert Slot 9: Gemini Certified Educator -->
+
+                    <!-- Cert Slot 9: Gemini Certified Educator -->
                     <label for="cert-input-9" tabindex="0" data-cert-id="9" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="Gemini Certified Educator 認證">
                         <input type="file" id="cert-input-9" class="hidden cert-input" data-cert-id="9" accept="image/*,.pdf">
                         <div id="cert-placeholder-9" class="space-y-2 py-2 hidden">
@@ -534,22 +667,22 @@
                         </div>
                     </label>
 
-                    <!-- Cert Slot 13: 丙種職業安全衛生業務主管安全衛生教育訓練結業證書 -->
-                    <label for="cert-input-13" tabindex="0" data-cert-id="13" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="丙種職業安全衛生業務主管安全衛生教育訓練結業證書">
+                    <!-- Cert Slot 13: 預留可自訂上傳欄位 -->
+                    <label for="cert-input-13" tabindex="0" data-cert-id="13" class="cert-upload-card p-4 rounded-xl cursor-pointer relative text-center group block bounce-on-click" aria-label="點擊上傳證照或資格證明 13">
                         <input type="file" id="cert-input-13" class="hidden cert-input" data-cert-id="13" accept="image/*,.pdf">
-                        <div id="cert-placeholder-13" class="space-y-2 py-2 hidden">
+                        <div id="cert-placeholder-13" class="space-y-2 py-2">
                             <div class="w-12 h-12 mx-auto rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl group-hover:scale-110 group-hover:rotate-12 transition-all">
-                                <i class="fa-solid fa-file-certificate"></i>
+                                <i class="fa-solid fa-plus text-2xl"></i>
                             </div>
-                            <h4 class="font-bold text-slate-900 text-sm">丙種職業安全衛生業務主管安全衛生教育訓練結業證書</h4>
+                            <h4 class="font-bold text-slate-900 text-sm">新增其他證照 / 證明</h4>
                             <p class="text-[11px] text-cyan-700 font-medium">點擊選擇檔案上傳 <i class="fa-solid fa-upload"></i></p>
                         </div>
-                        <div id="cert-preview-container-13" class="relative space-y-2">
-                            <img id="cert-img-13" src="https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/IMG_1809.jpeg" class="h-32 w-full object-contain rounded-lg border border-cyan-200 shadow-sm" alt="丙種職業安全衛生業務主管安全衛生教育訓練結業證書預覽">
-                            <p id="cert-name-13" class="text-xs font-bold text-slate-800 truncate px-2">丙種職業安全衛生業務主管安全衛生教育訓練結業證書</p>
+                        <div id="cert-preview-container-13" class="hidden relative space-y-2">
+                            <img id="cert-img-13" class="h-32 w-full object-cover rounded-lg border border-cyan-200 shadow-sm" alt="證照預覽 13">
+                            <p id="cert-name-13" class="text-xs font-bold text-slate-800 truncate px-2"></p>
                             <div class="flex items-center justify-center gap-2">
-                                <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">職業安全衛生業務主管訓練</span>
-                                <button type="button" data-cert-id="13" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽丙種職業安全衛生業務主管安全衛生教育訓練結業證書">放大預覽</button>
+                                <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">已上傳圖檔</span>
+                                <button type="button" data-cert-id="13" class="view-cert-btn text-xs text-cyan-700 hover:text-cyan-900 font-bold underline bounce-on-click" aria-label="放大預覽證照 13">放大預覽</button>
                             </div>
                         </div>
                     </label>
@@ -561,7 +694,70 @@
 
     <!-- Digital Tools Suite Section -->
     <section id="tools" class="relative z-10 py-6 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-                                    <i class="fa-solid fa-keyboard text-sm"></i> 開啟 PPT 快捷鍵查詢 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+        <div class="tech-card rounded-3xl p-6 sm:p-8 space-y-6 reveal-bounce">
+            <!-- Section Title -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-cyan-100 pb-4 gap-2">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-sky-600 text-white flex items-center justify-center font-bold shadow-md shadow-cyan-500/20 hover:rotate-12 transition-transform">
+                        <i class="fa-solid fa-wand-magic-sparkles text-lg animate-pulse"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-black text-slate-900">自製數位辦公與實用工具箱</h2>
+                        <p class="text-xs font-semibold text-cyan-700 tracking-wider">Interactive Custom Digital Tools & Utilities</p>
+                    </div>
+                </div>
+                <span class="text-xs text-cyan-800 bg-cyan-50 border border-cyan-200 px-3 py-1.5 rounded-full font-bold w-max self-start sm:self-center animate-bounce">
+                    <i class="fa-solid fa-cube mr-1"></i> 個人開發小工具集
+                </span>
+            </div>
+
+            <!-- Grid Layout for Custom Tools with bouncy animations -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                
+                <!-- Tool 0: AI Project Game -->
+                <div class="hud-corners p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-cyan-950 via-cyberNavy to-slate-900 text-white relative overflow-hidden border border-cyan-400/50 flex flex-col justify-between group shadow-lg hover:-translate-y-3 hover:scale-[1.02] hover:border-cyan-300 transition-all duration-300">
+                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-cyan-400/30 rounded-full blur-xl pointer-events-none group-hover:bg-cyan-300/50 group-hover:scale-125 transition-all"></div>
+                    <div class="space-y-3 relative z-10">
+                        <div class="flex items-center justify-between">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-cyan-500/20 border border-cyan-400/50 text-cyan-300 text-[11px] font-bold">
+                                <i class="fa-solid fa-robot animate-pulse"></i> AI 實務班專題
+                            </span>
+                            <span class="text-[10px] font-mono text-cyan-400/90 font-bold">PROJECT #00</span>
+                        </div>
+                        <h3 class="text-lg font-black text-white flex items-center gap-2 group-hover:text-cyan-300 transition-colors">
+                            <i class="fa-solid fa-gamepad text-cyan-400 group-hover:scale-125 transition-transform"></i> AI 專題互動遊戲作品
+                        </h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            於「數位辦公與 AI 應用實務班」所開發之 AI 專題網頁遊戲，展示結合生成式 AI 工具開發、互動機制設計與跨平台網頁部署成果。
+                        </p>
+                    </div>
+                    <div class="pt-5 relative z-10">
+                        <a href="https://aiproject-git-main-paul-9aea.vercel.app/" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-cyan-500 hover:from-cyan-300 hover:to-sky-300 text-slate-950 font-extrabold text-xs transition-all shadow-md shadow-cyan-400/20 flex items-center justify-center gap-2 bounce-on-click hover:scale-105">
+                            <i class="fa-solid fa-play text-sm"></i> 體驗 AI 專題遊戲 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tool 1: PPT Shortcut Tool -->
+                <div class="hud-corners p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-cyan-950 via-cyberNavy to-slate-900 text-white relative overflow-hidden border border-cyan-400/30 flex flex-col justify-between group shadow-lg hover:-translate-y-3 hover:scale-[1.02] hover:border-cyan-400 transition-all duration-300">
+                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-cyan-500/20 rounded-full blur-xl pointer-events-none group-hover:bg-cyan-400/40 group-hover:scale-125 transition-all"></div>
+                    <div class="space-y-3 relative z-10">
+                        <div class="flex items-center justify-between">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 text-[11px] font-bold">
+                                <i class="fa-solid fa-bolt animate-pulse"></i> 簡報效率
+                            </span>
+                            <span class="text-[10px] font-mono text-cyan-400/80">TOOL #01</span>
+                        </div>
+                        <h3 class="text-lg font-black text-white flex items-center gap-2 group-hover:text-cyan-300 transition-colors">
+                            <i class="fa-solid fa-file-powerpoint text-cyan-400 group-hover:scale-125 transition-transform"></i> PPT 快捷鍵快速查詢
+                        </h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            極致化簡報製作與展示效率！個人開發之互動式 PowerPoint 快捷鍵檢索介面，支援分類查詢與即時搜尋。
+                        </p>
+                    </div>
+                    <div class="pt-5 relative z-10">
+                        <a href="https://a0900271071-hash.github.io/portfolio/ppt-shortcut.html" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 font-extrabold text-xs transition-all shadow-md shadow-cyan-500/20 flex items-center justify-center gap-2 bounce-on-click hover:scale-105">
+                            <i class="fa-solid fa-keyboard text-sm"></i> 開啟 PPT 快捷鍵查詢 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                         </a>
                     </div>
                 </div>
@@ -878,7 +1074,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Scroll Reveal Bounce Observer
             const revealElements = document.querySelectorAll('.reveal-bounce');
-
+            
             const revealObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -922,7 +1118,7 @@
             // Copy Contact Details Logic
             function copyContactInfo() {
                 const contactText = "劉向榮 | 電話：0900-271-071 | 電子郵件：a0900271071@gmail.com";
-
+                
                 const tempInput = document.createElement("textarea");
                 tempInput.value = contactText;
                 document.body.appendChild(tempInput);
@@ -981,8 +1177,7 @@
                 "9": { name: "Gemini Certified Educator 認證", url: "https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Gemini%20Certified%20Educator.png" },
                 "10": { name: "Gemini Certified Faculty 認證", url: "https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Gemini%20Certified%20Faculty.png" },
                 "11": { name: "Gemini Certified Student 認證", url: "https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/Gemini%20Certified%20Student.png" },
-                "12": { name: "C-EPT 英語檢定 A1 級證書", url: "https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/C-EPT%20A1.JPG" },
-                "13": { name: "丙種職業安全衛生業務主管安全衛生教育訓練結業證書", url: "https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/IMG_1809.jpeg" }
+                "12": { name: "C-EPT 英語檢定 A1 級證書", url: "https://raw.githubusercontent.com/a0900271071-hash/portfolio/main/C-EPT%20A1.JPG" }
             };
 
             // File select listener on all cert inputs
@@ -1003,7 +1198,7 @@
                         // Hide placeholder, show preview
                         const placeholder = document.getElementById(`cert-placeholder-${id}`);
                         if (placeholder) placeholder.classList.add('hidden');
-
+                        
                         const previewContainer = document.getElementById(`cert-preview-container-${id}`);
                         const previewImg = document.getElementById(`cert-img-${id}`);
                         const previewName = document.getElementById(`cert-name-${id}`);
